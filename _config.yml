@@ -1,0 +1,34 @@
+title: CSSE1001
+description: >-
+  CSSE1001 Course Website for distributing various learning
+  resources for the University of Queenslands Introduction to
+  Software Engineering course
+baseurl: ""
+url: ""
+
+collections:
+  notes:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "notes"
+    values:
+      layout: "default"
+
+# Build settings
+markdown: kramdown
+parse_block_html: true
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
