@@ -9,6 +9,11 @@ This site is used to distribute course notes for the University of Queensland's 
 
 All of the course notes can be viewed in one page [here](/notes/all).
 
+## Examples
+[Software Engineering](/notes/software-engineering)
+[Programming Languages](/notes/programming-languages)
+[Writing Software](/notes/writing-software)
+
 ### Week-by-Week
 
 | Week | Notes |
