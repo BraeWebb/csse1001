@@ -1,6 +1,7 @@
 ---
 title: Writing Software
 permalink: /notes/writing-software
+hidden: true
 ---
 
 ### Writing Software

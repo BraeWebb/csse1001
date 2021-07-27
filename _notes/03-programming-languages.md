@@ -1,6 +1,7 @@
 ---
 title: Features of a Programming Languages
 permalink: /notes/programming-languages
+hidden: true
 ---
 
 ### Features of a Programming Language
