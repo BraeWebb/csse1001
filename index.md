@@ -4,7 +4,8 @@ layout: default
 ---
 <br/>
 # CSSE1001/7030
-_Semester 2, 2021_
+_Semester 2, 2021_<br/>
+<small>Last Updated: {% last_modified_at %H:%M:%S %Y-%m-%d %:z %}</small>
 
 Course notes and tutorials for CSSE1001 and CSSE7030.
 
