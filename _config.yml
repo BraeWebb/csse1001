@@ -9,6 +9,8 @@ url: ""
 collections:
   notes:
     output: true
+  tutorials:
+    output: true
 
 defaults:
   - scope:
@@ -16,10 +18,16 @@ defaults:
       type: "notes"
     values:
       layout: "default"
+  - scope:
+      path: ""
+      type: "tutorials"
+    values:
+      layout: "default"
 
 # Build settings
 markdown: kramdown
-parse_block_html: true
+kramdown:
+  parse_block_html: true
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

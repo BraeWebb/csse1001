@@ -20,8 +20,8 @@ The combined one-page course notes (useful for printing) are available [here](/n
 | Week | Notes | Tutorial | MyPyTutor |
 | ------------ |
 | 1 | [Introduction to SWE](/notes/software-engineering)<br/>[Variables & Types](/notes/variables-types) | | Log into MyPyTutor |
-| 2 | [Control Structure](/notes/control-structures)<br/>[Functional Decomposition](/notes/functional-decomp) | Expressions and Control Structures | Intro to Programming |
-| 3 | Data Structures<br/>Lists | Functional Decomposition | Control Structures |
+| 2 | [Control Structure](/notes/control-structures)<br/>[Functional Decomposition](/notes/functional-decomp) | [Expressions and Control Structures](/tutorials/expressions-control-structures) | Intro to Programming |
+| 3 | Data Structures<br/>Lists | [Functional Decomposition](/tutorials/functional-decomposition) | Control Structures |
 | 4 | Dictionaries<br/>File Processing | Data Structures | Functions |
 | 5 | Exceptions<br/>Object Oriented Programing | Debugging and Dictionaries | List, Strings, Tuples |
 | 6 | Variable Scope<br/>Testing | File IO and processing | Dictionaries, Lists, and Strings |
