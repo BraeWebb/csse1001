@@ -2,6 +2,7 @@
 .important,
 .aside,
 .extra,
+.blockquote,
 .viz {
     margin: 20px 0;
     padding: 15px 30px 15px 15px;
@@ -60,4 +61,13 @@
 .container {
     margin-top: 40px;
     margin-bottom: 40px;
+}
+
+.blockquote {
+    line-height: 10px;
+    font-style: italic;
+}
+
+.indent {
+    padding-left: 4em;
 }
