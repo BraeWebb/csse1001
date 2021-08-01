@@ -13,6 +13,7 @@ module Jekyll
         --css=style/code.css \
         --pdf-engine=wkhtmltopdf \
         --pdf-engine-opt=--enable-local-file-access \
+        --metadata title= \
         #{outpath} \
         -o "#{dest}.pdf"`
       end

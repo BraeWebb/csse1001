@@ -5,6 +5,12 @@ course at the University of Queensland.
 
 Notes are written in Markdown and automatically deployed to [csse1001.brae.dev](https://csse1001.brae.dev) using Jekyll.
 
+### Requirements
+To be able to run the website locally, you will need the following installed:
+- ruby and ruby-dev
+- pandoc
+- wkhtmltopdf
+
 ### Running Locally
 
 To run the website locallly, you will need to have ruby, ruby bundle, and ruby dev installed.
