@@ -3,8 +3,6 @@ title: Expressions and Control Structures
 permalink: /tutorials/expressions-control-structures
 ---
 
-# Expressions and Control Structures
-
 <div class="important">
 
 #### About Tutorials

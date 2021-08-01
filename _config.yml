@@ -17,12 +17,12 @@ defaults:
       path: ""
       type: "notes"
     values:
-      layout: "default"
+      layout: "content"
   - scope:
       path: ""
       type: "tutorials"
     values:
-      layout: "default"
+      layout: "content"
 
 # Build settings
 markdown: kramdown
@@ -32,11 +32,9 @@ kramdown:
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
-# exclude:
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
+  - bin/
+  - pdf-gen/

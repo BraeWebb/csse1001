@@ -11,6 +11,11 @@
 
 <body>
     <div class="container">
+        <h1>{{ page.title }}</h1>
+        <p class="link-bar">
+            <a href="{{ page.url }}.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
         {{ content }}
     </div>
 </body>

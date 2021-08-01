@@ -3,8 +3,6 @@ title: Functional Decomposition
 permalink: /tutorials/functional-decomposition
 ---
 
-# Functional Decomposition
-
 #### Leap Years
 
 Convert the leap year program you wrote in week 2 to a function. The function should take a single integer parameter representing a year (e.g. 2018), and return: `True` if the year is a leap year, and `False` if not.
@@ -41,16 +39,16 @@ The turtle begins facing 'east' (i.e. to the right). For example, the following 
 import turtle
 
 def demo() :
-	"""Turtle demo."""
-	turtle.forward(100)
-	turtle.left(120)
-	turtle.forward(80)
-	turtle.right(90)
-	turtle.forward(80)
-	turtle.exitonclick()
+    """Turtle demo."""
+    turtle.forward(100)
+    turtle.left(120)
+    turtle.forward(80)
+    turtle.right(90)
+    turtle.forward(80)
+    turtle.exitonclick()
 
 if __name__ == "__main__" :
-	demo()
+    demo()
 ```
 
 </div>

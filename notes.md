@@ -1,7 +1,7 @@
 ---
 title: CSSE1001/7030 Notes
 permalink: /notes/all
-layout: default
+layout: content
 ---
 
 {::options parse_block_html="true" /}
