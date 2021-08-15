@@ -71,3 +71,15 @@
 .indent {
     padding-left: 4em;
 }
+
+.viz figure {
+    margin-block-end: 0px;
+}
+
+.viz figure pre {
+    margin-block-end: 0px;
+}
+
+.viz pre {
+    margin-block-end: 0px;
+}

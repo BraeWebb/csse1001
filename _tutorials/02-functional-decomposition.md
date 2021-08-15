@@ -3,6 +3,8 @@ title: Functional Decomposition
 permalink: /tutorials/functional-decomposition
 ---
 
+# Functional Decomposition
+
 #### Leap Years
 
 Convert the leap year program you wrote in week 2 to a function. The function should take a single integer parameter representing a year (e.g. 2018), and return: `True` if the year is a leap year, and `False` if not.
@@ -62,29 +64,29 @@ Create a file which contains the following functions. NOTE:
 
 1. `rectangle(width, height)`, which draws a rectangle with the given side lengths. Ensure that the cursor finishes pointing east.
 
-![](images/_02/turtle_2.png)
+    ![](images/_02/turtle_2.png)
 
 2. `rotated_rectangle(width, height, angle)`, which draws a rectangle rotated anticlockwise by the given angle. Ensure that the cursor finishes pointing east. 
 
-![](images/_02/turtle_3.png)
+    ![](images/_02/turtle_3.png)
 
-**Hint**: This can be done in only four lines of code, including the `def ...`, and not including the function comment. 
+    **Hint**: This can be done in only four lines of code, including the `def ...`, and not including the function comment. 
 
 3. `polygon(radius, num_sides)`, which draws a regular polygon with n sides, and side length `radius * sin(π / num_sides)`.
 
-![](images/_02/turtle_4.png)
+    ![](images/_02/turtle_4.png)
 
-**Hint**: If the turtle moves anti-clockwise, it will turn a total of 360°, in `n` equal movements. The `math` module contains trigonometric functions and mathematical constants. Remember to `import math`. 
+    **Hint**: If the turtle moves anti-clockwise, it will turn a total of 360°, in `n` equal movements. The `math` module contains trigonometric functions and mathematical constants. Remember to `import math`. 
 
 4. `interact()`, which first asks the user for a distance, then repeatedly asks for a direction to move, from the options `n/s/e/w` (north/south/east/west respectively), and then moves in that direction by the given distance. If the user enters `q`, the turtle window closes and the function ends. If the user enters any other input, an error message is printed, as in the example.
 
-![](images/_02/turtle_5.png)
+    ![](images/_02/turtle_5.png)
 
 <div class="extra">
 
 **Challenge: Square Spirals**
 Write a function `spiral(num_lines, step_size)`, which draws a square spiral with `num_lines` lines, which starting from the centre have length `s, s, 2s, 2s, 3s, 3s, …,` where `s = step_size` (note that this is also the distance between two adjacent parallel lines). The example below shows a spiral of 20 lines, which makes five full revolutions, with a step size of 20. 
 
-</div>
-
 ![](images/_02/turtle_6.png)
+
+</div>
