@@ -11,6 +11,8 @@ collections:
     output: true
   tutorials:
     output: true
+  assignments:
+    output: true
 
 defaults:
   - scope:
