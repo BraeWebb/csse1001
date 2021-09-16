@@ -59,8 +59,8 @@ should leave this until they have completed all the non-masters classes.</p>
 <span>class <span class="ident">PokemonStats</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A class modelling the stats of a pokemon. Each stats must be a
-non-negative number.</p>
+<div class="desc"><p>A class modelling the stats of a pokemon. Each value in the initial
+stats is assumed to be a positive number.</p>
 <h2 id="examples">Examples</h2>
 <pre><code class="language-python-repl">&gt;&gt;&gt; stats = PokemonStats((1, 100, 110, 120))
 &gt;&gt;&gt; stats.get_hit_chance()
@@ -107,8 +107,7 @@ these values are not negative</em></li>
 <dd>
 <div class="desc"><p>Grows the PokemonStats instance after the pokemon has levelled up.</p>
 <p>On leveling up, the base hit chance should always be = <code>1</code>, while the
-remaining stats grow by <code>5%</code> and are rounded down to the nearest
-integer.</p>
+remaining stats grow by <code>5%</code> and are rounded down.</p>
 <h2 id="examples">Examples</h2>
 <pre><code class="language-python-repl">&gt;&gt;&gt; stats = PokemonStats((1, 100, 110, 120))
 &gt;&gt;&gt; stats.level_up()
@@ -700,10 +699,14 @@ implementation, the trainers cannot add an action to the queue unless it is
 valid for them to do so, based on the <code>turn</code>, and if the action would be
 valid.</li>
 <li>The <code>turn</code> is the battle's way of determining who should be allowed
-to add actions to the action queue. Each round, the turn starts as None.
+to add actions to the action queue. Each round, the <code>turn</code> starts as None.
 The first time an action is performed by a trainer that round, the turn
-is set to the opposite trainer, meaning only they can now add actions to
-the queue.</li>
+is set to the opposite trainer, becoming a boolean value which is True
+if the opposite trainer is the player, and False if they are the enemy.
+When the <code>turn</code> is a boolean, it means that only the trainer who it points
+to can add actions to the queue/enact them. When both trainers have enacted
+a valid action, the round is considered over, and the <code>turn</code> should be set
+to <code>None</code>.</li>
 </ol>
 <h2 id="examples">Examples</h2>
 <pre><code class="language-python-repl">&gt;&gt;&gt; DEFAULT_STATS = (1, 100, 200, 200)
@@ -722,6 +725,8 @@ True
 &gt;&gt;&gt; battle.is_over()
 False
 &gt;&gt;&gt; battle.queue_action(Flee(), True)
+&gt;&gt;&gt; battle.trainer_has_action_queued(True)
+True
 &gt;&gt;&gt; battle.get_trainer(True)
 Trainer('Ash')
 &gt;&gt;&gt; battle.get_trainer(False)
