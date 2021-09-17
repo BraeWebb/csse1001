@@ -59,8 +59,8 @@ should leave this until they have completed all the non-masters classes.</p>
 <span>class <span class="ident">PokemonStats</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A class modelling the stats of a pokemon. Each value in the initial
-stats is assumed to be a positive number.</p>
+<div class="desc"><p>A class modelling the stats of a pokemon. These stats must be
+non-negative.</p>
 <h2 id="examples">Examples</h2>
 <pre><code class="language-python-repl">&gt;&gt;&gt; stats = PokemonStats((1, 100, 110, 120))
 &gt;&gt;&gt; stats.get_hit_chance()
@@ -82,8 +82,8 @@ stats is assumed to be a positive number.</p>
 given by constants in the support code.</p>
 <h2 id="parameters">Parameters</h2>
 <ul>
-<li><code>stats</code>: The base list of stats to encapsulate. <em>You can assume
-these values are not negative</em></li>
+<li><code>stats</code>: The base list of stats to encapsulate. <em>These values
+can be assumed to be non-negative</em></li>
 </ul></div>
 <h3>Methods</h3>
 <dl>
@@ -97,8 +97,8 @@ these values are not negative</em></li>
 given by constants in the support code.</p>
 <h2 id="parameters">Parameters</h2>
 <ul>
-<li><code>stats</code>: The base list of stats to encapsulate. <em>You can assume
-these values are not negative</em></li>
+<li><code>stats</code>: The base list of stats to encapsulate. <em>These values
+can be assumed to be non-negative</em></li>
 </ul></div>
 </dd>
 <dt id="a2_solution.PokemonStats.level_up"><code class="name flex">
@@ -153,7 +153,7 @@ attack.</p></div>
 <div class="desc"><p>Applies a stat modifier and returns the newly constructed, modified
 pokemon stats.</p>
 <p>The resulting pokemon stats are the elementwise sum of the current stats
-and incoming modification.</p>
+and incoming modification and should be bound by 0.</p>
 <h2 id="parameters">Parameters</h2>
 <ul>
 <li><code>modifier</code>: A list of stat modifications to apply, of the same
@@ -385,7 +385,7 @@ by the amount that the maximum hp increased.</p>
 <div class="desc"><p>The experience awarded to the victorious pokemon if this pokemon
 faints.</p>
 <p>This is calculated through the formula:
-<code>200 * level / 7</code> and rounded to the nearest integer,
+<code>200 * level / 7</code> and rounded down to the nearest integer,
 where <code>level</code>: the level of the pokemon who fainted.</p></div>
 </dd>
 <dt id="a2_solution.Pokemon.can_learn_move"><code class="name flex">
@@ -1611,7 +1611,7 @@ current hit chance, and the move's hit chance. Returns True iff it hits.</p>
 assuming it hits, based on the stats of the attacking and defending
 pokemon.</p>
 <p>The damage formula is given by:
-<code>d * e * a / D</code>, rounded to the nearest integer,
+<code>d * e * a / (D + 1)</code>, rounded down to the nearest integer,
 where:
 <code>d</code> is the move's base damage;
 <code>e</code> is the move's type effectiveness (see support code);
