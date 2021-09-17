@@ -224,7 +224,8 @@ run first.</p>
 <li><code>name</code>: The name of this pokemon</li>
 <li><code>stats</code>: The pokemon's stats</li>
 <li><code>element_type</code>: The name of the type of this pokemon.</li>
-<li><code>moves</code>: A list of containing the moves to learn for this pokemon.</li>
+<li><code>moves</code>: A list of containing the moves that this pokemon will
+have learned after it is instantiated.</li>
 <li><code>level</code>: The pokemon's level.</li>
 </ul></div>
 <h3>Methods</h3>
@@ -239,7 +240,8 @@ run first.</p>
 <li><code>name</code>: The name of this pokemon</li>
 <li><code>stats</code>: The pokemon's stats</li>
 <li><code>element_type</code>: The name of the type of this pokemon.</li>
-<li><code>moves</code>: A list of containing the moves to learn for this pokemon.</li>
+<li><code>moves</code>: A list of containing the moves that this pokemon will
+have learned after it is instantiated.</li>
 <li><code>level</code>: The pokemon's level.</li>
 </ul></div>
 </dd>
@@ -401,7 +403,13 @@ they haven't already learned the supplied move.</p></div>
 <span>def <span class="ident">learn_move</span></span>(<span>self, move: <a title="a2_solution.Move" href="#a2_solution.Move">Move</a>) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Learns the given move, assuming the pokemon is able to.</p></div>
+<div class="desc"><p>Learns the given move, assuming the pokemon is able to.</p>
+<p>After learning this move, this Pokemon can use this move for <code>max_uses</code>
+times. See <code><a title="a2_solution.Move" href="#a2_solution.Move">Move</a></code>.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>move</code>: move for pokemon to learn</li>
+</ul></div>
 </dd>
 <dt id="a2_solution.Pokemon.forget_move"><code class="name flex">
 <span>def <span class="ident">forget_move</span></span>(<span>self, move: <a title="a2_solution.Move" href="#a2_solution.Move">Move</a>) ‑> None</span>
@@ -1405,7 +1413,7 @@ They also have a speed which determines the move's priority.</p>
 <ul>
 <li><code>name</code>: The name of this move</li>
 <li><code>element_type</code>: The name of the type of this move</li>
-<li><code>uses</code>: The number of time this move can be used before resting</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
 <li><code>speed</code>: The speed of this move, with lower values corresponding
 to faster moves priorities.</li>
 </ul></div>
@@ -1421,7 +1429,7 @@ to faster moves priorities.</li>
 <h3>Methods</h3>
 <dl>
 <dt id="a2_solution.Move.__init__"><code class="name flex">
-<span>def <span class="ident">__init__</span></span>(<span>self, name: str, element_type: str, uses: int, speed: int)</span>
+<span>def <span class="ident">__init__</span></span>(<span>self, name: str, element_type: str, max_uses: int, speed: int)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates an instance of the Move class.</p>
@@ -1431,7 +1439,7 @@ They also have a speed which determines the move's priority.</p>
 <ul>
 <li><code>name</code>: The name of this move</li>
 <li><code>element_type</code>: The name of the type of this move</li>
-<li><code>uses</code>: The number of time this move can be used before resting</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
 <li><code>speed</code>: The speed of this move, with lower values corresponding
 to faster moves priorities.</li>
 </ul></div>
@@ -1564,7 +1572,7 @@ pokemon, before the pokemon's hit chance stat is taken into account.</li>
 <ul>
 <li><code>name</code>: The name of this move</li>
 <li><code>element_type</code>: The name of the type of this move</li>
-<li><code>uses</code>: The number of time this move can be used before resting</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
 <li><code>speed</code>: The speed of this move, with lower values corresponding
 to faster moves.</li>
 <li><code>base_damage</code>: The base damage of this move.</li>
@@ -1578,7 +1586,7 @@ to faster moves.</li>
 <h3>Methods</h3>
 <dl>
 <dt id="a2_solution.Attack.__init__"><code class="name flex">
-<span>def <span class="ident">__init__</span></span>(<span>self, name: str, element_type: str, uses: int, speed: int, base_damage: int, hit_chance: float) ‑> None</span>
+<span>def <span class="ident">__init__</span></span>(<span>self, name: str, element_type: str, max_uses: int, speed: int, base_damage: int, hit_chance: float) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates an instance of an attacking move.</p>
@@ -1586,7 +1594,7 @@ to faster moves.</li>
 <ul>
 <li><code>name</code>: The name of this move</li>
 <li><code>element_type</code>: The name of the type of this move</li>
-<li><code>uses</code>: The number of time this move can be used before resting</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
 <li><code>speed</code>: The speed of this move, with lower values corresponding
 to faster moves.</li>
 <li><code>base_damage</code>: The base damage of this move.</li>
@@ -1653,7 +1661,7 @@ where:
 <ul>
 <li><code>name</code>: The name of this move</li>
 <li><code>element_type</code>: The name of the type of this move</li>
-<li><code>uses</code>: The number of time this move can be used before resting</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
 <li><code>speed</code>: The speed of this move, with lower values corresponding
 to faster moves.</li>
 <li><code>modification</code>: A list of the same structure as
@@ -1675,7 +1683,7 @@ to be in effect.</li>
 <h3>Methods</h3>
 <dl>
 <dt id="a2_solution.StatusModifier.__init__"><code class="name flex">
-<span>def <span class="ident">__init__</span></span>(<span>self, name: str, element_type: str, uses: int, speed: int, modification: Tuple[float, int, int, int], rounds: int) ‑> None</span>
+<span>def <span class="ident">__init__</span></span>(<span>self, name: str, element_type: str, max_uses: int, speed: int, modification: Tuple[float, int, int, int], rounds: int) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates an instance of this class</p>
@@ -1683,7 +1691,7 @@ to be in effect.</li>
 <ul>
 <li><code>name</code>: The name of this move</li>
 <li><code>element_type</code>: The name of the type of this move</li>
-<li><code>uses</code>: The number of time this move can be used before resting</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
 <li><code>speed</code>: The speed of this move, with lower values corresponding
 to faster moves.</li>
 <li><code>modification</code>: A list of the same structure as
@@ -1739,7 +1747,7 @@ to be in effect.</li>
 <ul>
 <li><code>name</code>: The name of this move</li>
 <li><code>element_type</code>: The name of the type of this move</li>
-<li><code>uses</code>: The number of time this move can be used before resting</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
 <li><code>speed</code>: The speed of this move, with lower values corresponding
 to faster moves.</li>
 <li><code>modification</code>: A list of the same structure as
@@ -1801,7 +1809,7 @@ the target of this move.</p>
 <ul>
 <li><code>name</code>: The name of this move</li>
 <li><code>element_type</code>: The name of the type of this move</li>
-<li><code>uses</code>: The number of time this move can be used before resting</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
 <li><code>speed</code>: The speed of this move, with lower values corresponding
 to faster moves.</li>
 <li><code>modification</code>: A list of the same structure as
