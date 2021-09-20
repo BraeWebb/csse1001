@@ -485,7 +485,8 @@ modifiers, and resets all move uses to their maximums.</p></div>
 <span>class <span class="ident">Trainer</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A class representing a pokemon trainer.</p>
+<div class="desc"><p>A class representing a pokemon trainer. A trainer can have 4 Pokemon
+at maximum.</p>
 <h2 id="notes">Notes</h2>
 <ul>
 <li>The current pokemon should be kept track of with an instance variable
@@ -563,7 +564,8 @@ a2_support.NoPokemonException
 <span>def <span class="ident">get_inventory</span></span>(<span>self) ‑> Dict[<a title="a2_solution.Item" href="#a2_solution.Item">Item</a>, int]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns the trainer's inventory.</p></div>
+<div class="desc"><p>Returns the trainer's inventory as a dictionary mapping items to
+the count of that item remaining in the dictionary.</p></div>
 </dd>
 <dt id="a2_solution.Trainer.get_current_pokemon"><code class="name flex">
 <span>def <span class="ident">get_current_pokemon</span></span>(<span>self) ‑> <a title="a2_solution.Pokemon" href="#a2_solution.Pokemon">Pokemon</a></span>
@@ -620,8 +622,8 @@ set the current pokemon to the one that was added.</p></div>
 <dd>
 <div class="desc"><p>Determines if the pokemon index would be valid to switch to,
 and returns true iff the switch would be valid.</p>
-<p>You cannot swap to a pokemon which is currently out, or which has
-fainted.</p>
+<p>You cannot swap to a pokemon which is currently out on battle,
+or which has fainted.</p>
 <h2 id="parameters">Parameters</h2>
 <ul>
 <li><code>index</code>: The index of the next pokemon in the roster.</li>
