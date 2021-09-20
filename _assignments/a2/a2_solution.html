@@ -284,13 +284,13 @@ are applied.</p></div>
 <div class="desc"><p>Get the level of this pokemon.</p></div>
 </dd>
 <dt id="a2_solution.Pokemon.get_experience"><code class="name flex">
-<span>def <span class="ident">get_experience</span></span>(<span>self)</span>
+<span>def <span class="ident">get_experience</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Return the current pokemon's experience.</p></div>
 </dd>
 <dt id="a2_solution.Pokemon.get_next_level_experience_requirement"><code class="name flex">
-<span>def <span class="ident">get_next_level_experience_requirement</span></span>(<span>self)</span>
+<span>def <span class="ident">get_next_level_experience_requirement</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Return the total experience required for the pokemon to be one level
@@ -555,7 +555,7 @@ a2_support.NoPokemonException
 </ul></div>
 </dd>
 <dt id="a2_solution.Trainer.get_name"><code class="name flex">
-<span>def <span class="ident">get_name</span></span>(<span>self)</span>
+<span>def <span class="ident">get_name</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Return the trainer's name.</p></div>
@@ -794,7 +794,7 @@ trainers.</li>
 <div class="desc"><p>Get whose turn it currently is</p></div>
 </dd>
 <dt id="a2_solution.Battle.get_trainer"><code class="name flex">
-<span>def <span class="ident">get_trainer</span></span>(<span>self, is_player: bool)</span>
+<span>def <span class="ident">get_trainer</span></span>(<span>self, is_player: bool) ‑> <a title="a2_solution.Trainer" href="#a2_solution.Trainer">Trainer</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Gets the trainer corresponding to the supplied parameter.</p>
@@ -1431,7 +1431,7 @@ to faster moves priorities.</li>
 <h3>Methods</h3>
 <dl>
 <dt id="a2_solution.Move.__init__"><code class="name flex">
-<span>def <span class="ident">__init__</span></span>(<span>self, name: str, element_type: str, max_uses: int, speed: int)</span>
+<span>def <span class="ident">__init__</span></span>(<span>self, name: str, element_type: str, max_uses: int, speed: int) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates an instance of the Move class.</p>
