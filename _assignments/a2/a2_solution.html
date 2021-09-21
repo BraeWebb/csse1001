@@ -993,8 +993,8 @@ e.g. an Action with priority 0 happens before one with priority 1.</p>
 <dd>
 <div class="desc"><p>Determines if the action would be valid for the given trainer and
 battle state. Returns true iff it would be valid.</p>
-<p>By default, no action is valid if the game is over, or if the trainer
-is unable to queue an action at this time (i.e. it is not their turn).</p>
+<p>By default, no action is valid if the game is over, or if it's not
+the trainer's turn.</p>
 <h2 id="parameters">Parameters</h2>
 <ul>
 <li><code>battle</code>: The ongoing pokemon battle</li>
