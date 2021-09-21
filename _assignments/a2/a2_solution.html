@@ -878,8 +878,8 @@ perform the post round actions.</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p>Returns true iff the battle is over.</p>
-<p>A battle is over if a trainer has fled, or if all of the pokemon have
-fainted for either trainer.</p></div>
+<p>A battle is over if all of the pokemon have
+fainted for either trainer, or if it ended early.</p></div>
 </dd>
 </dl>
 </dd>
@@ -1049,7 +1049,11 @@ NotImplementedError
 </code></dt>
 <dd>
 <div class="desc"><p>An action where the trainer attempts to run away from the battle.</p>
-<p>While it may still be valid, it has no effect in trainer battles.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>While it may still be valid, it has no effect in trainer battles.</li>
+<li>If successful, this should end the battle early.</li>
+</ul>
 <h2 id="examples">Examples</h2>
 <pre><code class="language-python-repl">&gt;&gt;&gt; flee = Flee()
 &gt;&gt;&gt; str(flee)
@@ -1309,11 +1313,14 @@ different message based on the results of attempting to use the
 pokeball. See the support code for some hints as to what these messages
 might be.</p>
 <h2 id="notes">Notes</h2>
-<p>No matter the result of the catch attempt, a pokeball will be used;
-Catching pokemon is impossible in trainer battles;
-The wild pokemon will be added to the trainers roster if there is
-room;
-In a wild battle, catching the enemy pokemon will end the battle;</p>
+<ul>
+<li>No matter the result of the catch attempt, a pokeball will be
+used.</li>
+<li>Catching pokemon is impossible in trainer battles.</li>
+<li>The wild pokemon will be added to the trainers roster if there is
+room</li>
+<li>In a wild battle, catching the enemy pokemon will end the battle.</li>
+</ul>
 <h2 id="parameters">Parameters</h2>
 <ul>
 <li><code>battle</code>: The ongoing pokemon battle</li>
