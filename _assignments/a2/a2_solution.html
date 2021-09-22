@@ -700,7 +700,12 @@ count. Removes the item from the inventory entirely if its count hits 0.</p></di
 <span>class <span class="ident">Battle</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A class which represents a pokemon battle.</p>
+<div class="desc"><p>A class which represents a pokemon battle. A battle can be between
+trainers or between a trainer and a wild pokemon. In this assignment,
+non-trainer battles are represented by a battle between 2 trainers, namely
+a regular trainer and
+a 'dummy' trainer whose only pokemon is the wild
+pokemon.</p>
 <p>The main state-components of the battle are the action queue, and the turn:</p>
 <ol>
 <li>Pokemon battles aren't strictly turn-based, because the priority of each
@@ -723,7 +728,7 @@ to <code>None</code>.</li>
 <h2 id="examples">Examples</h2>
 <pre><code class="language-python-repl">&gt;&gt;&gt; DEFAULT_STATS = (1, 100, 200, 200)
 &gt;&gt;&gt; def create_pokemon(name):
-...      return Pokemon(name, PokemonStats(DEFAULT_STATS), type='normal', moves=[])
+...      return Pokemon(name, PokemonStats(DEFAULT_STATS), 'normal', moves=[])
 ...
 &gt;&gt;&gt; ash = Trainer(&quot;Ash&quot;)
 &gt;&gt;&gt; brock = Trainer(&quot;Brock&quot;)
