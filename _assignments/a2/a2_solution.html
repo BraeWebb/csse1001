@@ -876,8 +876,13 @@ performed by the player.</li>
 <dd>
 <div class="desc"><p>Attempts to perform the next action in the queue,
 and returns a summary of its effects if it was valid.</p>
-<p>If this was the last turn to be performed that round,
-perform the post round actions.</p></div>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>If the next action in the queue is invalid, it should still
+be removed from the queue.</li>
+<li>If this was the last turn to be performed that round,
+perform the post round actions.</li>
+</ul></div>
 </dd>
 <dt id="a2_solution.Battle.is_over"><code class="name flex">
 <span>def <span class="ident">is_over</span></span>(<span>self) ‑> bool</span>
@@ -931,7 +936,7 @@ flow of the game.</p>
 <span>def <span class="ident">add_message</span></span>(<span>self, message: str) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Adds the supplied message to the message builder</p>
+<div class="desc"><p>Adds the supplied message to the ActionSummary instance.</p>
 <h2 id="parameters">Parameters</h2>
 <ul>
 <li><code>message</code>: The message to add.</li>
@@ -947,7 +952,7 @@ flow of the game.</p>
 <span>def <span class="ident">combine</span></span>(<span>self, summary: <a title="a2_solution.ActionSummary" href="#a2_solution.ActionSummary">ActionSummary</a>) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Combines two messageBuilders. </p>
+<div class="desc"><p>Combines two ActionSummaries. </p>
 <p>The messages contained in the supplied summary should be added
 after those currently contained.</p>
 <h2 id="parameters">Parameters</h2>
