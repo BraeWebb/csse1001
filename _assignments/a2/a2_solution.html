@@ -496,7 +496,7 @@ representing the index of the currently selected Pokemon.</li>
 <h2 id="examples">Examples</h2>
 <pre><code class="language-python-repl">&gt;&gt;&gt; DEFAULT_STATS = (1, 100, 200, 200)
 &gt;&gt;&gt; def create_pokemon(name):
-...     return Pokemon(name, PokemonStats(DEFAULT_STATS), type='normal', moves=[])
+...     return Pokemon(name, PokemonStats(DEFAULT_STATS), 'normal', moves=[])
 ...
 &gt;&gt;&gt; ash = Trainer('Ash Ketchup')
 &gt;&gt;&gt; ash.get_name()
