@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Data Structures</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/tutorials/data-structures.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <h1 id="data-structures">Data Structures</h1>
+<h2 id="dna-manipulation">DNA Manipulation</h2>
+<p>In molecular biology, a DNA sequence can be represented by a string made up of the characters <code class="highlighter-rouge">A</code>, <code class="highlighter-rouge">T</code>, <code class="highlighter-rouge">G</code> and <code class="highlighter-rouge">C</code>. The length of a DNA sequence must also be a multiple of three.</p>
+
+<ol>
+  <li>
+    <p>Write a function <code class="highlighter-rouge">is_dna(string)</code> which returns <code class="highlighter-rouge">True</code> if the input is a valid DNA sequence and <code class="highlighter-rouge">False</code> otherwise.</p>
+
+    <div class="viz">
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">&gt;&gt;&gt;</span> <span class="n">is_dna</span><span class="p">(</span><span class="s">"AATGAC"</span><span class="p">)</span>
+ <span class="bp">True</span>
+ <span class="o">&gt;&gt;&gt;</span> <span class="n">is_dna</span><span class="p">(</span><span class="s">"ACtACT"</span><span class="p">)</span>
+ <span class="bp">False</span>
+ <span class="o">&gt;&gt;&gt;</span> <span class="n">is_dna</span><span class="p">(</span><span class="s">"AATC"</span><span class="p">)</span>
+ <span class="bp">False</span>
+</code></pre></div>      </div>
+    </div>
+  </li>
+  <li>
+    <p>The reverse complement of a DNA sequence is computed by interchanging <code class="highlighter-rouge">A</code> with <code class="highlighter-rouge">T</code>, and <code class="highlighter-rouge">G</code> with <code class="highlighter-rouge">C</code>, and reversing the string. For example, the reverse complement of <code class="highlighter-rouge">AATGAC</code> is <code class="highlighter-rouge">GTCATT</code>. Write a function <code class="highlighter-rouge">reverse_complement(dna)</code> which returns the reverse complement of the sequence <code class="highlighter-rouge">dna</code>. If the sequence is invalid, return <code class="highlighter-rouge">None</code>.</p>
+
+    <div class="viz">
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">&gt;&gt;&gt;</span> <span class="n">reverse_complement</span><span class="p">(</span><span class="s">"AATGAC"</span><span class="p">)</span>
+ <span class="s">'GTCATT'</span>
+ <span class="o">&gt;&gt;&gt;</span> <span class="n">reverse_complement</span><span class="p">(</span><span class="s">"GATTACAAA"</span><span class="p">)</span>
+ <span class="s">'TTTGTAATC'</span>
+ <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">reverse_complement</span><span class="p">(</span><span class="s">"GAGA"</span><span class="p">))</span>
+ <span class="bp">None</span>
+</code></pre></div>      </div>
+    </div>
+  </li>
+  <li>
+    <p>A DNA sequence is divided up into blocks of three letters, called codons. For example, the sequence <code class="highlighter-rouge">GATTACAAA</code> contains three codons: <code class="highlighter-rouge">GAT</code>, <code class="highlighter-rouge">TAC</code> and <code class="highlighter-rouge">AAA</code>. Write a function <code class="highlighter-rouge">print_codons(dna)</code> which one-by-one prints each of the codons of the sequence <code class="highlighter-rouge">dna</code>. If the sequence is invalid, do nothing.</p>
+
+    <div class="viz">
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">&gt;&gt;&gt;</span> <span class="n">print_codons</span><span class="p">(</span><span class="s">"GATTACAAA"</span><span class="p">)</span>
+ <span class="n">GAT</span>
+ <span class="n">TAC</span>
+ <span class="n">AAA</span>
+ <span class="o">&gt;&gt;&gt;</span> <span class="n">print_codons</span><span class="p">(</span><span class="s">"AATGAC"</span><span class="p">)</span>
+ <span class="n">AAT</span>
+ <span class="n">GAC</span>
+ <span class="o">&gt;&gt;&gt;</span> <span class="n">print_codons</span><span class="p">(</span><span class="s">"GAGA"</span><span class="p">)</span>
+ <span class="o">&gt;&gt;&gt;</span>
+</code></pre></div>      </div>
+    </div>
+  </li>
+</ol>
+
+<div class="extra">
+
+  <h4 id="challenge-returning-codons">Challenge: Returning Codons</h4>
+  <p>In general, a function that performs a logical task, such as dividing a DNA sequence into codons, should not perform output from within the function. It is better to return the result and let the calling code determine what to do with the result. This makes it easier to reuse the function in other parts of a program. It also means that the code for outputting data is not spread throughout the logic of the program.</p>
+
+  <p>Write a <code class="highlighter-rouge">generate_codons(dna)</code> function that returns a list containing each of the codons of the sequence <code class="highlighter-rouge">dna</code>. If the sequence is invalid, return <code class="highlighter-rouge">None</code>. 
+Modify the <code class="highlighter-rouge">print_codons(codons)</code> function so that the parameter is now a list containing the codons. Print each codon found in the list on a separate line, like in the previous implementation of <code class="highlighter-rouge">print_codons(dna)</code>. For the purposes of this exercise, you may assume that the list contains a valid set of codons.</p>
+
+  <div class="viz">
+
+    <figure class="highlight">
+      <pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">generate_codons</span><span class="p">(</span><span class="s">"GATTACAAA"</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'GAT'</span><span class="p">,</span> <span class="s">'TAC'</span><span class="p">,</span> <span class="s">'AAA'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">generate_codons</span><span class="p">(</span><span class="s">"GA"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></code></pre>
+    </figure>
+    <pre>&lt;class 'NoneType'&gt;</pre>
+    <figure class="highlight">
+      <pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">print_codons</span><span class="p">(</span><span class="n">generate_codons</span><span class="p">(</span><span class="s">"GATTACAAA"</span><span class="p">))</span>
+<span class="n">GAT</span>
+<span class="n">TAC</span>
+<span class="n">AAA</span>
+<span class="o">&gt;&gt;&gt;</span> </code></pre>
+    </figure>
+
+  </div>
+</div>
+
+<div class="aside">
+
+  <h4 id="aside-dealing-with-bad-input">Aside: Dealing with Bad Input</h4>
+  <p>If we encounter a string which is not an invalid DNA sequence, the optimal situation would be not to ‘ignore’ the invalid data by doing nothing, instead we should cause an error to occur, by raising an exception:</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">...</span>
+<span class="k">if</span> <span class="o">...</span> <span class="p">:</span>
+    <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"Invalid DNA sequence"</span><span class="p">)</span>
+<span class="o">...</span>
+</code></pre></div>    </div>
+  </div>
+  <p>We will cover raising and handling exceptions later in the course.</p>
+</div>
+
+<h2 id="number-extraction">Number Extraction</h2>
+<p>Data mining is the process of discovering and analysing information from raw datasets. Often, most of the data is not relevant, and so the first task in data mining is to extract only the useful information. In this task, we are given a string that contains numbers, and we want to extract the first integer out of the string.</p>
+
+<p>Write a function <code class="highlighter-rouge">get_number(string)</code> which returns the first positive integer in the string, or <code class="highlighter-rouge">None</code> if there are no integers in the string. You may find it useful to use the <code class="highlighter-rouge">str.isdigit</code> method.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">get_number</span><span class="p">(</span><span class="s">"zbagy22.17clguba19"</span><span class="p">)</span>
+<span class="mi">22</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">get_number</span><span class="p">(</span><span class="s">"ubyl 014tenvy,1975 ncevy9gu"</span><span class="p">)</span>
+<span class="mi">14</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">get_number</span><span class="p">(</span><span class="s">"sylvatpvephf"</span><span class="p">))</span>
+<span class="bp">None</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="extra">
+
+  <h4 id="challenge-negative-numbers">Challenge: Negative Numbers</h4>
+  <p>Modify this function to handle negative integers.</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">get_number</span><span class="p">(</span><span class="s">"zl-39u0irepensg"</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">39</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">get_number</span><span class="p">(</span><span class="s">"vf-shyy23-4bs"</span><span class="p">)</span>
+<span class="mi">23</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">get_number</span><span class="p">(</span><span class="s">"33yf-"</span><span class="p">)</span>
+<span class="mi">33</span>
+</code></pre></div>    </div>
+  </div>
+</div>
+
+    </div>
+</body>
+
+</html>

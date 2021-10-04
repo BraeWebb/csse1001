@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Introduction to Software Design and Implementation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/2B0_functional_decomposition.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p> All right … all right … but apart from better sanitation and </p>
+  <p> medicine and education and irrigation and public health and roads and a </p>
+  <blockquote>
+
+  </blockquote>
+  <p> freshwater system and baths and public order … what have the Romans </p>
+  <p> ever done for us? </p>
+  <p class="indent"> — Monty Python’s Life of Brian</p>
+</blockquote>
+
+<h1 id="functional-decomposition">Functional Decomposition</h1>
+<h2 id="reusing-the-code">Reusing the Code</h2>
+<p>In the previous readings we used control structures to implement a simple conversation between a user and the computer. It is not very much to ask the user for all the topics to discuss. Let’s add in some code that starts off with a query about university, and make the computer’s reply “That’s very interesting”. In principle, this is easy, because we already have code that does a discussion, so perhaps we can reuse it by just copying it and changing certain parts.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"What is your name? "</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"Tim"</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Greetings, Tim the Enchanter"</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"Brian"</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Bad luck, Brian"</span><span class="p">)</span>
+<span class="k">else</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Hello "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">"."</span><span class="p">)</span>
+
+<span class="n">like</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Do you like university? "</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Why do you think that? "</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"That's very interesting."</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="bp">True</span> <span class="p">:</span>
+    <span class="n">topic</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"What do you want to talk about? "</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">topic</span> <span class="o">==</span> <span class="s">"nothing"</span> <span class="p">:</span>
+        <span class="k">break</span>
+    <span class="n">like</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Do you like "</span> <span class="o">+</span> <span class="n">topic</span> <span class="o">+</span> <span class="s">"? "</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Why do you think that? "</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"I also think that"</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Okay. Goodbye, "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">"!"</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+<p>This works, but there are a couple of things that might go wrong with copying code like this. First, it makes the code look more complicated than it is, and it is harder to read when the code is in two places instead of one. The second issue is to do with updating the program: if we want to modify how a discussion works, then we would need to update the code in two separate places. Worse, if we forget one of those two places, then the two discussions become different.</p>
+
+<p>What we want to be able to do is to pull out, or abstract the idea of a “discussion” into a separate part of the code, and then be able to easily use that code in as many places as possible. Ideally, we want to end up with code that behaves like this (with code instead of the comments):</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># have a discussion on "university"
+</span><span class="k">print</span><span class="p">(</span><span class="s">"That's very interesting."</span><span class="p">)</span>
+<span class="k">while</span> <span class="bp">True</span> <span class="p">:</span>
+    <span class="n">topic</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"What do you want to talk about? "</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">topic</span> <span class="o">==</span> <span class="s">"nothing"</span> <span class="p">:</span>
+        <span class="k">break</span>
+    <span class="c1"># have a discussion on "topic"
+</span>    <span class="k">print</span><span class="p">(</span><span class="s">"I also think that"</span><span class="p">)</span><span class="c1"># , user's response
+</span></code></pre></div>  </div>
+</div>
+<p>And then somewhere else in the code, we can define how a discussion works. This abstraction is called a <strong>function</strong>. Here is what the definition of a “discuss” function looks like in Python:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">discuss</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span> <span class="p">:</span>
+    <span class="n">like</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Do you like "</span> <span class="o">+</span> <span class="n">topic</span> <span class="o">+</span> <span class="s">"? "</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Why do you think that? "</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span>
+</code></pre></div>  </div>
+</div>
+<p>We use the <code class="highlighter-rouge">def</code> keyword to say that we are defining the function called <code class="highlighter-rouge">discuss</code>. Inside parentheses, we state the <em>formal parameters</em>, also called <em>arguments</em>, that the function takes, which are the bits of information that the function needs to know to complete its task. In this case, we cannot discuss something without knowing what topic to discuss, so we specify that the <code class="highlighter-rouge">discuss</code> function takes a single parameter, which we will give the name <code class="highlighter-rouge">topic</code>. After the first line is an indented body of code, most of which we are already familiar with. In this case, the discussion needs to supply or ‘give back’ a result at the end, which is the response that the user entered. We do this using the <strong>return</strong> keyword, which is shown in the last line above. When a <code class="highlighter-rouge">return</code> statement is reached, the function will end immediately; if there is a value after the return keyword, it is the result that is ‘given back’ (we say the value is <em>returned</em>).
+Every time that we use the <code class="highlighter-rouge">discuss</code> function, this body of code is what actually gets executed. The indentation behaves in the same way we’ve seen before – when we stop indenting, then we have finished the function definition. Now that we have this abstraction, we can use the <code class="highlighter-rouge">discuss</code> function instead of using the actual discussion code directly:</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"What is your name? "</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"Tim"</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Greetings, Tim the Enchanter"</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"Brian"</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Bad luck, Brian"</span><span class="p">)</span>
+<span class="k">else</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Hello "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">"."</span><span class="p">)</span>
+
+<span class="n">discuss</span><span class="p">(</span><span class="s">"university"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"That's very interesting."</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="bp">True</span> <span class="p">:</span>
+    <span class="n">topic</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"What do you want to talk about? "</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">topic</span> <span class="o">==</span> <span class="s">"nothing"</span> <span class="p">:</span>
+        <span class="k">break</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">discuss</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"I also think that"</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Okay. Goodbye, "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">"!"</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The full program that we have written is in <code class="highlighter-rouge">interaction.py</code>. This file also includes comments, which are discussed in the next section.</p>
+
+<p>Notice the use of the return value in this line: <code class="highlighter-rouge">response = discuss(topic)</code>. This will execute the <code class="highlighter-rouge">discuss</code> function above, and the value that is returned is assigned to the variable <code class="highlighter-rouge">response</code>. The line <code class="highlighter-rouge">discuss("university")</code> shows a situation where our function is used for its side-effect of interacting with the user. The value is still returned by the function, but it is discarded by the main program.</p>
+
+<div class="important">
+
+  <h4 id="function-syntax">Function Syntax</h4>
+
+  <p>A definition has the following form:</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">function_name</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="p">:</span>
+    <span class="n">body</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>Function definitions start with the word <code class="highlighter-rouge">def</code>, followed by a <code class="highlighter-rouge">function_name</code> which follows the same syntax rules as for variable names. In parentheses is a comma separated list of arguments – these are all names of variables and are usually called the <strong>formal parameters</strong>. The body is an indented sequence of statements.</p>
+
+  <p>Executing, or “calling”, a function uses the syntax</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">function_name</span><span class="p">(</span><span class="n">value1</span><span class="p">,</span> <span class="n">value2</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </div>
+  <p>The comma-separated values are called the <strong>actual parameters</strong>. The number of <code class="highlighter-rouge">values</code> must be the same as the number of <code class="highlighter-rouge">args</code> in the definition.</p>
+
+  <h4 id="semantics">Semantics</h4>
+  <p>When a function is called, the actual parameters are associated with the formal parameters. That is, each <code class="highlighter-rouge">arg</code> is treated as a variable with the corresponding <code class="highlighter-rouge">value</code>. Then the body is executed. After that, the program will continue from the point where the function was called.
+If a <code class="highlighter-rouge">return</code> statement is executed, then the function will exit immediately. The resulting value of the function call will be the value used in the <code class="highlighter-rouge">return</code> statement.</p>
+</div>
+
+<div class="extra">
+  <p>Another example of function definition and use 
+Although addition is built into Python we can create our own definition as follows.</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">return</span> <span class="n">n</span> <span class="o">+</span> <span class="n">m</span>
+</code></pre></div>    </div>
+  </div>
+  <p>In detail <code class="highlighter-rouge">– def</code> introduces the function definition for <code class="highlighter-rouge">add</code>. The name of the function is <code class="highlighter-rouge">add</code> and its formal parameters are <code class="highlighter-rouge">n</code> and <code class="highlighter-rouge">m</code>. The function simply computes the sum of <code class="highlighter-rouge">n</code> and <code class="highlighter-rouge">m</code> and returns that as the result of the function (using the <code class="highlighter-rouge">return</code> statement).</p>
+
+  <p>Here are some example uses.</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="mi">5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="mi">15</span>
+</code></pre></div>    </div>
+  </div>
+  <p>In the first case we call the function passing in actual parameters 2 and 3. When the function is evaluated, <code class="highlighter-rouge">n</code> gets the value 2 and <code class="highlighter-rouge">m</code> gets the value 3. The function returns 5 as is seen when evaluated in the interpreter. The second example shows that we can use a call to the function within an arithmetic expression.</p>
+</div>
+
+<h2 id="decomposing-problems">Decomposing Problems</h2>
+<p>There is more to software engineering than knowing how to write code. Part of the design process discussed above is problem decomposition. If we are given a description of a problem or task, how can we write a program that solves the problem?</p>
+
+<p>The problem we will work on in this section is “write a program to find the nth prime number”. The first prime is 2, the second is 3, the third is 5 and so on.</p>
+
+<p>The first step (after we understand the problem) is to decompose the problem into simpler and simpler subproblems until we reach a point where the subproblems are easy to implement.</p>
+
+<p>Given we need to find the nth prime number, we could start at some prime (like 2 or 3) and find the next prime number. If we repeat this process, we will get to the prime we want. So an interesting subproblem is “given a number n, find the next prime number after n”.</p>
+
+<p>To do this we can repeatedly look at the next number and ask if that number is a prime, if so we have finished, if not we keep looking. So the next interesting subproblem is “given a number n determine if n is a prime”.</p>
+
+<p>Recall that a prime is a number that is divisible by only itself and one. We can therefore test for a number being a prime if we can test for divisibility of every number from 2 up to n. So, the last subproblem is “given numbers n and m, determine if m divides n (exactly)”.</p>
+
+<h2 id="divisible-or-not-divisible">Divisible or not Divisible</h2>
+<p>There is a useful mathematical operation that can be used for testing for divisibility. The operator <code class="highlighter-rouge">%</code> is known as <strong>mod</strong> or <strong>modulo</strong>. It returns the remainder of division, making it useful to test for divisibility.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="mi">7</span> <span class="o">%</span> <span class="mi">2</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">7</span> <span class="o">%</span> <span class="mi">4</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">9</span> <span class="o">%</span> <span class="mi">3</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">10</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">7</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="bp">False</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The first three results are because <code class="highlighter-rouge">7 // 2</code> is <code class="highlighter-rouge">3</code> with remainder <code class="highlighter-rouge">1</code>, <code class="highlighter-rouge">7 // 4</code> is <code class="highlighter-rouge">1</code> with remainder <code class="highlighter-rouge">3</code>, and <code class="highlighter-rouge">9 // 3</code> is <code class="highlighter-rouge">3</code> with remainder <code class="highlighter-rouge">0</code>. Testing for divisibility is the same as testing if the remainder is equal to <code class="highlighter-rouge">0</code>. So, <code class="highlighter-rouge">10</code> is divisible by <code class="highlighter-rouge">5</code>, and <code class="highlighter-rouge">7</code> is not divisible by <code class="highlighter-rouge">4</code>.</p>
+
+<p>Now we have reached a level of detail that we know how to write it all in Python code, so we can now start writing the code, building up to larger subproblems.</p>
+
+<h2 id="is-a-number-prime">Is a Number Prime?</h2>
+<p>We will write a function called <code class="highlighter-rouge">is_prime</code> to test a number and return whether it is a prime number or not, using the idea above of testing numbers from 2 to n. This code can be downloaded as the file <code class="highlighter-rouge">is_prime1.py</code>.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Returns True iff 'num' is prime.
+
+    Parameters:
+        num (int): Integer value to be tested to see if it is prime.
+
+    Return:
+        bool: True if 'num' is prime. False otherwise.
+
+    Preconditions:
+        num &gt; 1
+    """</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="bp">True</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The input to the function is the number <code class="highlighter-rouge">num</code>, this is the number that we wish to test if it is prime. Notice in the comment there is a <strong>precondition</strong>. As we discussed earlier, preconditions form a “contract” with the user; the function will work only if certain conditions are met. So, for example, if someone uses <code class="highlighter-rouge">is_prime</code> with a number less than 2, then the result could be anything - in this case, an incorrect value will be returned, in other cases the function could cause an error - but that is the caller’s problem because this falls outside the contract.</p>
+
+<p>The first line of the function sets <code class="highlighter-rouge">i</code> to 2, <code class="highlighter-rouge">i</code> is the counting variable that is being used to keep track of the current value to test. It is common coding practice to use <code class="highlighter-rouge">i</code> (and <code class="highlighter-rouge">j</code> and <code class="highlighter-rouge">k</code> as counting variables in loops). The next line is a while, this while tests if <code class="highlighter-rouge">i &lt; num</code>, this will mean that we can test the divisibility of all the numbers less than <code class="highlighter-rouge">num</code>. The first line of the body of code in the while is an if statement. Inside the while loop, all we need to do is check if <code class="highlighter-rouge">i</code> divides <code class="highlighter-rouge">num</code> using the <code class="highlighter-rouge">%</code> operator. If <code class="highlighter-rouge">i</code> does divide <code class="highlighter-rouge">num</code> then <code class="highlighter-rouge">num</code> is not prime, therefore the body of the if statement is to simply return False. Notice that this takes advantage of the way return works: <em>a return statement will end the function immediately</em>; at this stage, we already know that <code class="highlighter-rouge">num</code> is not prime, so we can return immediately and ignore the rest of the function. The last line of the while body is to increment <em>i</em> by 1, this moves onto the next number to check. The last line of the function is to return <code class="highlighter-rouge">True</code>. This again uses the “stop immediately” property of return statements: if the function has not returned <code class="highlighter-rouge">False</code> by now, then the <code class="highlighter-rouge">if num % i == 0:</code> test never became <code class="highlighter-rouge">True</code> during the while loop, so we know that <code class="highlighter-rouge">num</code> must be prime, so we return <code class="highlighter-rouge">True</code>.</p>
+
+<p>Here are a couple of examples of <code class="highlighter-rouge">is_prime</code>. Try out some more to test your understanding of the function.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">is_prime</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">is_prime</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
+<span class="bp">True</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This code works fine but we can do better! Firstly note that if 2 does not divide <code class="highlighter-rouge">num</code> then there is no point testing if other even numbers divide <code class="highlighter-rouge">num</code> (as all even numbers are divisible by 2). We only need to consider odd <code class="highlighter-rouge">i</code>. Secondly if <code class="highlighter-rouge">i</code> does divide <code class="highlighter-rouge">num</code> then there is a <code class="highlighter-rouge">j</code> such that <code class="highlighter-rouge">num == i*j</code>. Therefore, if <code class="highlighter-rouge">num</code> has a factor then one will be less than or equal to the square root of <code class="highlighter-rouge">num</code>. Summarising, we only need to test if 2 divides <code class="highlighter-rouge">num</code> and if any odd <code class="highlighter-rouge">i</code> less than or equal to the square root of <code class="highlighter-rouge">num</code> divide <code class="highlighter-rouge">num</code>.</p>
+
+<p>The function below implements these ideas. Update the definition to match the following code, or download <code class="highlighter-rouge">is_prime2.py</code>.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Returns True iff 'num' is prime.
+
+    Parameters:
+        num (int): Integer value to be tested to see if it is prime.
+
+    Return:
+        bool: True if 'num' is prime. False otherwise.
+
+    Preconditions:
+        num &gt; 1
+    """</span>
+    <span class="k">if</span> <span class="n">num</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="n">sqrt_num</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">sqrt_num</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="bp">True</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The first line introduces an <code class="highlighter-rouge">import</code> statement. This is used to load a module of other functions and data that could be useful. In this case the “<code class="highlighter-rouge">math</code>” module is used. This module contains many mathematical functions and numbers (such as pi) not present in the default Python libraries, in our case we are using the square root function (<code class="highlighter-rouge">sqrt</code>). To see more of what is in the math module, try <code class="highlighter-rouge">&gt;&gt;&gt; help(math) after importing the math module.</code></p>
+
+<p>The first if statement in the code checks if <code class="highlighter-rouge">num</code> is 2 and if so, it is obviously prime so <code class="highlighter-rouge">True</code> is returned. The elif statement deals with divisibility by 2, if <code class="highlighter-rouge">num</code> is divisible by 2 then it is not prime, therefore <code class="highlighter-rouge">False</code> is returned. <code class="highlighter-rouge">sqrt_num</code> is set to the square toot of <code class="highlighter-rouge">num</code>. To do this, we call the square root function (<code class="highlighter-rouge">sqrt</code>) of the <code class="highlighter-rouge">math</code> library using the syntax <code class="highlighter-rouge">math.sqrt(num)</code>. <code class="highlighter-rouge">i</code> is then started at 3 as we are now checking the odd numbers only. The while loop will keep going while <code class="highlighter-rouge">i &lt;= sqrt_num</code> and will terminate when this test becomes false (i.e. when <code class="highlighter-rouge">i &gt; sqrt_num</code>). The if statement checks divisibility of <code class="highlighter-rouge">num</code> with <code class="highlighter-rouge">i</code> as before and returns <code class="highlighter-rouge">False</code> if that is the case. <code class="highlighter-rouge">i</code> is then incremented by 2, moving to the next odd number. As before, if the function has not returned by the end of the while loop, then the last line will be executed returning <code class="highlighter-rouge">True</code> (i.e. num is prime).</p>
+
+<p>Now that we have updated the function, we can test it again.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">is_prime</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">is_prime</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">is_prime</span><span class="p">(</span><span class="mi">19</span><span class="p">)</span>
+<span class="bp">True</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Thinking more about how to test for primality enabled us to write more efficient code. The second version of the <code class="highlighter-rouge">is_prime</code> function is more efficient as there are fewer iterations through the while loop. This means the code will return an answer faster (especially for larger numbers). Try comparing the two functions with really large numbers and see if there is a difference. Although efficiency is very important in software engineering, we leave more detailed and formal discussions of efficiency to later courses.</p>
+
+<h2 id="the-next-prime">The Next Prime</h2>
+<p>The next function to define is <code class="highlighter-rouge">next_prime</code> which takes an <code class="highlighter-rouge">num</code> and returns the next prime after <code class="highlighter-rouge">num</code>. We will use the same idea as in the previous function - i.e. increment by twos. So we will do slightly different things depending on whether <code class="highlighter-rouge">num</code> is odd or even.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">next_prime</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Returns the next prime number after 'num'.
+
+    Parameters:
+        num (int): Starting point for the search for the next prime number.
+
+    Return:
+        int: The next prime number that can be found after 'num'.
+
+    Preconditions:
+        num &gt; 1
+    """</span>
+    <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+        <span class="n">next_number</span> <span class="o">=</span> <span class="n">num</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="n">next_number</span> <span class="o">=</span> <span class="n">num</span> <span class="o">+</span> <span class="mi">2</span>
+
+    <span class="c1"># next_number is the next odd number after num
+</span>    <span class="k">while</span> <span class="ow">not</span> <span class="n">is_prime</span><span class="p">(</span><span class="n">next_number</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">next_number</span> <span class="o">=</span> <span class="n">next_number</span> <span class="o">+</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">next_number</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Looking at the code in detail – we start with an if statement that tests if <code class="highlighter-rouge">num</code> is even. We use the variable <code class="highlighter-rouge">next_number</code> to be the next candidate for being a prime and we initialise it to be either one or two more than <code class="highlighter-rouge">num</code>, depending on whether <code class="highlighter-rouge">num</code> is odd or even. We have added a comment to remind us about this. The while loop simply increments <code class="highlighter-rouge">next_number</code> by 2 until it becomes prime. Note that the test in the while loop is the logical negation of the <code class="highlighter-rouge">is_prime</code> test. In other words, we continue looping while <code class="highlighter-rouge">next_number</code> is not a prime.</p>
+
+<p>Here are the results of testing.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">next_prime</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="mi">5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">next_prime</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
+<span class="mi">17</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">next_prime</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
+<span class="mi">103</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">next_prime</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">next_prime</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="mi">23</span>
+</code></pre></div>  </div>
+</div>
+
+<h3 id="the-nth-prime">The n<sup>th</sup> Prime</h3>
+<p>Now we bring it all together by writing the top-level function <code class="highlighter-rouge">nth_prime</code> that returns the <code class="highlighter-rouge">n</code><sup>th</sup> prime number.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">nth_prime</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Returns the n'th prime number.
+
+    Parameters:
+        n (int): The number of prime numbers to find.
+
+    Return:
+        int: The n'th prime.
+
+    Preconditions:
+        n &gt; 0
+    """</span>
+    <span class="n">next_prime_number</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">:</span>
+        <span class="c1"># loop invariant: next_prime_number is the i'th prime
+</span>        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">next_prime_number</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">next_prime_number</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">next_prime_number</span>
+</code></pre></div>  </div>
+</div>
+<p>In this example we introduce the idea of a <strong>loop invariant</strong>. A loop invariant is a property that, if it is true at the beginning of the body, then it is also true at the end of the loop body. So if the code in the body satisfies this property and it is also true initially (i.e. when we enter the while loop) then it must be true when we exit the loop. A loop invariant can be useful in helping decide on how variables should be initialised, how the variable should change in the body, and when to exit the loop. It is also helps document what the loop does. So think of the loop invariant and then write the code!</p>
+
+<p>In our example the loop invariant is true initially (because 2 is the first prime). Assuming it is true at the start of the loop, then the code advances <code class="highlighter-rouge">next_prime_number</code> to the next prime and increments <code class="highlighter-rouge">i</code> and so the loop invariant is true again at the end of the loop. Therefore, it is also true when we terminate. In which case, not only is the invariant true but also <code class="highlighter-rouge">i == n</code> and so <code class="highlighter-rouge">next_prime_number</code> is indeed the <code class="highlighter-rouge">n</code><sup>th</sup> prime.</p>
+
+<p>By the way, <code class="highlighter-rouge">i += 1</code> is a shorthand for <code class="highlighter-rouge">i = i + 1</code>.
+The file <code class="highlighter-rouge">prime.py</code> contains all the code above plus a top-level comment (using the triple quotes style). In fact, what we have just done is write our own module! In the interpreter try <code class="highlighter-rouge">import prime</code> and <code class="highlighter-rouge">help(prime)</code>, and see how all the trouble we went to writing comments pays off!</p>
+
+    </div>
+</body>
+
+</html>

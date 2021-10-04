@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Dictionaries</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/4A0_dictionary.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p> Word association football</p>
+</blockquote>
+
+<h1 id="dictionaries">Dictionaries</h1>
+<p>A dictionary is similar to a sequence, as it can be indexed. The difference is that, instead of being indexed by 0, 1, 2, etc.; it is indexed by keys. (Dictionaries cannot be sliced.) A dictionary is really <strong>a mapping from keys to values</strong>. Dictionary <strong>keys</strong> can be any <strong>immutable type</strong> — for example strings or numbers, while <strong>values</strong> can be of <strong>any type</strong>. Dictionaries are used for storing and retrieving information based on a key. For this reason, there can be no duplicates in the keys, but there can be duplicates in the values.</p>
+
+<p>Here are some examples of dictionaries in action using a phone book as an example.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; phone = {'Eric' : 7724, 'John' : 9224, 'Graham' : 8462}
+&gt;&gt;&gt; phone
+{'John': 9224, 'Graham': 8462, 'Eric': 7724}
+&gt;&gt;&gt; type(phone)
+&lt;class 'dict'&gt;
+&gt;&gt;&gt; phone['John']
+9224
+&gt;&gt;&gt; phone['Terry']
+
+Traceback (most recent call last):
+  File "&lt;pyshell#4&gt;", line 1, in &lt;module&gt;
+    phone['Terry']
+KeyError: 'Terry'
+&gt;&gt;&gt; phone['Terry'] = 6352
+&gt;&gt;&gt; phone['Terry']
+6352
+&gt;&gt;&gt; phone
+{'John': 9224, 'Graham': 8462, 'Eric': 7724, 'Terry': 6352}
+</code></pre></div>  </div>
+</div>
+
+<p>The first example shows one way of constructing a dictionary — an open brace (curly bracket) followed by a sequence of <code class="highlighter-rouge">key : value</code> pairs followed by a closed brace. Notice how when the dictionary is printed, it is not in the same order that it was created in. This is due to the way dictionaries are stored in memory. They are not necessarily stored in any particular order. The third example shows accessing the dictionary using the square bracket notation. The next example shows that, using the square bracket notation, if a key is not in the dictionary it will raise an error. However, if a key is not in the dictionary it can be added (or if the key is in the dictionary then its value is updated) using the square bracket notation as shown in the last example.</p>
+
+<p>The next couple of examples show other methods of creating a dictionary.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">phone</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Eric</span><span class="o">=</span><span class="mi">7724</span><span class="p">,</span> <span class="n">John</span><span class="o">=</span><span class="mi">9224</span><span class="p">,</span> <span class="n">Graham</span><span class="o">=</span><span class="mi">8462</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">phone</span>
+<span class="p">{</span><span class="s">'John'</span><span class="p">:</span> <span class="mi">9224</span><span class="p">,</span> <span class="s">'Graham'</span><span class="p">:</span> <span class="mi">8462</span><span class="p">,</span> <span class="s">'Eric'</span><span class="p">:</span> <span class="mi">7724</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">phone</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="s">'Eric'</span><span class="p">,</span> <span class="mi">7724</span><span class="p">),</span> <span class="p">(</span><span class="s">'John'</span><span class="p">,</span> <span class="mi">9224</span><span class="p">),</span> <span class="p">(</span><span class="s">'Graham'</span><span class="p">,</span> <span class="mi">8462</span><span class="p">)])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">phone</span>
+<span class="p">{</span><span class="s">'John'</span><span class="p">:</span> <span class="mi">9224</span><span class="p">,</span> <span class="s">'Graham'</span><span class="p">:</span> <span class="mi">8462</span><span class="p">,</span> <span class="s">'Eric'</span><span class="p">:</span> <span class="mi">7724</span><span class="p">}</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The first example shows that a dictionary can be created using the <code class="highlighter-rouge">dict</code> function with a sequence of <code class="highlighter-rouge">key=value</code> pairs as arguments. The second example shows that the <code class="highlighter-rouge">dict</code> function can also be used with a single sequence of <code class="highlighter-rouge">(key, value)</code> pairs as an argument.</p>
+
+<p>The next few examples show a few methods of dictionaries as well as a few examples of for loops on dictionaries.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">phone</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">phone</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+
+<span class="n">John</span> <span class="mi">9224</span>
+<span class="n">Graham</span> <span class="mi">8462</span>
+<span class="n">Eric</span> <span class="mi">7724</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">phone</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="n">dict_keys</span><span class="p">([</span><span class="s">'Graham'</span><span class="p">,</span> <span class="s">'John'</span><span class="p">,</span> <span class="s">'Eric'</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">phone</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="n">dict_items</span><span class="p">([(</span><span class="s">'Graham'</span><span class="p">,</span> <span class="mi">8462</span><span class="p">),</span> <span class="p">(</span><span class="s">'John'</span><span class="p">,</span> <span class="mi">9224</span><span class="p">),</span> <span class="p">(</span><span class="s">'Eric'</span><span class="p">,</span> <span class="mi">7724</span><span class="p">)])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">phone</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+<span class="p">(</span><span class="s">'Graham'</span><span class="p">,</span> <span class="mi">8462</span><span class="p">)</span>
+<span class="p">(</span><span class="s">'John'</span><span class="p">,</span> <span class="mi">9224</span><span class="p">)</span>
+<span class="p">(</span><span class="s">'Eric'</span><span class="p">,</span> <span class="mi">7724</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The first example shows using a for loop directly on a dictionary. The loop variable <code class="highlighter-rouge">key</code> becomes each key in the dictionary in turn. This prints out all the <code class="highlighter-rouge">key, value</code> pairs of the dictionary. This is the most common method of looping through dictionaries. The next two examples show the <code class="highlighter-rouge">keys</code> and <code class="highlighter-rouge">items</code> dictionary methods. These two methods return a special class (similar to that of range), but as can be seen they contain a sequence of all the keys or all the <code class="highlighter-rouge">key, value</code> pairs that are known as items. These methods (and a similar <code class="highlighter-rouge">values</code> are included to provide an efficient way of getting the keys, values, or both and looping through them, as shown in the last example. They are rarely used in any other way.</p>
+
+<h3 id="using-dictionaries">Using Dictionaries</h3>
+<p>Let’s start with a simple example of a function that takes a filename and creates a dictionary where the keys are the line numbers and the values are the corresponding lines. Below is the function definition.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_lines</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Return a dictionary containing each line in the file as values
+    and the corresponding line number as keys.
+
+    Parameters:
+        filename (str): Name, including path, of the file to be opened.
+
+    Return:
+        dict: Dictionary containing the contents of the file.
+
+    Preconditions:
+        'filename' is the name of a file that can be opened for reading.
+    """</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">lines</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The first line creates an empty dictionary, <code class="highlighter-rouge">lines</code>, for us to store our lines in. We then open the <code class="highlighter-rouge">filename</code> in universal read mode. Using a for loop, along with the enumerate function seen before, the index and line is easily obtained. We then use the square bracket notation to added the stripped line as the value to the dictionary, with the index (being the line number) as the key. The line was stripped using the strip method of strings, as this is more useful if we were to do anything more with this dictionary. The dictionary is then returned.</p>
+
+<p>Having saved this code as <code class="highlighter-rouge">get_lines.py</code>, it can be tested. The following is a test using the <code class="highlighter-rouge">text.txt</code> file use previously.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">lines</span> <span class="o">=</span> <span class="n">get_lines</span><span class="p">(</span><span class="s">'text.txt'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">lines</span>
+<span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s">'Python is fun,'</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s">'it lets me play with files.'</span><span class="p">,</span>
+<span class="mi">2</span><span class="p">:</span> <span class="s">'I like playing with files,'</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s">'I can do some really fun stuff.'</span><span class="p">,</span>
+<span class="mi">4</span><span class="p">:</span> <span class="s">''</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s">'I like Python!'</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">lines</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+<span class="s">'I like Python!'</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Let’s now look at a slightly more complex example. This example will look at determining the frequency count of characters in a file. We will need to open the file for reading, read the contents of the file and count how many times each character appears. Dictionaries are ideal for this — we can use the characters as the keys and the character counts as the associated values. We will need to make use of the dictionary method <code class="highlighter-rouge">get</code>.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">help</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+<span class="n">Help</span> <span class="n">on</span> <span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">function</span> <span class="n">get</span><span class="p">:</span>
+
+<span class="n">get</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+    <span class="n">D</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">[,</span><span class="n">d</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">D</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">D</span><span class="p">,</span> <span class="k">else</span> <span class="n">d</span><span class="o">.</span>  <span class="n">d</span> <span class="n">defaults</span> <span class="n">to</span> <span class="bp">None</span><span class="o">.</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s">"one"</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"three"</span> <span class="p">:</span> <span class="mi">3</span> <span class="p">,</span><span class="s">"many"</span> <span class="p">:</span> <span class="mi">99999999999</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="p">[</span><span class="s">"one"</span><span class="p">]</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"one"</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="p">[</span><span class="s">"two"</span><span class="p">]</span>
+
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;pyshell#4&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="n">d</span><span class="p">[</span><span class="s">"two"</span><span class="p">]</span>
+<span class="nb">KeyError</span><span class="p">:</span> <span class="s">'two'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"two"</span><span class="p">))</span>
+<span class="bp">None</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"two"</span><span class="p">,</span> <span class="s">"that number does not exist"</span><span class="p">)</span>
+<span class="s">'that number does not exist'</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The <code class="highlighter-rouge">get</code> method is similar to the square bracket notation that we have used to look up values associated with a key. The biggest difference is that <code class="highlighter-rouge">get</code> does not raise an error if the key is not in the dictionary as the square bracket notation does.</p>
+
+<div class="important">
+
+  <h4 id="get-syntax"><code class="highlighter-rouge">get</code> Syntax</h4>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dictionary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">dictionary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </div>
+
+  <h4 id="semantics">Semantics</h4>
+  <p><code class="highlighter-rouge">get</code> takes in a key as an argument and either returns the value in <code class="highlighter-rouge">dictionary</code> associated with that <code class="highlighter-rouge">key</code> or, if that key is not in <code class="highlighter-rouge">dictionary</code>, then <code class="highlighter-rouge">get</code> returns <code class="highlighter-rouge">d</code>. <code class="highlighter-rouge">d</code> is an optional argument of <code class="highlighter-rouge">get</code> and defaults to <code class="highlighter-rouge">None</code>.</p>
+</div>
+
+<p>Now we can have a look at our example. The following is the required function definition.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">freq_count</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Return the frequency count of characters occuring in a file.
+
+    Parameters:
+        filename (str): Name, including path, of the file to be opened.
+
+    Return:
+        dict: Frequency of each character occuring in the file.
+
+    Preconditions:
+        'filename' is the name of a file that can be opened for reading.
+    """</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">file</span> <span class="p">:</span>
+        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">line</span> <span class="p">:</span>
+            <span class="n">freq</span><span class="p">[</span><span class="n">char</span><span class="p">]</span> <span class="o">=</span> <span class="n">freq</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">freq</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The function starts with creating an empty dictionary, <code class="highlighter-rouge">freq</code>. Then the function opens the file and iterates through the lines of the file with a for loop. Inside the for loop is another (nested) for loop to iterate through the line to get each character. Inside that for loop we start with the square bracket notation for adding a key, value pair to <code class="highlighter-rouge">freq</code> using the <code class="highlighter-rouge">char</code> as the key. We then use the <code class="highlighter-rouge">get</code> method to look up the same key but if <code class="highlighter-rouge">char</code> is not in <code class="highlighter-rouge">freq</code> then 0 is returned. The value returned by <code class="highlighter-rouge">get</code> is incremented by 1, thus incrementing the number of occurrences of <code class="highlighter-rouge">char</code>. <code class="highlighter-rouge">get</code> is used as it provides the perfect base for this problem. If the <code class="highlighter-rouge">char</code> is in <code class="highlighter-rouge">freq</code> then the value (the count) is returned and then has 1 added to it and then that new value is assigned to the key. If <code class="highlighter-rouge">char</code> is not in <code class="highlighter-rouge">freq</code> then <code class="highlighter-rouge">get</code> returns 0 which allows us to add 1 to it as this will be the first occurrence of <code class="highlighter-rouge">char</code> in the file.</p>
+
+<p>After saving <code class="highlighter-rouge">freq.py</code>, it can be applied to a few files that we have used in previous sections.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">freq_count</span><span class="p">(</span><span class="s">"sgame.txt"</span><span class="p">)</span>
+<span class="p">{</span><span class="s">' '</span><span class="p">:</span> <span class="mi">125</span><span class="p">,</span> <span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s">'1'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">'3'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'2'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'5'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'4'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'7'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'6'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> 
+<span class="s">'9'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'8'</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">freq_count</span><span class="p">(</span><span class="s">"text.txt"</span><span class="p">)</span>
+<span class="p">{</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">'!'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">' '</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span> <span class="s">','</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'.'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'I'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'P'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'a'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="s">'e'</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s">'d'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'g'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'f'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">'i'</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s">'h'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'k'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'m'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'l'</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s">'o'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> 
+<span class="s">'n'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">'p'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'s'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">'r'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'u'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'t'</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">'w'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'y'</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">freq_count</span><span class="p">(</span><span class="s">"words.txt"</span><span class="p">)</span>
+<span class="p">{</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">:</span> <span class="mi">252</span><span class="p">,</span> <span class="s">'!'</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s">' '</span><span class="p">:</span> <span class="mi">943</span><span class="p">,</span> <span class="s">"'"</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span> <span class="s">')'</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s">'('</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s">'-'</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">','</span><span class="p">:</span> <span class="mi">48</span><span class="p">,</span> 
+<span class="s">'.'</span><span class="p">:</span> <span class="mi">211</span><span class="p">,</span> <span class="s">'2'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'4'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'?'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s">'A'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">'C'</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">'B'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">'E'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'D'</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> 
+<span class="s">'G'</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">'F'</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s">'I'</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s">'H'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'K'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'J'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'M'</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span> <span class="s">'L'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'O'</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> 
+<span class="s">'N'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s">'P'</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s">'S'</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span> <span class="s">'R'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">'U'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'T'</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s">'W'</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s">'V'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'Y'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> 
+<span class="s">'a'</span><span class="p">:</span> <span class="mi">203</span><span class="p">,</span> <span class="s">'`'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span> <span class="s">'b'</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span> <span class="s">'e'</span><span class="p">:</span> <span class="mi">324</span><span class="p">,</span> <span class="s">'d'</span><span class="p">:</span> <span class="mi">114</span><span class="p">,</span> <span class="s">'g'</span><span class="p">:</span> <span class="mi">78</span><span class="p">,</span> <span class="s">'f'</span><span class="p">:</span> <span class="mi">48</span><span class="p">,</span> 
+<span class="s">'i'</span><span class="p">:</span> <span class="mi">134</span><span class="p">,</span> <span class="s">'h'</span><span class="p">:</span> <span class="mi">203</span><span class="p">,</span> <span class="s">'k'</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span> <span class="s">'j'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'m'</span><span class="p">:</span> <span class="mi">38</span><span class="p">,</span> <span class="s">'l'</span><span class="p">:</span> <span class="mi">99</span><span class="p">,</span> <span class="s">'o'</span><span class="p">:</span> <span class="mi">298</span><span class="p">,</span> <span class="s">'n'</span><span class="p">:</span> <span class="mi">179</span><span class="p">,</span> <span class="s">'q'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">'p'</span><span class="p">:</span> <span class="mi">48</span><span class="p">,</span> <span class="s">'s'</span><span class="p">:</span> <span class="mi">155</span><span class="p">,</span> <span class="s">'r'</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span> <span class="s">'u'</span><span class="p">:</span> <span class="mi">98</span><span class="p">,</span> <span class="s">'t'</span><span class="p">:</span> <span class="mi">294</span><span class="p">,</span> <span class="s">'w'</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s">'v'</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s">'y'</span><span class="p">:</span> <span class="mi">72</span><span class="p">,</span> <span class="s">'x'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'z'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Note that, instead of reading the file line-by-line, we could have read the entire file into a single string, using <code class="highlighter-rouge">read</code> and processed that character-by-character. However, for a very large file this approach would generate a very large (especially in memory) string.</p>
+
+<h3 id="formatting-strings">Formatting Strings</h3>
+
+<p>The dictionaries, especially when large, do not print out very nicely. Let’s write a function that takes a dictionary and displays it in an easy to read format (also called ‘pretty printing’). To be able to ‘pretty print’ we need to be able to print in a formatted way. We have seen simple examples of this already by simply printing one value after another separated by commas. Python has another approach using the <code class="highlighter-rouge">format</code> method of strings. <code class="highlighter-rouge">format</code> operates on a format string which has segments where substitutions are made. The items substituted into this format string are the arguments of the <code class="highlighter-rouge">format</code> method.
+Following are a few examples using the <code class="highlighter-rouge">format</code> method.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">help</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="nb">format</span><span class="p">)</span>
+<span class="n">Help</span> <span class="n">on</span> <span class="n">method_descriptor</span><span class="p">:</span>
+
+<span class="nb">format</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+    <span class="n">S</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">string</span>
+
+    <span class="n">Return</span> <span class="n">a</span> <span class="n">formatted</span> <span class="n">version</span> <span class="n">of</span> <span class="n">S</span><span class="p">,</span> <span class="n">using</span> <span class="n">substitutions</span> <span class="k">from</span> <span class="n">args</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="o">.</span>
+    <span class="n">The</span> <span class="n">substitutions</span> <span class="n">are</span> <span class="n">identified</span> <span class="n">by</span> <span class="n">braces</span> <span class="p">(</span><span class="s">'{'</span> <span class="ow">and</span> <span class="s">'}'</span><span class="p">)</span><span class="o">.</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">22</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'a = {0}, b = {1}, c = {2}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="s">'a = 10, b = 22, c = 42'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'a = {0}, b = {1}, c = {2}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="s">'a = 22, b = 42, c = 10'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'a = {0}, b = {1}, c = b + 2 * a = {1} + 2 * {0} = {2}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+<span class="s">'a = 10, b = 22, c = b + 2 * a = 22 + 2 * 10 = 42'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s">'hello'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'{0} world, {1}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="s">'hello world, 42'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'a = {0}, b = {1}, c = {2}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;pyshell#8&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="s">'a = {0}, b = {1}, c = {2}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="nb">IndexError</span><span class="p">:</span> <span class="nb">tuple</span> <span class="n">index</span> <span class="n">out</span> <span class="n">of</span> <span class="nb">range</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'a = {0}, b = {1}, c = {2}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="s">'a = 10, b = 22, c = 42'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">our_format</span> <span class="o">=</span> <span class="s">'print {0} everywhere, {1}'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">our_format</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="s">'print 10 everywhere, hello'</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The first example is of the <code class="highlighter-rouge">help</code> description of the <code class="highlighter-rouge">format</code> method. The next two examples use the <code class="highlighter-rouge">format</code> method to print three numbers out with descriptors as to what they are. Notice how the order of the arguments of <code class="highlighter-rouge">format</code> is associated with the numbers in the substitutions. The next example shows that substitutions can be made more than once into the format string. The next example shows that multiple types can be printed. The next example shows that if there are more substitutions to be made than there are arguments in <code class="highlighter-rouge">format</code> then an error is raised. However, the next example shows that if there are more arguments in <code class="highlighter-rouge">format</code> than substitution areas then there is no error, the extra values are ignored as the example shows that the format string can be assigned to a variable and used later to format print.</p>
+
+<div class="important">
+
+  <h4 id="format-syntax"><code class="highlighter-rouge">format</code> Syntax</h4>
+  <p><code class="highlighter-rouge">string.format(sequence)</code></p>
+
+  <h4 id="semantics-1">Semantics</h4>
+  <p>Values from sequence are substituted into substitution place holders in string. These place holders are denoted by numbers starting from 0 inside braces (curly brackets). The index of the value in sequence is the corresponding number that the value is substituted. The string resulting from the substitutions is returned.</p>
+</div>
+
+<div class="aside">
+
+  <h4 id="aside-more-formatting-options">Aside: More Formatting options</h4>
+  <p>The <code class="highlighter-rouge">format</code> method, along with the format string, has many options to enable different forms of formatted printing. Following are examples of some of the possible formatting options.</p>
+
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="mf">60.0</span><span class="o">/</span><span class="mi">22</span>
+<span class="mf">2.727272727272727</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">"2 decimal places - {0:.2f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="mf">60.0</span><span class="o">/</span><span class="mi">22</span><span class="p">)</span>
+<span class="s">'2 decimal places - 2.73'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">"5 decimal places - {0:.5f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="mf">60.0</span><span class="o">/</span><span class="mi">22</span><span class="p">)</span>
+<span class="s">'5 decimal places - 2.72727'</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>It is possible to print to a certain number of decimal places by using a <code class="highlighter-rouge">:.nf</code> after the index number. <code class="highlighter-rouge">n</code> here is the number of decimal places that are to be used. The examples above show printing to 2 and 5 decimal places.</p>
+
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="s">"use indexing - {0[3]}, {0[1]}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="s">"hello"</span><span class="p">)</span>
+<span class="s">'use indexing - l, e'</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>Indexing can be used on sequences inside the format string by indexing the substitution placeholder. The above example uses indexing twice during formatting.</p>
+
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="s">"give spacing - {0:10}, {1:7}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="s">"hi"</span><span class="p">,</span> <span class="s">"bye"</span><span class="p">)</span>
+<span class="s">'give spacing - hi        , bye    '</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">"give spacing - {0:10}, {1:7}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="s">"longer"</span><span class="p">,</span> <span class="s">"bye"</span><span class="p">)</span>
+<span class="s">'give spacing - longer    , bye    '</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>Spacing can be made around the items that are to be printed by adding a <code class="highlighter-rouge">:n</code> after the substitution place holder. n here represents the number of places that are required. The item fills up the spacing to its length then blank spaces are added to fill the rest. Above is two examples of printing with spacing around a couple of strings.
+These are just a few of the possible options available for format printing. More options and examples are available at the <a href="https://docs.python.org/3/library/string.html#formatstrings">Python docs page</a> for format strings.</p>
+</div>
+
+<p>Let’s return to our example. Below is the function definition for ‘pretty printing our dictionary.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">display_dictionary</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Pretty print 'dictionary' in key sorted order.
+
+    Parameters:
+        dictionary dict: Dictionary to be pretty printed.
+    """</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span> <span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'{0}  :  {1}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">dictionary</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The function first gets the keys of the dictionary and sorts them. The <code class="highlighter-rouge">sorted</code> function returns a sorted list of the given sequence. Now, when the dictionary is printed, there is a nice order to the characters. Then it iterates through the keys list and prints them using <code class="highlighter-rouge">format</code>. The keys are printed using the <code class="highlighter-rouge">repr</code> function. This makes the strings print with the ‘ ‘ around them, if we had printed the strings directly we would have lost the quotes. <code class="highlighter-rouge">repr</code> returns the <strong>representation</strong> of the argument. This can be seen when the <code class="highlighter-rouge">disp_dict.py</code> file is saved and tested as below.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">freq</span> <span class="o">=</span> <span class="n">freq_count</span><span class="p">(</span><span class="s">'sgame.txt'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">display_dictionary</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
+<span class="s">'</span><span class="se">\n</span><span class="s">'</span>  <span class="p">:</span>  <span class="mi">9</span>
+<span class="s">' '</span>  <span class="p">:</span>  <span class="mi">125</span>
+<span class="s">'1'</span>  <span class="p">:</span>  <span class="mi">5</span>
+<span class="s">'2'</span>  <span class="p">:</span>  <span class="mi">3</span>
+<span class="s">'3'</span>  <span class="p">:</span>  <span class="mi">3</span>
+<span class="s">'4'</span>  <span class="p">:</span>  <span class="mi">3</span>
+<span class="s">'5'</span>  <span class="p">:</span>  <span class="mi">3</span>
+<span class="s">'6'</span>  <span class="p">:</span>  <span class="mi">3</span>
+<span class="s">'7'</span>  <span class="p">:</span>  <span class="mi">2</span>
+<span class="s">'8'</span>  <span class="p">:</span>  <span class="mi">2</span>
+<span class="s">'9'</span>  <span class="p">:</span>  <span class="mi">4</span>
+</code></pre></div>  </div>
+</div>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,2159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>a2_solution API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>a2_solution</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="a2_solution.create_encounter"><code class="name flex">
+<span>def <span class="ident">create_encounter</span></span>(<span>trainer: <a title="a2_solution.Trainer" href="#a2_solution.Trainer">Trainer</a>, wild_pokemon: <a title="a2_solution.Pokemon" href="#a2_solution.Pokemon">Pokemon</a>) ‑> <a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>(7030 Task) Creates a Battle corresponding to an encounter with a wild
+pokemon.</p>
+<p>The enemy in this battle corresponds to a trainer with the empty string for
+a name, and whose only pokemon is the supplied wild pokemon. Masters students
+should leave this until they have completed all the non-masters classes.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>trainer</code>: The adventuring trainer.</li>
+<li><code>wild_pokemon</code>: The pokemon that the player comes into contact with.</li>
+</ul></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="a2_solution.PokemonStats"><code class="flex name class">
+<span>class <span class="ident">PokemonStats</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A class modelling the stats of a pokemon. These stats must be
+non-negative.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; stats = PokemonStats((1, 100, 110, 120))
+&gt;&gt;&gt; stats.get_hit_chance()
+1
+&gt;&gt;&gt; stats.get_max_health()
+100
+&gt;&gt;&gt; stats.get_attack()
+110
+&gt;&gt;&gt; stats.get_defense()
+120
+&gt;&gt;&gt; str(stats)
+'PokemonStats((1, 100, 110, 120))'
+&gt;&gt;&gt; repr(stats)
+'PokemonStats((1, 100, 110, 120))'
+</code></pre>
+<p>Constructs an instance of PokemonStats.</p>
+<p>The format of the incoming stats are:
+<code>(hit_chance, health, attack, defense)</code> with the indices
+given by constants in the support code.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>stats</code>: The base list of stats to encapsulate. <em>These values
+can be assumed to be non-negative</em></li>
+</ul></div>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.PokemonStats.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, stats: Tuple[float, int, int, int]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Constructs an instance of PokemonStats.</p>
+<p>The format of the incoming stats are:
+<code>(hit_chance, health, attack, defense)</code> with the indices
+given by constants in the support code.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>stats</code>: The base list of stats to encapsulate. <em>These values
+can be assumed to be non-negative</em></li>
+</ul></div>
+</dd>
+<dt id="a2_solution.PokemonStats.level_up"><code class="name flex">
+<span>def <span class="ident">level_up</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Grows the PokemonStats instance after the pokemon has levelled up.</p>
+<p>On leveling up, the base hit chance should always be = <code>1</code>, while the
+remaining stats grow by <code>5%</code> and are rounded down.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; stats = PokemonStats((1, 100, 110, 120))
+&gt;&gt;&gt; stats.level_up()
+&gt;&gt;&gt; stats.get_hit_chance()
+1
+&gt;&gt;&gt; stats.get_max_health()
+105
+&gt;&gt;&gt; stats.get_attack()
+115
+&gt;&gt;&gt; stats.get_defense()
+126
+</code></pre></div>
+</dd>
+<dt id="a2_solution.PokemonStats.get_hit_chance"><code class="name flex">
+<span>def <span class="ident">get_hit_chance</span></span>(<span>self) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the pokemon's current chance at making a successful
+attack.</p></div>
+</dd>
+<dt id="a2_solution.PokemonStats.get_max_health"><code class="name flex">
+<span>def <span class="ident">get_max_health</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the pokemon's max health</p></div>
+</dd>
+<dt id="a2_solution.PokemonStats.get_attack"><code class="name flex">
+<span>def <span class="ident">get_attack</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the pokemon's attack stat</p></div>
+</dd>
+<dt id="a2_solution.PokemonStats.get_defense"><code class="name flex">
+<span>def <span class="ident">get_defense</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the pokemon's defense stat</p></div>
+</dd>
+<dt id="a2_solution.PokemonStats.apply_modifier"><code class="name flex">
+<span>def <span class="ident">apply_modifier</span></span>(<span>self, modifier: Tuple[float, int, int, int]) ‑> <a title="a2_solution.PokemonStats" href="#a2_solution.PokemonStats">PokemonStats</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Applies a stat modifier and returns the newly constructed, modified
+pokemon stats.</p>
+<p>The resulting pokemon stats are the elementwise sum of the current stats
+and incoming modification and should be bound by 0.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>modifier</code>: A list of stat modifications to apply, of the same
+structure as the initial supplied pokemon stats.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; stats = PokemonStats((1, 100, 110, 120))
+&gt;&gt;&gt; modified_stats = stats.apply_modifier((-0.5, -20, -10, -5))
+&gt;&gt;&gt; stats.get_hit_chance()
+1
+&gt;&gt;&gt; modified_stats.get_hit_chance()
+0.5
+&gt;&gt;&gt; stats.get_max_health()
+100
+&gt;&gt;&gt; modified_stats.get_max_health()
+80
+</code></pre></div>
+</dd>
+<dt id="a2_solution.PokemonStats.__str__"><code class="name flex">
+<span>def <span class="ident">__str__</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the string representation of this class.</p></div>
+</dd>
+<dt id="a2_solution.PokemonStats.__repr__"><code class="name flex">
+<span>def <span class="ident">__repr__</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the string representation of this class.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="a2_solution.Pokemon"><code class="flex name class">
+<span>class <span class="ident">Pokemon</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A class which represents a Pokemon.</p>
+<p>A pokemon's level is determined by its experience points, through
+the formula: <code>level = floor(experience ^ (1/3))</code>.</p>
+<p>A pokemon can learn a maximum of 4 moves.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; stats = PokemonStats((1, 100, 200, 200))
+&gt;&gt;&gt; pokemon = Pokemon(&quot;Pikachu&quot;, stats, 'electric', [], level=5)
+&gt;&gt;&gt; pokemon.get_name()
+'Pikachu'
+&gt;&gt;&gt; pokemon.get_health()
+100
+&gt;&gt;&gt; pokemon.get_max_health()
+100
+&gt;&gt;&gt; pokemon.get_element_type()
+'electric'
+&gt;&gt;&gt; pokemon.get_level()
+5
+&gt;&gt;&gt; pokemon.get_experience()
+125
+&gt;&gt;&gt; pokemon.get_next_level_experience_requirement()
+216
+&gt;&gt;&gt; pokemon.has_fainted()
+False
+&gt;&gt;&gt; str(pokemon)
+'Pikachu (lv5)'
+</code></pre>
+<p>For future examples in this class, you can assume the above example was
+run first.</p>
+<p>Creates a Pokemon instance.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this pokemon</li>
+<li><code>stats</code>: The pokemon's stats</li>
+<li><code>element_type</code>: The name of the type of this pokemon.</li>
+<li><code>moves</code>: A list of containing the moves that this pokemon will
+have learned after it is instantiated.</li>
+<li><code>level</code>: The pokemon's level.</li>
+</ul></div>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.Pokemon.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, name: str, stats: <a title="a2_solution.PokemonStats" href="#a2_solution.PokemonStats">PokemonStats</a>, element_type: str, moves: List[ForwardRef('<a title="a2_solution.Move" href="#a2_solution.Move">Move</a>')], level: int = 1) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates a Pokemon instance.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this pokemon</li>
+<li><code>stats</code>: The pokemon's stats</li>
+<li><code>element_type</code>: The name of the type of this pokemon.</li>
+<li><code>moves</code>: A list of containing the moves that this pokemon will
+have learned after it is instantiated.</li>
+<li><code>level</code>: The pokemon's level.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Pokemon.get_name"><code class="name flex">
+<span>def <span class="ident">get_name</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get this pokemon's name.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.get_health"><code class="name flex">
+<span>def <span class="ident">get_health</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the remaining health of this pokemon.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.get_max_health"><code class="name flex">
+<span>def <span class="ident">get_max_health</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the maximum health of this pokemon before stat modifiers
+are applied.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.get_element_type"><code class="name flex">
+<span>def <span class="ident">get_element_type</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the name of the type of this pokemon.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.get_remaining_move_uses"><code class="name flex">
+<span>def <span class="ident">get_remaining_move_uses</span></span>(<span>self, move: <a title="a2_solution.Move" href="#a2_solution.Move">Move</a>) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the number of moves left for the supplied move, or
+0 if the pokemon doesn't know the move.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.get_level"><code class="name flex">
+<span>def <span class="ident">get_level</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the level of this pokemon.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.get_experience"><code class="name flex">
+<span>def <span class="ident">get_experience</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the current pokemon's experience.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.get_next_level_experience_requirement"><code class="name flex">
+<span>def <span class="ident">get_next_level_experience_requirement</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the total experience required for the pokemon to be one level
+higher.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.get_move_info"><code class="name flex">
+<span>def <span class="ident">get_move_info</span></span>(<span>self) ‑> List[Tuple[<a title="a2_solution.Move" href="#a2_solution.Move">Move</a>, int]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a list of the pokemon's known moves and their remaining uses.</p>
+<p>This list should be sorted by the name of the moves.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; tackle = Attack('tackle', 'normal', 15, 80, 50, .95)
+&gt;&gt;&gt; flamethrower = Attack('flamethrower', 'fire', 10, 80, 60, 0.8)
+&gt;&gt;&gt; pokemon.get_move_info()
+[]
+&gt;&gt;&gt; pokemon.learn_move(tackle)
+&gt;&gt;&gt; pokemon.learn_move(flamethrower)
+&gt;&gt;&gt; pokemon.get_move_info()
+[(Attack('flamethrower', 'fire', 10), 10), (Attack('tackle', 'normal', 15), 15)]
+</code></pre></div>
+</dd>
+<dt id="a2_solution.Pokemon.has_fainted"><code class="name flex">
+<span>def <span class="ident">has_fainted</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return true iff the pokemon has fainted.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.modify_health"><code class="name flex">
+<span>def <span class="ident">modify_health</span></span>(<span>self, change: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Modify the pokemons health by the supplied amount. </p>
+<p>The resulting health is clamped between 0 and the max health
+of this pokemon after stat modifiers are applied.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>change</code>: The health change to be applied to the pokemon.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; pokemon.get_max_health()
+100
+&gt;&gt;&gt; pokemon.get_health()
+100
+&gt;&gt;&gt; pokemon.modify_health(-20)
+&gt;&gt;&gt; pokemon.get_health()
+80
+&gt;&gt;&gt; pokemon.modify_health(30)
+&gt;&gt;&gt; pokemon.get_health()
+100
+&gt;&gt;&gt; pokemon.modify_health(-9000)
+&gt;&gt;&gt; pokemon.get_health()
+0
+&gt;&gt;&gt; pokemon.has_fainted()
+True
+</code></pre></div>
+</dd>
+<dt id="a2_solution.Pokemon.gain_experience"><code class="name flex">
+<span>def <span class="ident">gain_experience</span></span>(<span>self, experience: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Increase the experience of this pokemon by the supplied amount, and
+level up if necessary.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>experience</code>: The amount of experience points to increase.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Pokemon.level_up"><code class="name flex">
+<span>def <span class="ident">level_up</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Increase the level of this pokemon.</p>
+<p>leveling up grows the pokemon's stats, and increase its current health
+by the amount that the maximum hp increased.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; pokemon.get_health()
+100
+&gt;&gt;&gt; pokemon.get_max_health()
+100
+&gt;&gt;&gt; pokemon.modify_health(-20)
+&gt;&gt;&gt; pokemon.get_health()
+80
+&gt;&gt;&gt; pokemon.level_up()
+&gt;&gt;&gt; pokemon.get_health()
+85
+&gt;&gt;&gt; pokemon.get_max_health()
+105
+</code></pre></div>
+</dd>
+<dt id="a2_solution.Pokemon.experience_on_death"><code class="name flex">
+<span>def <span class="ident">experience_on_death</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The experience awarded to the victorious pokemon if this pokemon
+faints.</p>
+<p>This is calculated through the formula:
+<code>200 * level / 7</code> and rounded down to the nearest integer,
+where <code>level</code>: the level of the pokemon who fainted.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.can_learn_move"><code class="name flex">
+<span>def <span class="ident">can_learn_move</span></span>(<span>self, move: <a title="a2_solution.Move" href="#a2_solution.Move">Move</a>) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns true iff the pokemon can learn the given move. i.e. they
+have learned less than the maximum number of moves for a pokemon and
+they haven't already learned the supplied move.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.learn_move"><code class="name flex">
+<span>def <span class="ident">learn_move</span></span>(<span>self, move: <a title="a2_solution.Move" href="#a2_solution.Move">Move</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Learns the given move, assuming the pokemon is able to.</p>
+<p>After learning this move, this Pokemon can use this move for <code>max_uses</code>
+times. See <code><a title="a2_solution.Move" href="#a2_solution.Move">Move</a></code>.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>move</code>: move for pokemon to learn</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Pokemon.forget_move"><code class="name flex">
+<span>def <span class="ident">forget_move</span></span>(<span>self, move: <a title="a2_solution.Move" href="#a2_solution.Move">Move</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Forgets the supplied move, if the pokemon knows it.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.has_moves_left"><code class="name flex">
+<span>def <span class="ident">has_moves_left</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns true iff the pokemon has any moves they can use</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.reduce_move_count"><code class="name flex">
+<span>def <span class="ident">reduce_move_count</span></span>(<span>self, move: <a title="a2_solution.Move" href="#a2_solution.Move">Move</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reduce the move count of the move if the pokemon has learnt it.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.add_stat_modifier"><code class="name flex">
+<span>def <span class="ident">add_stat_modifier</span></span>(<span>self, modifier: Tuple[float, int, int, int], rounds: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds a stat modifier for a supplied number of rounds.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>modifier</code>: A stat modifier to be applied to the pokemon.</li>
+<li><code>rounds</code>: The number of rounds that the stat modifier will be in
+effect for.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Pokemon.get_stats"><code class="name flex">
+<span>def <span class="ident">get_stats</span></span>(<span>self) ‑> <a title="a2_solution.PokemonStats" href="#a2_solution.PokemonStats">PokemonStats</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the pokemon stats after applying all current modifications.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.post_round_actions"><code class="name flex">
+<span>def <span class="ident">post_round_actions</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Update the stat modifiers by decrementing the remaining number of
+rounds they are in effect for.</p>
+<p>Hint: students should make sure that the pokemon's health is updated
+appropriately after status modifiers are removed, i.e. the pokemon's
+health should never exceed its max health.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.rest"><code class="name flex">
+<span>def <span class="ident">rest</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns this pokemon to max health, removes any remaining status
+modifiers, and resets all move uses to their maximums.</p></div>
+</dd>
+<dt id="a2_solution.Pokemon.__str__"><code class="name flex">
+<span>def <span class="ident">__str__</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a simple representation of this pokemons name and level.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; str(pokemon)
+'Pikachu (lv5)'
+</code></pre></div>
+</dd>
+<dt id="a2_solution.Pokemon.__repr__"><code class="name flex">
+<span>def <span class="ident">__repr__</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a string representation of this pokemon</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="a2_solution.Trainer"><code class="flex name class">
+<span>class <span class="ident">Trainer</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A class representing a pokemon trainer. A trainer can have 6 Pokemon
+at maximum.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>The current pokemon should be kept track of with an instance variable
+representing the index of the currently selected Pokemon.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; DEFAULT_STATS = (1, 100, 200, 200)
+&gt;&gt;&gt; def create_pokemon(name):
+...     return Pokemon(name, PokemonStats(DEFAULT_STATS), 'normal', moves=[])
+...
+&gt;&gt;&gt; ash = Trainer('Ash Ketchup')
+&gt;&gt;&gt; ash.get_name()
+'Ash Ketchup'
+&gt;&gt;&gt; ash.get_inventory()
+{}
+&gt;&gt;&gt; ash.can_switch_pokemon(1)
+False
+&gt;&gt;&gt; pikachu = create_pokemon(&quot;Pikachu&quot;)
+&gt;&gt;&gt; ash.can_add_pokemon(pikachu)
+True
+&gt;&gt;&gt; ash.get_all_pokemon()
+[]
+&gt;&gt;&gt; ash.add_pokemon(pikachu)
+&gt;&gt;&gt; ash.get_all_pokemon()
+[Pikachu (lv1)]
+&gt;&gt;&gt; ash.get_current_pokemon()
+Pikachu (lv1)
+&gt;&gt;&gt; ash.can_add_pokemon(pikachu)
+False
+&gt;&gt;&gt; for _ in range(5):
+...     ash.add_pokemon(create_pokemon('jynx'))
+...
+&gt;&gt;&gt; ash.get_all_pokemon()
+[Pikachu (lv1), jynx (lv1), jynx (lv1), jynx (lv1), jynx (lv1), jynx (lv1)]
+&gt;&gt;&gt; ash.get_current_pokemon()
+Pikachu (lv1)
+&gt;&gt;&gt; ash.can_add_pokemon(create_pokemon('slugma'))
+False
+&gt;&gt;&gt; ash
+Trainer('Ash Ketchup')
+&gt;&gt;&gt; repr(ash)
+&quot;Trainer('Ash Ketchup')&quot;
+&gt;&gt;&gt; brock = Trainer(&quot;Brock&quot;)
+&gt;&gt;&gt; brock.get_current_pokemon()
+Traceback (most recent call last):
+File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+File &quot;a2.py&quot;, line X, in get_current_pokemon
+    raise NoPokemonException()
+a2_support.NoPokemonException
+</code></pre>
+<p>Create an instance of the Trainer class.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of the trainer.</li>
+</ul></div>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.Trainer.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, name: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create an instance of the Trainer class.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of the trainer.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Trainer.get_name"><code class="name flex">
+<span>def <span class="ident">get_name</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the trainer's name.</p></div>
+</dd>
+<dt id="a2_solution.Trainer.get_inventory"><code class="name flex">
+<span>def <span class="ident">get_inventory</span></span>(<span>self) ‑> Dict[<a title="a2_solution.Item" href="#a2_solution.Item">Item</a>, int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the trainer's inventory as a dictionary mapping items to
+the count of that item remaining in the dictionary.</p></div>
+</dd>
+<dt id="a2_solution.Trainer.get_current_pokemon"><code class="name flex">
+<span>def <span class="ident">get_current_pokemon</span></span>(<span>self) ‑> <a title="a2_solution.Pokemon" href="#a2_solution.Pokemon">Pokemon</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the current pokemon, or raises a NoPokemonException
+if the trainer doesn't have a single pokemon.</p></div>
+</dd>
+<dt id="a2_solution.Trainer.get_all_pokemon"><code class="name flex">
+<span>def <span class="ident">get_all_pokemon</span></span>(<span>self) ‑> List[<a title="a2_solution.Pokemon" href="#a2_solution.Pokemon">Pokemon</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the trainer's pokemon.</p>
+<ul>
+<li>The order of the pokemon in the list should be the order in which they
+were added to the roster.</li>
+<li>Modifying the list returned by this method should not affect the state
+of this instance.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Trainer.rest_all_pokemon"><code class="name flex">
+<span>def <span class="ident">rest_all_pokemon</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Rests all pokemon in the party</p></div>
+</dd>
+<dt id="a2_solution.Trainer.all_pokemon_fainted"><code class="name flex">
+<span>def <span class="ident">all_pokemon_fainted</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return true iff all the trainer's pokemon have fainted.</p></div>
+</dd>
+<dt id="a2_solution.Trainer.can_add_pokemon"><code class="name flex">
+<span>def <span class="ident">can_add_pokemon</span></span>(<span>self, pokemon: <a title="a2_solution.Pokemon" href="#a2_solution.Pokemon">Pokemon</a>) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns true iff the supplied pokemon can be added to this trainer's
+roster.</p>
+<p>You shouldn't be able to add the same pokemon instance twice or more
+than the maximum amount of pokemon for a trainer.</p></div>
+</dd>
+<dt id="a2_solution.Trainer.add_pokemon"><code class="name flex">
+<span>def <span class="ident">add_pokemon</span></span>(<span>self, pokemon: <a title="a2_solution.Pokemon" href="#a2_solution.Pokemon">Pokemon</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds a new pokemon into the roster, assuming that doing so
+would be valid. </p>
+<p>If there were no Pokemon in the roster prior to calling this method,
+set the current pokemon to the one that was added.</p></div>
+</dd>
+<dt id="a2_solution.Trainer.can_switch_pokemon"><code class="name flex">
+<span>def <span class="ident">can_switch_pokemon</span></span>(<span>self, index: int) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determines if the pokemon index would be valid to switch to,
+and returns true iff the switch would be valid.</p>
+<p>You cannot swap to a pokemon which is currently out on battle,
+or which has fainted.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>index</code>: The index of the next pokemon in the roster.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Trainer.switch_pokemon"><code class="name flex">
+<span>def <span class="ident">switch_pokemon</span></span>(<span>self, index: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Switches pokemon to the one at the supplied index, assuming
+that the switch is valid.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>index</code>: The index of the pokemon to switch to.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Trainer.add_item"><code class="name flex">
+<span>def <span class="ident">add_item</span></span>(<span>self, item: <a title="a2_solution.Item" href="#a2_solution.Item">Item</a>, uses: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds an item to the trainer's inventory and increments its uses by
+the supplied amount.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>item</code>: The item to add.</li>
+<li><code>uses</code>: The quantity of the item to be added to the inventory.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; food = Food(&quot;Burger King Foot Lettuce&quot;, 20)
+&gt;&gt;&gt; ash.get_inventory()
+{}
+&gt;&gt;&gt; ash.add_item(food, 1)
+&gt;&gt;&gt; ash.get_inventory()
+{Food('Burger King Foot Lettuce'): 1}
+&gt;&gt;&gt; ash.use_item(food)
+&gt;&gt;&gt; ash.get_inventory()
+{}
+&gt;&gt;&gt; ash.add_item(food, 3)
+&gt;&gt;&gt; ash.add_item(food, 4)
+&gt;&gt;&gt; ash.get_inventory()
+{Food('Burger King Foot Lettuce'): 7}
+</code></pre></div>
+</dd>
+<dt id="a2_solution.Trainer.has_item"><code class="name flex">
+<span>def <span class="ident">has_item</span></span>(<span>self, item: <a title="a2_solution.Item" href="#a2_solution.Item">Item</a>) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns true if the item is in the trainer's inventory and has
+uses.</p></div>
+</dd>
+<dt id="a2_solution.Trainer.use_item"><code class="name flex">
+<span>def <span class="ident">use_item</span></span>(<span>self, item: <a title="a2_solution.Item" href="#a2_solution.Item">Item</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>If the item is present in the trainer's inventory, decrement its
+count. Removes the item from the inventory entirely if its count hits 0.</p></div>
+</dd>
+<dt id="a2_solution.Trainer.__str__"><code class="name flex">
+<span>def <span class="ident">__str__</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a string representation of a Trainer</p></div>
+</dd>
+<dt id="a2_solution.Trainer.__repr__"><code class="name flex">
+<span>def <span class="ident">__repr__</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a string representation of a Trainer</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="a2_solution.Battle"><code class="flex name class">
+<span>class <span class="ident">Battle</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A class which represents a pokemon battle. A battle can be between
+trainers or between a trainer and a wild pokemon. In this assignment,
+non-trainer battles are represented by a battle between 2 trainers, namely
+a regular trainer and
+a 'dummy' trainer whose only pokemon is the wild
+pokemon.</p>
+<p>The main state-components of the battle are the action queue, and the turn:</p>
+<ol>
+<li>Pokemon battles aren't strictly turn-based, because the priority of each
+Action must be evaluated before they are performed. To make this happen,
+each round, each trainer adds their desired action to an <code>action queue</code>,
+and then the actions are performed in order of priority. In our
+implementation, the trainers cannot add an action to the queue unless it is
+valid for them to do so, based on the <code>turn</code>, and if the action would be
+valid.</li>
+<li>The <code>turn</code> is the battle's way of determining who should be allowed
+to add actions to the action queue. Each round, the <code>turn</code> starts as None.
+The first time an action is performed by a trainer that round, the turn
+is set to the opposite trainer, becoming a boolean value which is True
+if the opposite trainer is the player, and False if they are the enemy.
+When the <code>turn</code> is a boolean, it means that only the trainer who it points
+to can add actions to the queue/enact them. When both trainers have enacted
+a valid action, the round is considered over, and the <code>turn</code> should be set
+to <code>None</code>.</li>
+</ol>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; DEFAULT_STATS = (1, 100, 200, 200)
+&gt;&gt;&gt; def create_pokemon(name):
+...      return Pokemon(name, PokemonStats(DEFAULT_STATS), 'normal', moves=[])
+...
+&gt;&gt;&gt; ash = Trainer(&quot;Ash&quot;)
+&gt;&gt;&gt; brock = Trainer(&quot;Brock&quot;)
+&gt;&gt;&gt; ash.add_pokemon(create_pokemon(&quot;pikachu&quot;))
+&gt;&gt;&gt; brock.add_pokemon(create_pokemon(&quot;geodude&quot;))
+&gt;&gt;&gt; battle = Battle(ash, brock, True)
+&gt;&gt;&gt; print(battle.get_turn())
+None
+&gt;&gt;&gt; battle.is_action_queue_empty()
+True
+&gt;&gt;&gt; battle.is_over()
+False
+&gt;&gt;&gt; battle.queue_action(Flee(), True)
+&gt;&gt;&gt; battle.trainer_has_action_queued(True)
+True
+&gt;&gt;&gt; battle.get_trainer(True)
+Trainer('Ash')
+&gt;&gt;&gt; battle.get_trainer(False)
+Trainer('Brock')
+&gt;&gt;&gt; battle.is_ready()
+False
+&gt;&gt;&gt; battle.queue_action(Flee(), False)
+&gt;&gt;&gt; battle.is_action_queue_full()
+True
+&gt;&gt;&gt; battle.is_ready()
+True
+&gt;&gt;&gt; summary = battle.enact_turn()
+&gt;&gt;&gt; summary.get_messages()
+['Unable to escape a trainer battle.']
+&gt;&gt;&gt; battle.get_turn()
+False
+&gt;&gt;&gt; battle.is_ready()
+True
+&gt;&gt;&gt; battle.is_action_queue_full()
+False
+&gt;&gt;&gt; other_summary = battle.enact_turn()
+&gt;&gt;&gt; other_summary.get_messages()
+['Unable to escape a trainer battle.']
+&gt;&gt;&gt; print(battle.get_turn())
+None
+</code></pre>
+<p>Creates an instance of a trainer battle.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>player</code>: The trainer corresponding to the player character.</li>
+<li><code>enemy</code>: The enemy trainer.</li>
+<li><code>is_trainer_battle</code>: True iff the battle takes place between
+trainers.</li>
+</ul></div>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.Battle.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, player: <a title="a2_solution.Trainer" href="#a2_solution.Trainer">Trainer</a>, enemy: <a title="a2_solution.Trainer" href="#a2_solution.Trainer">Trainer</a>, is_trainer_battle: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates an instance of a trainer battle.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>player</code>: The trainer corresponding to the player character.</li>
+<li><code>enemy</code>: The enemy trainer.</li>
+<li><code>is_trainer_battle</code>: True iff the battle takes place between
+trainers.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Battle.get_turn"><code class="name flex">
+<span>def <span class="ident">get_turn</span></span>(<span>self) ‑> Optional[bool]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get whose turn it currently is</p></div>
+</dd>
+<dt id="a2_solution.Battle.get_trainer"><code class="name flex">
+<span>def <span class="ident">get_trainer</span></span>(<span>self, is_player: bool) ‑> <a title="a2_solution.Trainer" href="#a2_solution.Trainer">Trainer</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the trainer corresponding to the supplied parameter.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>is_player</code>: True iff the trainer we want is the player.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Battle.attempt_end_early"><code class="name flex">
+<span>def <span class="ident">attempt_end_early</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Ends the battle early if it's not a trainer battle</p></div>
+</dd>
+<dt id="a2_solution.Battle.is_trainer_battle"><code class="name flex">
+<span>def <span class="ident">is_trainer_battle</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns true iff the battle is between trainers</p></div>
+</dd>
+<dt id="a2_solution.Battle.is_action_queue_full"><code class="name flex">
+<span>def <span class="ident">is_action_queue_full</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns true if both trainers have an action queued.</p></div>
+</dd>
+<dt id="a2_solution.Battle.is_action_queue_empty"><code class="name flex">
+<span>def <span class="ident">is_action_queue_empty</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns true if neither trainer have an action queued.</p></div>
+</dd>
+<dt id="a2_solution.Battle.trainer_has_action_queued"><code class="name flex">
+<span>def <span class="ident">trainer_has_action_queued</span></span>(<span>self, is_player: bool) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns true iff the supplied trainer has an action queued</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>is_player</code>: True iff the trainer we want to check for is the
+player.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Battle.is_ready"><code class="name flex">
+<span>def <span class="ident">is_ready</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns true iff the next action is ready to be performed.</p>
+<p>The battle is deemed ready if neither trainer has performed an action
+this round and the action queue is full, or if one trainer has performed
+an action, and the other trainer is in the queue.</p></div>
+</dd>
+<dt id="a2_solution.Battle.queue_action"><code class="name flex">
+<span>def <span class="ident">queue_action</span></span>(<span>self, action: <a title="a2_solution.Action" href="#a2_solution.Action">Action</a>, is_player: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Attempts to queue the supplied action if it's valid given the battle
+state, and came from the right trainer.</p>
+<p>An action is unable to be added to the queue if:
+The trainer is already in the queue;
+The queue is ready;
+The action is invalid given the game state;</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>action</code>: The action we are attempting to queue</li>
+<li><code>is_player</code>: True iff we're saying the action is going to be
+performed by the player.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Battle.enact_turn"><code class="name flex">
+<span>def <span class="ident">enact_turn</span></span>(<span>self) ‑> Optional[<a title="a2_solution.ActionSummary" href="#a2_solution.ActionSummary">ActionSummary</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Attempts to perform the next action in the queue,
+and returns a summary of its effects if it was valid.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>If the next action in the queue is invalid, it should still
+be removed from the queue.</li>
+<li>If this was the last turn to be performed that round,
+perform the post round actions.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Battle.is_over"><code class="name flex">
+<span>def <span class="ident">is_over</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns true iff the battle is over.</p>
+<p>A battle is over if all of the pokemon have
+fainted for either trainer, or if it ended early.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="a2_solution.ActionSummary"><code class="flex name class">
+<span>class <span class="ident">ActionSummary</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A class containing messages about actions and their effects.</p>
+<p>These messages are handled by the view to display information about the
+flow of the game.</p>
+<p>Constructs a new ActionSummary with an optional message.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>message</code>: An optional message to be included.</li>
+</ul></div>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.ActionSummary.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, message: Optional[str] = None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Constructs a new ActionSummary with an optional message.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>message</code>: An optional message to be included.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.ActionSummary.get_messages"><code class="name flex">
+<span>def <span class="ident">get_messages</span></span>(<span>self) ‑> List[str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of the messages contained within this summary.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; msg = ActionSummary()
+&gt;&gt;&gt; msg.get_messages()
+[]
+&gt;&gt;&gt; msg = ActionSummary(&quot;oh-wo&quot;)
+&gt;&gt;&gt; msg.get_messages()
+['oh-wo']
+</code></pre></div>
+</dd>
+<dt id="a2_solution.ActionSummary.add_message"><code class="name flex">
+<span>def <span class="ident">add_message</span></span>(<span>self, message: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds the supplied message to the ActionSummary instance.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>message</code>: The message to add.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; msg = ActionSummary()
+&gt;&gt;&gt; msg.add_message(&quot;Action did a thing&quot;)
+&gt;&gt;&gt; msg.get_messages()
+['Action did a thing']
+</code></pre></div>
+</dd>
+<dt id="a2_solution.ActionSummary.combine"><code class="name flex">
+<span>def <span class="ident">combine</span></span>(<span>self, summary: <a title="a2_solution.ActionSummary" href="#a2_solution.ActionSummary">ActionSummary</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Combines two ActionSummaries. </p>
+<p>The messages contained in the supplied summary should be added
+after those currently contained.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>summary</code>: A summary containing the messages to add.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; msg = ActionSummary('first')
+&gt;&gt;&gt; msg2 = ActionSummary('second')
+&gt;&gt;&gt; msg.combine(msg2)
+&gt;&gt;&gt; msg.get_messages()
+['first', 'second']
+&gt;&gt;&gt; msg2.get_messages()
+[‘second’]
+</code></pre></div>
+</dd>
+</dl>
+</dd>
+<dt id="a2_solution.Action"><code class="flex name class">
+<span>class <span class="ident">Action</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>An abstract class detailing anything which takes up a turn in battle.</p>
+<p>Applying an action can be thought of as moving the game from one state to
+the next.</p></div>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Flee" href="#a2_solution.Flee">Flee</a></li>
+<li><a title="a2_solution.Item" href="#a2_solution.Item">Item</a></li>
+<li><a title="a2_solution.Move" href="#a2_solution.Move">Move</a></li>
+<li><a title="a2_solution.SwitchPokemon" href="#a2_solution.SwitchPokemon">SwitchPokemon</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.Action.get_priority"><code class="name flex">
+<span>def <span class="ident">get_priority</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the priority of this action, which is used to determine
+which action is performed first each round in the battle.</p>
+<p>Lower values of priority are 'quicker' than higher values,
+e.g. an Action with priority 0 happens before one with priority 1.</p>
+<p>You might want to take a look at the support code for a hint here.</p></div>
+</dd>
+<dt id="a2_solution.Action.is_valid"><code class="name flex">
+<span>def <span class="ident">is_valid</span></span>(<span>self, battle: <a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a>, is_player: bool) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determines if the action would be valid for the given trainer and
+battle state. Returns true iff it would be valid.</p>
+<p>By default, no action is valid if the game is over, or if it's not
+the trainer's turn.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>battle</code>: The ongoing pokemon battle</li>
+<li><code>is_player</code>: True iff the player is using this action.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Action.apply"><code class="name flex">
+<span>def <span class="ident">apply</span></span>(<span>self, battle: <a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a>, is_player: bool) ‑> <a title="a2_solution.ActionSummary" href="#a2_solution.ActionSummary">ActionSummary</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Applies the action to the game state and returns a summary of
+the effects of doing so.</p>
+<p>On the base Action class, this method should raise a
+NotImplementedError.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>battle</code>: The ongoing pokemon battle</li>
+<li><code>is_player</code>: True iff the player is using this action.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; action = Action()
+&gt;&gt;&gt; action.apply(battle, True)
+Traceback (most recent call last):
+File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+File &quot;a2.py&quot;, line X, in apply
+    raise NotImplementedError()
+NotImplementedError
+</code></pre></div>
+</dd>
+<dt id="a2_solution.Action.__str__"><code class="name flex">
+<span>def <span class="ident">__str__</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a string representation of this class.</p></div>
+</dd>
+<dt id="a2_solution.Action.__repr__"><code class="name flex">
+<span>def <span class="ident">__repr__</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a string representation of this class</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; action = Action()
+&gt;&gt;&gt; str(action)
+'Action()'
+&gt;&gt;&gt; repr(action)
+'Action()'
+</code></pre></div>
+</dd>
+</dl>
+</dd>
+<dt id="a2_solution.Flee"><code class="flex name class">
+<span>class <span class="ident">Flee</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>An action where the trainer attempts to run away from the battle.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>While it may still be valid, it has no effect in trainer battles.</li>
+<li>If successful, this should end the battle early.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; flee = Flee()
+&gt;&gt;&gt; str(flee)
+'Flee()'
+&gt;&gt;&gt; repr(flee)
+'Flee()'
+</code></pre></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.Flee.is_valid"><code class="name flex">
+<span>def <span class="ident">is_valid</span></span>(<span>self, battle: <a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a>, is_player: bool) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determines if an attempt to flee would be valid for a given
+battle state. Returns true iff it would be valid.</p>
+<p>Fleeing is considered a valid action if the base action validity checks
+pass, and the trainer's current pokemon has not fainted. This does not
+mean, however, that a trainer can flee trainer battles. In that case,
+fleeing is considered wasting a turn.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>battle</code>: The ongoing pokemon battle</li>
+<li><code>is_player</code>: True iff the player is using this item.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Flee.apply"><code class="name flex">
+<span>def <span class="ident">apply</span></span>(<span>self, battle: <a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a>, is_player: bool) ‑> <a title="a2_solution.ActionSummary" href="#a2_solution.ActionSummary">ActionSummary</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>The trainer attempts to flee the battle.</p>
+<p>The resulting message depends on whether or not the action was
+successful. See the support code for a hint.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>battle</code>: The ongoing pokemon battle</li>
+<li><code>is_player</code>: True iff the player is using this item.</li>
+</ul></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></b></code>:
+<ul class="hlist">
+<li><code><a title="a2_solution.Action.__repr__" href="#a2_solution.Action.__repr__">__repr__</a></code></li>
+<li><code><a title="a2_solution.Action.__str__" href="#a2_solution.Action.__str__">__str__</a></code></li>
+<li><code><a title="a2_solution.Action.get_priority" href="#a2_solution.Action.get_priority">get_priority</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="a2_solution.SwitchPokemon"><code class="flex name class">
+<span>class <span class="ident">SwitchPokemon</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>An action representing the trainer's intention to switch pokemon.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; switch = SwitchPokemon(2)
+&gt;&gt;&gt; str(switch)
+'SwitchPokemon(2)'
+&gt;&gt;&gt; repr(switch)
+'SwitchPokemon(2)'
+</code></pre>
+<p>Creates an instance of the SwitchPokemon class.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>next_pokemon_index</code>: The index of the pokemon the trainer wants
+to switch to.</li>
+</ul></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.SwitchPokemon.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, next_pokemon_index: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates an instance of the SwitchPokemon class.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>next_pokemon_index</code>: The index of the pokemon the trainer wants
+to switch to.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.SwitchPokemon.is_valid"><code class="name flex">
+<span>def <span class="ident">is_valid</span></span>(<span>self, battle: <a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a>, is_player: bool) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determines if switching pokemon would be valid for a given
+trainer and battle state. Returns true iff it would be valid.</p>
+<p>After checking the validity requirements specified on the base Action
+class, switching delegates validity checking to the <code><a title="a2_solution.Trainer" href="#a2_solution.Trainer">Trainer</a></code> class.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>battle</code>: The ongoing pokemon battle</li>
+<li><code>is_player</code>: True iff the player is using this item.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.SwitchPokemon.apply"><code class="name flex">
+<span>def <span class="ident">apply</span></span>(<span>self, battle: <a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a>, is_player: bool) ‑> <a title="a2_solution.ActionSummary" href="#a2_solution.ActionSummary">ActionSummary</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>The trainer switches pokemon, assuming that the switch would
+be valid.</p>
+<p>If the trainer using this action is the player, and their pokemon has
+not yet fainted, a message should be added to the action summary, in
+the form: <code>'{pokemon_name}, return!'</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>battle</code>: The ongoing pokemon battle</li>
+<li><code>is_player</code>: True iff the player is using this action.</li>
+</ul></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></b></code>:
+<ul class="hlist">
+<li><code><a title="a2_solution.Action.__repr__" href="#a2_solution.Action.__repr__">__repr__</a></code></li>
+<li><code><a title="a2_solution.Action.__str__" href="#a2_solution.Action.__str__">__str__</a></code></li>
+<li><code><a title="a2_solution.Action.get_priority" href="#a2_solution.Action.get_priority">get_priority</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="a2_solution.Item"><code class="flex name class">
+<span>class <span class="ident">Item</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>An abstract class representing an Item, which a trainer may attempt
+to use to influence the battle.</p>
+<p>Creates an Item.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this item</li>
+</ul></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Food" href="#a2_solution.Food">Food</a></li>
+<li><a title="a2_solution.Pokeball" href="#a2_solution.Pokeball">Pokeball</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.Item.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, name: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates an Item.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this item</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Item.get_name"><code class="name flex">
+<span>def <span class="ident">get_name</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the name of this item</p></div>
+</dd>
+<dt id="a2_solution.Item.is_valid"><code class="name flex">
+<span>def <span class="ident">is_valid</span></span>(<span>self, battle: <a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a>, is_player: bool) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determines if using the item would be a valid action for the given
+trainer and battle state. Returns true iff it would be valid.</p>
+<p>In addition to the validity requirements specified on the base Action
+class, <code><a title="a2_solution.Item" href="#a2_solution.Item">Item</a></code> and its subclasses are considered valid if:
+1. The trainer's current pokemon has not fainted.
+2. The item exists in the inventory of the trainer attempting to
+use it.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>battle</code>: The ongoing pokemon battle</li>
+<li><code>is_player</code>: True iff the player is using this item.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Item.decrement_item_count"><code class="name flex">
+<span>def <span class="ident">decrement_item_count</span></span>(<span>self, trainer: <a title="a2_solution.Trainer" href="#a2_solution.Trainer">Trainer</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Decrease the count of this item by one in the trainer's inventory</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>trainer</code>: The trainer attempting to use this item.</li>
+</ul></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></b></code>:
+<ul class="hlist">
+<li><code><a title="a2_solution.Action.__repr__" href="#a2_solution.Action.__repr__">__repr__</a></code></li>
+<li><code><a title="a2_solution.Action.__str__" href="#a2_solution.Action.__str__">__str__</a></code></li>
+<li><code><a title="a2_solution.Action.apply" href="#a2_solution.Action.apply">apply</a></code></li>
+<li><code><a title="a2_solution.Action.get_priority" href="#a2_solution.Action.get_priority">get_priority</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="a2_solution.Pokeball"><code class="flex name class">
+<span>class <span class="ident">Pokeball</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>An item which a trainer can use to attempt to catch wild pokemon.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; pokeball = Pokeball(&quot;Master Ball&quot;, 1)
+&gt;&gt;&gt; pokeball
+Pokeball('Master Ball')
+&gt;&gt;&gt; str(pokeball)
+&quot;Pokeball('Master Ball')&quot;
+&gt;&gt;&gt; repr(pokeball)
+&quot;Pokeball('Master Ball')&quot;
+</code></pre>
+<p>Creates a pokeball instance, used to catch pokemon in wild battles</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this pokeball</li>
+<li><code>catch_chance</code>: The chance this pokeball has of catching a
+pokemon.</li>
+</ul></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Item" href="#a2_solution.Item">Item</a></li>
+<li><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.Pokeball.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, name, catch_chance) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates a pokeball instance, used to catch pokemon in wild battles</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this pokeball</li>
+<li><code>catch_chance</code>: The chance this pokeball has of catching a
+pokemon.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Pokeball.apply"><code class="name flex">
+<span>def <span class="ident">apply</span></span>(<span>self, battle: <a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a>, is_player: bool) ‑> <a title="a2_solution.ActionSummary" href="#a2_solution.ActionSummary">ActionSummary</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Attempt to catch the enemy pokemon and returns an ActionSummary
+containing information about the catch attempt.</p>
+<p>The returned summary will contain a
+different message based on the results of attempting to use the
+pokeball. See the support code for some hints as to what these messages
+might be.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>No matter the result of the catch attempt, a pokeball will be
+used.</li>
+<li>Catching pokemon is impossible in trainer battles.</li>
+<li>The <code>did_succeed</code> method from the support code must be used to
+determine if a catch attempt was successful.</li>
+<li>The wild pokemon will be added to the trainers roster if there is
+room</li>
+<li>In a wild battle, catching the enemy pokemon will end the battle.</li>
+</ul>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>battle</code>: The ongoing pokemon battle</li>
+<li><code>is_player</code>: True iff the player is using this item.</li>
+</ul></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="a2_solution.Item" href="#a2_solution.Item">Item</a></b></code>:
+<ul class="hlist">
+<li><code><a title="a2_solution.Item.__repr__" href="#a2_solution.Action.__repr__">__repr__</a></code></li>
+<li><code><a title="a2_solution.Item.__str__" href="#a2_solution.Action.__str__">__str__</a></code></li>
+<li><code><a title="a2_solution.Item.decrement_item_count" href="#a2_solution.Item.decrement_item_count">decrement_item_count</a></code></li>
+<li><code><a title="a2_solution.Item.get_name" href="#a2_solution.Item.get_name">get_name</a></code></li>
+<li><code><a title="a2_solution.Item.get_priority" href="#a2_solution.Action.get_priority">get_priority</a></code></li>
+<li><code><a title="a2_solution.Item.is_valid" href="#a2_solution.Item.is_valid">is_valid</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="a2_solution.Food"><code class="flex name class">
+<span>class <span class="ident">Food</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>An Item which restores HP to the pokemon whose trainer uses it.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; soup = Food(&quot;Good Soup&quot;, 69)
+&gt;&gt;&gt; soup
+Food('Good Soup')
+&gt;&gt;&gt; str(soup)
+&quot;Food('Good Soup')&quot;
+&gt;&gt;&gt; repr(soup)
+&quot;Food('Good Soup')&quot;
+</code></pre>
+<p>Create a Food instance.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this food.</li>
+<li><code>health_restored</code>: The number of health points restored when
+a pokemon eats this piece of food.</li>
+</ul></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Item" href="#a2_solution.Item">Item</a></li>
+<li><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.Food.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, name: str, health_restored: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a Food instance.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this food.</li>
+<li><code>health_restored</code>: The number of health points restored when
+a pokemon eats this piece of food.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Food.apply"><code class="name flex">
+<span>def <span class="ident">apply</span></span>(<span>self, battle: <a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a>, is_player: bool) ‑> <a title="a2_solution.ActionSummary" href="#a2_solution.ActionSummary">ActionSummary</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>The trainer's current pokemon eats the food.</p>
+<p>Their current pokemon's health should consequently increase by the
+amount of health restored by this food.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>battle</code>: The ongoing pokemon battle</li>
+<li><code>is_player</code>: True iff the player is using this item.</li>
+</ul></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="a2_solution.Item" href="#a2_solution.Item">Item</a></b></code>:
+<ul class="hlist">
+<li><code><a title="a2_solution.Item.__repr__" href="#a2_solution.Action.__repr__">__repr__</a></code></li>
+<li><code><a title="a2_solution.Item.__str__" href="#a2_solution.Action.__str__">__str__</a></code></li>
+<li><code><a title="a2_solution.Item.decrement_item_count" href="#a2_solution.Item.decrement_item_count">decrement_item_count</a></code></li>
+<li><code><a title="a2_solution.Item.get_name" href="#a2_solution.Item.get_name">get_name</a></code></li>
+<li><code><a title="a2_solution.Item.get_priority" href="#a2_solution.Action.get_priority">get_priority</a></code></li>
+<li><code><a title="a2_solution.Item.is_valid" href="#a2_solution.Item.is_valid">is_valid</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="a2_solution.Move"><code class="flex name class">
+<span>class <span class="ident">Move</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>An abstract class representing all learnable pokemon moves.</p>
+<p>Creates an instance of the Move class.</p>
+<p>Like pokemon, moves have a type which determines their effectiveness.
+They also have a speed which determines the move's priority.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this move</li>
+<li><code>element_type</code>: The name of the type of this move</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
+<li><code>speed</code>: The speed of this move, with lower values corresponding
+to faster moves priorities.</li>
+</ul></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Attack" href="#a2_solution.Attack">Attack</a></li>
+<li><a title="a2_solution.StatusModifier" href="#a2_solution.StatusModifier">StatusModifier</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.Move.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, name: str, element_type: str, max_uses: int, speed: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates an instance of the Move class.</p>
+<p>Like pokemon, moves have a type which determines their effectiveness.
+They also have a speed which determines the move's priority.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this move</li>
+<li><code>element_type</code>: The name of the type of this move</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
+<li><code>speed</code>: The speed of this move, with lower values corresponding
+to faster moves priorities.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Move.get_name"><code class="name flex">
+<span>def <span class="ident">get_name</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the name of this move</p></div>
+</dd>
+<dt id="a2_solution.Move.get_element_type"><code class="name flex">
+<span>def <span class="ident">get_element_type</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the type of this move</p></div>
+</dd>
+<dt id="a2_solution.Move.get_max_uses"><code class="name flex">
+<span>def <span class="ident">get_max_uses</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the maximum times this move can be used</p></div>
+</dd>
+<dt id="a2_solution.Move.get_priority"><code class="name flex">
+<span>def <span class="ident">get_priority</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the priority of this move.</p>
+<p>Moves have a speed-based priority. By default they are slower than other
+actions, with their total priority being calculated by adding the
+default speed-based action priority to the individual move's speed.</p></div>
+</dd>
+<dt id="a2_solution.Move.is_valid"><code class="name flex">
+<span>def <span class="ident">is_valid</span></span>(<span>self, battle: <a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a>, is_player: bool) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determines if the move would be valid for the given trainer and
+battle state. Returns true iff it would be valid.</p>
+<p>In addition to the validity requirements specified on the base Action
+class, a <code><a title="a2_solution.Move" href="#a2_solution.Move">Move</a></code> is considered valid if:
+1. The trainer's current pokemon has not fainted.
+2. The trainer's current pokemon has learnt this move.
+3. The trainer's current pokemon has uses remaining for this move.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>battle</code>: The ongoing pokemon battle</li>
+<li><code>is_player</code>: True iff the player is using this action.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Move.apply"><code class="name flex">
+<span>def <span class="ident">apply</span></span>(<span>self, battle: <a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a>, is_player: bool) ‑> <a title="a2_solution.ActionSummary" href="#a2_solution.ActionSummary">ActionSummary</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Applies the Move to the game state.</p>
+<p>Generally, the move should be performed and its effects should be
+applied to the player and/or the enemy if needed. In addition,
+the appropriate pokemon's remaining moves should be updated.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>In the resulting ActionSummary, messages for ally effects should
+preceed enemy effects.</li>
+</ul>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>battle</code>: The ongoing pokemon battle</li>
+<li><code>is_player</code>: True iff the player is using this action.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Move.apply_ally_effects"><code class="name flex">
+<span>def <span class="ident">apply_ally_effects</span></span>(<span>self, trainer: <a title="a2_solution.Trainer" href="#a2_solution.Trainer">Trainer</a>) ‑> <a title="a2_solution.ActionSummary" href="#a2_solution.ActionSummary">ActionSummary</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Apply this move's effects to the ally trainer; if appropriate, and return
+the resulting ActionSummary.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>trainer</code>: The trainer whose pokemon is using the move.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Move.apply_enemy_effects"><code class="name flex">
+<span>def <span class="ident">apply_enemy_effects</span></span>(<span>self, trainer: <a title="a2_solution.Trainer" href="#a2_solution.Trainer">Trainer</a>, enemy: <a title="a2_solution.Trainer" href="#a2_solution.Trainer">Trainer</a>) ‑> <a title="a2_solution.ActionSummary" href="#a2_solution.ActionSummary">ActionSummary</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Apply this move's effects to the enemy; if appropriate, and return
+the resulting ActionSummary.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>trainer</code>: The trainer whose pokemon is using the move.</li>
+<li><code>enemy</code>: The trainer whose pokemon is the target of the move.</li>
+</ul></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></b></code>:
+<ul class="hlist">
+<li><code><a title="a2_solution.Action.__repr__" href="#a2_solution.Action.__repr__">__repr__</a></code></li>
+<li><code><a title="a2_solution.Action.__str__" href="#a2_solution.Action.__str__">__str__</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="a2_solution.Attack"><code class="flex name class">
+<span>class <span class="ident">Attack</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A class representing damaging pokemon moves, that may be used against an
+enemy pokemon. </p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>In addition to regular move requirements, attacking moves have a base
+damage and hit chance. </li>
+<li>Base damage is the damage this move would do
+before the pokemon's attack, defense or type effectiveness is accounted
+for. </li>
+<li>Hit chance is a measure of how likely the move is to hit an enemy
+pokemon, before the pokemon's hit chance stat is taken into account.</li>
+<li>The <code>did_succeed</code> method from the support code must be used to
+determine if the attack hit.</li>
+<li>If an attack 'misses' it does no damage to the enemy pokemon.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; tackle = Attack('tackle', 'normal', 15, 100, 40, .95)
+&gt;&gt;&gt; tackle.get_name()
+'tackle'
+&gt;&gt;&gt; tackle.get_element_type()
+'normal'
+&gt;&gt;&gt; tackle.get_max_uses()
+15
+&gt;&gt;&gt; tackle.get_priority()
+101
+&gt;&gt;&gt; str(tackle)
+&quot;Attack('tackle', 'normal', 15)&quot;
+&gt;&gt;&gt; repr(tackle)
+&quot;Attack('tackle', 'normal', 15)&quot;
+</code></pre>
+<p>Creates an instance of an attacking move.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this move</li>
+<li><code>element_type</code>: The name of the type of this move</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
+<li><code>speed</code>: The speed of this move, with lower values corresponding
+to faster moves.</li>
+<li><code>base_damage</code>: The base damage of this move.</li>
+<li><code>hit_chance</code>: The base hit chance of this move.</li>
+</ul></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Move" href="#a2_solution.Move">Move</a></li>
+<li><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.Attack.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, name: str, element_type: str, max_uses: int, speed: int, base_damage: int, hit_chance: float) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates an instance of an attacking move.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this move</li>
+<li><code>element_type</code>: The name of the type of this move</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
+<li><code>speed</code>: The speed of this move, with lower values corresponding
+to faster moves.</li>
+<li><code>base_damage</code>: The base damage of this move.</li>
+<li><code>hit_chance</code>: The base hit chance of this move.</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Attack.did_hit"><code class="name flex">
+<span>def <span class="ident">did_hit</span></span>(<span>self, pokemon: <a title="a2_solution.Pokemon" href="#a2_solution.Pokemon">Pokemon</a>) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determine if the move hit, based on the product of the pokemon's
+current hit chance, and the move's hit chance. Returns True iff it hits.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>pokemon</code>: The attacking pokemon</li>
+</ul></div>
+</dd>
+<dt id="a2_solution.Attack.calculate_damage"><code class="name flex">
+<span>def <span class="ident">calculate_damage</span></span>(<span>self, pokemon: <a title="a2_solution.Pokemon" href="#a2_solution.Pokemon">Pokemon</a>, enemy_pokemon: <a title="a2_solution.Pokemon" href="#a2_solution.Pokemon">Pokemon</a>) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculates what would be the total damage of using this move,
+assuming it hits, based on the stats of the attacking and defending
+pokemon.</p>
+<p>The damage formula is given by:
+<code>d * e * a / (D + 1)</code>, rounded down to the nearest integer,
+where:
+<code>d</code> is the move's base damage;
+<code>e</code> is the move's type effectiveness (see support code);
+<code>a</code> is the attacking pokemon's attack stat;
+<code>D</code> is the defending pokemon's defense stat.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>pokemon</code>: The attacking trainer's pokemon</li>
+<li><code>enemy_pokemon</code>: The defending trainer's pokemon</li>
+</ul></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="a2_solution.Move" href="#a2_solution.Move">Move</a></b></code>:
+<ul class="hlist">
+<li><code><a title="a2_solution.Move.__repr__" href="#a2_solution.Action.__repr__">__repr__</a></code></li>
+<li><code><a title="a2_solution.Move.__str__" href="#a2_solution.Action.__str__">__str__</a></code></li>
+<li><code><a title="a2_solution.Move.apply" href="#a2_solution.Move.apply">apply</a></code></li>
+<li><code><a title="a2_solution.Move.apply_ally_effects" href="#a2_solution.Move.apply_ally_effects">apply_ally_effects</a></code></li>
+<li><code><a title="a2_solution.Move.apply_enemy_effects" href="#a2_solution.Move.apply_enemy_effects">apply_enemy_effects</a></code></li>
+<li><code><a title="a2_solution.Move.get_element_type" href="#a2_solution.Move.get_element_type">get_element_type</a></code></li>
+<li><code><a title="a2_solution.Move.get_max_uses" href="#a2_solution.Move.get_max_uses">get_max_uses</a></code></li>
+<li><code><a title="a2_solution.Move.get_name" href="#a2_solution.Move.get_name">get_name</a></code></li>
+<li><code><a title="a2_solution.Move.get_priority" href="#a2_solution.Move.get_priority">get_priority</a></code></li>
+<li><code><a title="a2_solution.Move.is_valid" href="#a2_solution.Move.is_valid">is_valid</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="a2_solution.StatusModifier"><code class="flex name class">
+<span>class <span class="ident">StatusModifier</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>An abstract class to group commonalities between buffs and debuffs.</p>
+<p>Creates an instance of this class</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this move</li>
+<li><code>element_type</code>: The name of the type of this move</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
+<li><code>speed</code>: The speed of this move, with lower values corresponding
+to faster moves.</li>
+<li><code>modification</code>: A list of the same structure as
+the <code><a title="a2_solution.PokemonStats" href="#a2_solution.PokemonStats">PokemonStats</a></code>, to be applied for the duration of the
+supplied number of rounds.</li>
+<li><code>rounds</code>: The number of rounds for the modification
+to be in effect.</li>
+</ul></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Move" href="#a2_solution.Move">Move</a></li>
+<li><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Buff" href="#a2_solution.Buff">Buff</a></li>
+<li><a title="a2_solution.Debuff" href="#a2_solution.Debuff">Debuff</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.StatusModifier.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, name: str, element_type: str, max_uses: int, speed: int, modification: Tuple[float, int, int, int], rounds: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates an instance of this class</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this move</li>
+<li><code>element_type</code>: The name of the type of this move</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
+<li><code>speed</code>: The speed of this move, with lower values corresponding
+to faster moves.</li>
+<li><code>modification</code>: A list of the same structure as
+the <code><a title="a2_solution.PokemonStats" href="#a2_solution.PokemonStats">PokemonStats</a></code>, to be applied for the duration of the
+supplied number of rounds.</li>
+<li><code>rounds</code>: The number of rounds for the modification
+to be in effect.</li>
+</ul></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="a2_solution.Move" href="#a2_solution.Move">Move</a></b></code>:
+<ul class="hlist">
+<li><code><a title="a2_solution.Move.__repr__" href="#a2_solution.Action.__repr__">__repr__</a></code></li>
+<li><code><a title="a2_solution.Move.__str__" href="#a2_solution.Action.__str__">__str__</a></code></li>
+<li><code><a title="a2_solution.Move.apply" href="#a2_solution.Move.apply">apply</a></code></li>
+<li><code><a title="a2_solution.Move.apply_ally_effects" href="#a2_solution.Move.apply_ally_effects">apply_ally_effects</a></code></li>
+<li><code><a title="a2_solution.Move.apply_enemy_effects" href="#a2_solution.Move.apply_enemy_effects">apply_enemy_effects</a></code></li>
+<li><code><a title="a2_solution.Move.get_element_type" href="#a2_solution.Move.get_element_type">get_element_type</a></code></li>
+<li><code><a title="a2_solution.Move.get_max_uses" href="#a2_solution.Move.get_max_uses">get_max_uses</a></code></li>
+<li><code><a title="a2_solution.Move.get_name" href="#a2_solution.Move.get_name">get_name</a></code></li>
+<li><code><a title="a2_solution.Move.get_priority" href="#a2_solution.Move.get_priority">get_priority</a></code></li>
+<li><code><a title="a2_solution.Move.is_valid" href="#a2_solution.Move.is_valid">is_valid</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="a2_solution.Buff"><code class="flex name class">
+<span>class <span class="ident">Buff</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Moves which buff the trainer's selected pokemon.</p>
+<p>A buff is a stat modifier that is applied to the pokemon using the move.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; modifier = (0.2, 100, 100, 100)
+&gt;&gt;&gt; meditate = Buff('meditate', 'psychic', 5, 80, modifier, 5)
+&gt;&gt;&gt; meditate.get_name()
+'meditate'
+&gt;&gt;&gt; meditate.get_element_type()
+'psychic'
+&gt;&gt;&gt; meditate.get_max_uses()
+5
+&gt;&gt;&gt; meditate.get_priority()
+81
+&gt;&gt;&gt; str(meditate)
+&quot;Buff('meditate', 'psychic', 5)&quot;
+&gt;&gt;&gt; repr(meditate)
+&quot;Buff('meditate', 'psychic', 5)&quot;
+</code></pre>
+<p>Creates an instance of this class</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this move</li>
+<li><code>element_type</code>: The name of the type of this move</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
+<li><code>speed</code>: The speed of this move, with lower values corresponding
+to faster moves.</li>
+<li><code>modification</code>: A list of the same structure as
+the <code><a title="a2_solution.PokemonStats" href="#a2_solution.PokemonStats">PokemonStats</a></code>, to be applied for the duration of the
+supplied number of rounds.</li>
+<li><code>rounds</code>: The number of rounds for the modification
+to be in effect.</li>
+</ul></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="a2_solution.StatusModifier" href="#a2_solution.StatusModifier">StatusModifier</a></li>
+<li><a title="a2_solution.Move" href="#a2_solution.Move">Move</a></li>
+<li><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="a2_solution.StatusModifier" href="#a2_solution.StatusModifier">StatusModifier</a></b></code>:
+<ul class="hlist">
+<li><code><a title="a2_solution.StatusModifier.__init__" href="#a2_solution.StatusModifier.__init__">__init__</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.__repr__" href="#a2_solution.Action.__repr__">__repr__</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.__str__" href="#a2_solution.Action.__str__">__str__</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.apply" href="#a2_solution.Move.apply">apply</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.apply_ally_effects" href="#a2_solution.Move.apply_ally_effects">apply_ally_effects</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.apply_enemy_effects" href="#a2_solution.Move.apply_enemy_effects">apply_enemy_effects</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.get_element_type" href="#a2_solution.Move.get_element_type">get_element_type</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.get_max_uses" href="#a2_solution.Move.get_max_uses">get_max_uses</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.get_name" href="#a2_solution.Move.get_name">get_name</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.get_priority" href="#a2_solution.Move.get_priority">get_priority</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.is_valid" href="#a2_solution.Move.is_valid">is_valid</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="a2_solution.Debuff"><code class="flex name class">
+<span>class <span class="ident">Debuff</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Moves which debuff the enemy trainer's selected pokemon.</p>
+<p>A debuff is a stat modifier that is applied to the enemy pokemon which is
+the target of this move.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; modifier = (0, -50, 0, -50)
+&gt;&gt;&gt; toxic = Debuff('toxic', 'poison', 10, 70, modifier, 4)
+&gt;&gt;&gt; toxic.get_name()
+'toxic'
+&gt;&gt;&gt; toxic.get_element_type()
+'poison'
+&gt;&gt;&gt; toxic.get_max_uses()
+10
+&gt;&gt;&gt; toxic.get_priority()
+71
+&gt;&gt;&gt; str(toxic)
+&quot;Debuff('toxic', 'poison', 10)&quot;
+&gt;&gt;&gt; repr(toxic)
+&quot;Debuff('toxic', 'poison', 10)&quot;
+</code></pre>
+<p>Creates an instance of this class</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>name</code>: The name of this move</li>
+<li><code>element_type</code>: The name of the type of this move</li>
+<li><code>max_uses</code>: The number of time this move can be used before resting</li>
+<li><code>speed</code>: The speed of this move, with lower values corresponding
+to faster moves.</li>
+<li><code>modification</code>: A list of the same structure as
+the <code><a title="a2_solution.PokemonStats" href="#a2_solution.PokemonStats">PokemonStats</a></code>, to be applied for the duration of the
+supplied number of rounds.</li>
+<li><code>rounds</code>: The number of rounds for the modification
+to be in effect.</li>
+</ul></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="a2_solution.StatusModifier" href="#a2_solution.StatusModifier">StatusModifier</a></li>
+<li><a title="a2_solution.Move" href="#a2_solution.Move">Move</a></li>
+<li><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="a2_solution.StatusModifier" href="#a2_solution.StatusModifier">StatusModifier</a></b></code>:
+<ul class="hlist">
+<li><code><a title="a2_solution.StatusModifier.__init__" href="#a2_solution.StatusModifier.__init__">__init__</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.__repr__" href="#a2_solution.Action.__repr__">__repr__</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.__str__" href="#a2_solution.Action.__str__">__str__</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.apply" href="#a2_solution.Move.apply">apply</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.apply_ally_effects" href="#a2_solution.Move.apply_ally_effects">apply_ally_effects</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.apply_enemy_effects" href="#a2_solution.Move.apply_enemy_effects">apply_enemy_effects</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.get_element_type" href="#a2_solution.Move.get_element_type">get_element_type</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.get_max_uses" href="#a2_solution.Move.get_max_uses">get_max_uses</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.get_name" href="#a2_solution.Move.get_name">get_name</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.get_priority" href="#a2_solution.Move.get_priority">get_priority</a></code></li>
+<li><code><a title="a2_solution.StatusModifier.is_valid" href="#a2_solution.Move.is_valid">is_valid</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="a2_solution.Strategy"><code class="flex name class">
+<span>class <span class="ident">Strategy</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>An abstract class providing behaviour to determine a next action given a battle state.</p></div>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="a2_solution.ScaredyCat" href="#a2_solution.ScaredyCat">ScaredyCat</a></li>
+<li><a title="a2_solution.TeamRocket" href="#a2_solution.TeamRocket">TeamRocket</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="a2_solution.Strategy.get_next_action"><code class="name flex">
+<span>def <span class="ident">get_next_action</span></span>(<span>self, battle: <a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a>, is_player: bool) ‑> <a title="a2_solution.Action" href="#a2_solution.Action">Action</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determines and returns the next action for this strategy, given
+the battle state and trainer.</p>
+<p>This method should be overriden on subclasses.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><code>battle</code>: The ongoing pokemon battle</li>
+<li><code>is_player</code>: True iff the player is using this action.</li>
+</ul></div>
+</dd>
+</dl>
+</dd>
+<dt id="a2_solution.ScaredyCat"><code class="flex name class">
+<span>class <span class="ident">ScaredyCat</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>(7030 Task) A strategy where the trainer always attempts to flee.</p>
+<p>Switches to the next available pokemon if the current one faints, and
+then keeps attempting to flee.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Strategy" href="#a2_solution.Strategy">Strategy</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="a2_solution.Strategy" href="#a2_solution.Strategy">Strategy</a></b></code>:
+<ul class="hlist">
+<li><code><a title="a2_solution.Strategy.get_next_action" href="#a2_solution.Strategy.get_next_action">get_next_action</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="a2_solution.TeamRocket"><code class="flex name class">
+<span>class <span class="ident">TeamRocket</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>(7030 Task) A tough strategy used by Pokemon Trainers that are members
+of Team Rocket.</p>
+<h2 id="behaviour">Behaviour</h2>
+<ol>
+<li>Switch to the next available pokemon if the current one faints.</li>
+<li>Attempt to flee any wild battle.</li>
+<li>If the enemy trainer's current pokemon's name is 'pikachu', throw
+pokeballs at it, if some exist in the inventory.</li>
+<li>Otherwise, use the first available move with an elemental type
+effectiveness greater than 1x against the defending pokemon's type.</li>
+<li>Otherwise, use the first available move with uses.</li>
+<li>Attempt to flee if the current pokemon has no moves with uses.</li>
+</ol></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="a2_solution.Strategy" href="#a2_solution.Strategy">Strategy</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="a2_solution.Strategy" href="#a2_solution.Strategy">Strategy</a></b></code>:
+<ul class="hlist">
+<li><code><a title="a2_solution.Strategy.get_next_action" href="#a2_solution.Strategy.get_next_action">get_next_action</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="a2_solution.create_encounter" href="#a2_solution.create_encounter">create_encounter</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="a2_solution.PokemonStats" href="#a2_solution.PokemonStats">PokemonStats</a></code></h4>
+<ul class="two-column">
+<li><code><a title="a2_solution.PokemonStats.__init__" href="#a2_solution.PokemonStats.__init__">__init__</a></code></li>
+<li><code><a title="a2_solution.PokemonStats.level_up" href="#a2_solution.PokemonStats.level_up">level_up</a></code></li>
+<li><code><a title="a2_solution.PokemonStats.get_hit_chance" href="#a2_solution.PokemonStats.get_hit_chance">get_hit_chance</a></code></li>
+<li><code><a title="a2_solution.PokemonStats.get_max_health" href="#a2_solution.PokemonStats.get_max_health">get_max_health</a></code></li>
+<li><code><a title="a2_solution.PokemonStats.get_attack" href="#a2_solution.PokemonStats.get_attack">get_attack</a></code></li>
+<li><code><a title="a2_solution.PokemonStats.get_defense" href="#a2_solution.PokemonStats.get_defense">get_defense</a></code></li>
+<li><code><a title="a2_solution.PokemonStats.apply_modifier" href="#a2_solution.PokemonStats.apply_modifier">apply_modifier</a></code></li>
+<li><code><a title="a2_solution.PokemonStats.__str__" href="#a2_solution.PokemonStats.__str__">__str__</a></code></li>
+<li><code><a title="a2_solution.PokemonStats.__repr__" href="#a2_solution.PokemonStats.__repr__">__repr__</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.Pokemon" href="#a2_solution.Pokemon">Pokemon</a></code></h4>
+<ul class="">
+<li><code><a title="a2_solution.Pokemon.__init__" href="#a2_solution.Pokemon.__init__">__init__</a></code></li>
+<li><code><a title="a2_solution.Pokemon.get_name" href="#a2_solution.Pokemon.get_name">get_name</a></code></li>
+<li><code><a title="a2_solution.Pokemon.get_health" href="#a2_solution.Pokemon.get_health">get_health</a></code></li>
+<li><code><a title="a2_solution.Pokemon.get_max_health" href="#a2_solution.Pokemon.get_max_health">get_max_health</a></code></li>
+<li><code><a title="a2_solution.Pokemon.get_element_type" href="#a2_solution.Pokemon.get_element_type">get_element_type</a></code></li>
+<li><code><a title="a2_solution.Pokemon.get_remaining_move_uses" href="#a2_solution.Pokemon.get_remaining_move_uses">get_remaining_move_uses</a></code></li>
+<li><code><a title="a2_solution.Pokemon.get_level" href="#a2_solution.Pokemon.get_level">get_level</a></code></li>
+<li><code><a title="a2_solution.Pokemon.get_experience" href="#a2_solution.Pokemon.get_experience">get_experience</a></code></li>
+<li><code><a title="a2_solution.Pokemon.get_next_level_experience_requirement" href="#a2_solution.Pokemon.get_next_level_experience_requirement">get_next_level_experience_requirement</a></code></li>
+<li><code><a title="a2_solution.Pokemon.get_move_info" href="#a2_solution.Pokemon.get_move_info">get_move_info</a></code></li>
+<li><code><a title="a2_solution.Pokemon.has_fainted" href="#a2_solution.Pokemon.has_fainted">has_fainted</a></code></li>
+<li><code><a title="a2_solution.Pokemon.modify_health" href="#a2_solution.Pokemon.modify_health">modify_health</a></code></li>
+<li><code><a title="a2_solution.Pokemon.gain_experience" href="#a2_solution.Pokemon.gain_experience">gain_experience</a></code></li>
+<li><code><a title="a2_solution.Pokemon.level_up" href="#a2_solution.Pokemon.level_up">level_up</a></code></li>
+<li><code><a title="a2_solution.Pokemon.experience_on_death" href="#a2_solution.Pokemon.experience_on_death">experience_on_death</a></code></li>
+<li><code><a title="a2_solution.Pokemon.can_learn_move" href="#a2_solution.Pokemon.can_learn_move">can_learn_move</a></code></li>
+<li><code><a title="a2_solution.Pokemon.learn_move" href="#a2_solution.Pokemon.learn_move">learn_move</a></code></li>
+<li><code><a title="a2_solution.Pokemon.forget_move" href="#a2_solution.Pokemon.forget_move">forget_move</a></code></li>
+<li><code><a title="a2_solution.Pokemon.has_moves_left" href="#a2_solution.Pokemon.has_moves_left">has_moves_left</a></code></li>
+<li><code><a title="a2_solution.Pokemon.reduce_move_count" href="#a2_solution.Pokemon.reduce_move_count">reduce_move_count</a></code></li>
+<li><code><a title="a2_solution.Pokemon.add_stat_modifier" href="#a2_solution.Pokemon.add_stat_modifier">add_stat_modifier</a></code></li>
+<li><code><a title="a2_solution.Pokemon.get_stats" href="#a2_solution.Pokemon.get_stats">get_stats</a></code></li>
+<li><code><a title="a2_solution.Pokemon.post_round_actions" href="#a2_solution.Pokemon.post_round_actions">post_round_actions</a></code></li>
+<li><code><a title="a2_solution.Pokemon.rest" href="#a2_solution.Pokemon.rest">rest</a></code></li>
+<li><code><a title="a2_solution.Pokemon.__str__" href="#a2_solution.Pokemon.__str__">__str__</a></code></li>
+<li><code><a title="a2_solution.Pokemon.__repr__" href="#a2_solution.Pokemon.__repr__">__repr__</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.Trainer" href="#a2_solution.Trainer">Trainer</a></code></h4>
+<ul class="two-column">
+<li><code><a title="a2_solution.Trainer.__init__" href="#a2_solution.Trainer.__init__">__init__</a></code></li>
+<li><code><a title="a2_solution.Trainer.get_name" href="#a2_solution.Trainer.get_name">get_name</a></code></li>
+<li><code><a title="a2_solution.Trainer.get_inventory" href="#a2_solution.Trainer.get_inventory">get_inventory</a></code></li>
+<li><code><a title="a2_solution.Trainer.get_current_pokemon" href="#a2_solution.Trainer.get_current_pokemon">get_current_pokemon</a></code></li>
+<li><code><a title="a2_solution.Trainer.get_all_pokemon" href="#a2_solution.Trainer.get_all_pokemon">get_all_pokemon</a></code></li>
+<li><code><a title="a2_solution.Trainer.rest_all_pokemon" href="#a2_solution.Trainer.rest_all_pokemon">rest_all_pokemon</a></code></li>
+<li><code><a title="a2_solution.Trainer.all_pokemon_fainted" href="#a2_solution.Trainer.all_pokemon_fainted">all_pokemon_fainted</a></code></li>
+<li><code><a title="a2_solution.Trainer.can_add_pokemon" href="#a2_solution.Trainer.can_add_pokemon">can_add_pokemon</a></code></li>
+<li><code><a title="a2_solution.Trainer.add_pokemon" href="#a2_solution.Trainer.add_pokemon">add_pokemon</a></code></li>
+<li><code><a title="a2_solution.Trainer.can_switch_pokemon" href="#a2_solution.Trainer.can_switch_pokemon">can_switch_pokemon</a></code></li>
+<li><code><a title="a2_solution.Trainer.switch_pokemon" href="#a2_solution.Trainer.switch_pokemon">switch_pokemon</a></code></li>
+<li><code><a title="a2_solution.Trainer.add_item" href="#a2_solution.Trainer.add_item">add_item</a></code></li>
+<li><code><a title="a2_solution.Trainer.has_item" href="#a2_solution.Trainer.has_item">has_item</a></code></li>
+<li><code><a title="a2_solution.Trainer.use_item" href="#a2_solution.Trainer.use_item">use_item</a></code></li>
+<li><code><a title="a2_solution.Trainer.__str__" href="#a2_solution.Trainer.__str__">__str__</a></code></li>
+<li><code><a title="a2_solution.Trainer.__repr__" href="#a2_solution.Trainer.__repr__">__repr__</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.Battle" href="#a2_solution.Battle">Battle</a></code></h4>
+<ul class="">
+<li><code><a title="a2_solution.Battle.__init__" href="#a2_solution.Battle.__init__">__init__</a></code></li>
+<li><code><a title="a2_solution.Battle.get_turn" href="#a2_solution.Battle.get_turn">get_turn</a></code></li>
+<li><code><a title="a2_solution.Battle.get_trainer" href="#a2_solution.Battle.get_trainer">get_trainer</a></code></li>
+<li><code><a title="a2_solution.Battle.attempt_end_early" href="#a2_solution.Battle.attempt_end_early">attempt_end_early</a></code></li>
+<li><code><a title="a2_solution.Battle.is_trainer_battle" href="#a2_solution.Battle.is_trainer_battle">is_trainer_battle</a></code></li>
+<li><code><a title="a2_solution.Battle.is_action_queue_full" href="#a2_solution.Battle.is_action_queue_full">is_action_queue_full</a></code></li>
+<li><code><a title="a2_solution.Battle.is_action_queue_empty" href="#a2_solution.Battle.is_action_queue_empty">is_action_queue_empty</a></code></li>
+<li><code><a title="a2_solution.Battle.trainer_has_action_queued" href="#a2_solution.Battle.trainer_has_action_queued">trainer_has_action_queued</a></code></li>
+<li><code><a title="a2_solution.Battle.is_ready" href="#a2_solution.Battle.is_ready">is_ready</a></code></li>
+<li><code><a title="a2_solution.Battle.queue_action" href="#a2_solution.Battle.queue_action">queue_action</a></code></li>
+<li><code><a title="a2_solution.Battle.enact_turn" href="#a2_solution.Battle.enact_turn">enact_turn</a></code></li>
+<li><code><a title="a2_solution.Battle.is_over" href="#a2_solution.Battle.is_over">is_over</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.ActionSummary" href="#a2_solution.ActionSummary">ActionSummary</a></code></h4>
+<ul class="">
+<li><code><a title="a2_solution.ActionSummary.__init__" href="#a2_solution.ActionSummary.__init__">__init__</a></code></li>
+<li><code><a title="a2_solution.ActionSummary.get_messages" href="#a2_solution.ActionSummary.get_messages">get_messages</a></code></li>
+<li><code><a title="a2_solution.ActionSummary.add_message" href="#a2_solution.ActionSummary.add_message">add_message</a></code></li>
+<li><code><a title="a2_solution.ActionSummary.combine" href="#a2_solution.ActionSummary.combine">combine</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.Action" href="#a2_solution.Action">Action</a></code></h4>
+<ul class="">
+<li><code><a title="a2_solution.Action.get_priority" href="#a2_solution.Action.get_priority">get_priority</a></code></li>
+<li><code><a title="a2_solution.Action.is_valid" href="#a2_solution.Action.is_valid">is_valid</a></code></li>
+<li><code><a title="a2_solution.Action.apply" href="#a2_solution.Action.apply">apply</a></code></li>
+<li><code><a title="a2_solution.Action.__str__" href="#a2_solution.Action.__str__">__str__</a></code></li>
+<li><code><a title="a2_solution.Action.__repr__" href="#a2_solution.Action.__repr__">__repr__</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.Flee" href="#a2_solution.Flee">Flee</a></code></h4>
+<ul class="">
+<li><code><a title="a2_solution.Flee.is_valid" href="#a2_solution.Flee.is_valid">is_valid</a></code></li>
+<li><code><a title="a2_solution.Flee.apply" href="#a2_solution.Flee.apply">apply</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.SwitchPokemon" href="#a2_solution.SwitchPokemon">SwitchPokemon</a></code></h4>
+<ul class="">
+<li><code><a title="a2_solution.SwitchPokemon.__init__" href="#a2_solution.SwitchPokemon.__init__">__init__</a></code></li>
+<li><code><a title="a2_solution.SwitchPokemon.is_valid" href="#a2_solution.SwitchPokemon.is_valid">is_valid</a></code></li>
+<li><code><a title="a2_solution.SwitchPokemon.apply" href="#a2_solution.SwitchPokemon.apply">apply</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.Item" href="#a2_solution.Item">Item</a></code></h4>
+<ul class="">
+<li><code><a title="a2_solution.Item.__init__" href="#a2_solution.Item.__init__">__init__</a></code></li>
+<li><code><a title="a2_solution.Item.get_name" href="#a2_solution.Item.get_name">get_name</a></code></li>
+<li><code><a title="a2_solution.Item.is_valid" href="#a2_solution.Item.is_valid">is_valid</a></code></li>
+<li><code><a title="a2_solution.Item.decrement_item_count" href="#a2_solution.Item.decrement_item_count">decrement_item_count</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.Pokeball" href="#a2_solution.Pokeball">Pokeball</a></code></h4>
+<ul class="">
+<li><code><a title="a2_solution.Pokeball.__init__" href="#a2_solution.Pokeball.__init__">__init__</a></code></li>
+<li><code><a title="a2_solution.Pokeball.apply" href="#a2_solution.Pokeball.apply">apply</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.Food" href="#a2_solution.Food">Food</a></code></h4>
+<ul class="">
+<li><code><a title="a2_solution.Food.__init__" href="#a2_solution.Food.__init__">__init__</a></code></li>
+<li><code><a title="a2_solution.Food.apply" href="#a2_solution.Food.apply">apply</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.Move" href="#a2_solution.Move">Move</a></code></h4>
+<ul class="two-column">
+<li><code><a title="a2_solution.Move.__init__" href="#a2_solution.Move.__init__">__init__</a></code></li>
+<li><code><a title="a2_solution.Move.get_name" href="#a2_solution.Move.get_name">get_name</a></code></li>
+<li><code><a title="a2_solution.Move.get_element_type" href="#a2_solution.Move.get_element_type">get_element_type</a></code></li>
+<li><code><a title="a2_solution.Move.get_max_uses" href="#a2_solution.Move.get_max_uses">get_max_uses</a></code></li>
+<li><code><a title="a2_solution.Move.get_priority" href="#a2_solution.Move.get_priority">get_priority</a></code></li>
+<li><code><a title="a2_solution.Move.is_valid" href="#a2_solution.Move.is_valid">is_valid</a></code></li>
+<li><code><a title="a2_solution.Move.apply" href="#a2_solution.Move.apply">apply</a></code></li>
+<li><code><a title="a2_solution.Move.apply_ally_effects" href="#a2_solution.Move.apply_ally_effects">apply_ally_effects</a></code></li>
+<li><code><a title="a2_solution.Move.apply_enemy_effects" href="#a2_solution.Move.apply_enemy_effects">apply_enemy_effects</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.Attack" href="#a2_solution.Attack">Attack</a></code></h4>
+<ul class="">
+<li><code><a title="a2_solution.Attack.__init__" href="#a2_solution.Attack.__init__">__init__</a></code></li>
+<li><code><a title="a2_solution.Attack.did_hit" href="#a2_solution.Attack.did_hit">did_hit</a></code></li>
+<li><code><a title="a2_solution.Attack.calculate_damage" href="#a2_solution.Attack.calculate_damage">calculate_damage</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.StatusModifier" href="#a2_solution.StatusModifier">StatusModifier</a></code></h4>
+<ul class="">
+<li><code><a title="a2_solution.StatusModifier.__init__" href="#a2_solution.StatusModifier.__init__">__init__</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.Buff" href="#a2_solution.Buff">Buff</a></code></h4>
+</li>
+<li>
+<h4><code><a title="a2_solution.Debuff" href="#a2_solution.Debuff">Debuff</a></code></h4>
+</li>
+<li>
+<h4><code><a title="a2_solution.Strategy" href="#a2_solution.Strategy">Strategy</a></code></h4>
+<ul class="">
+<li><code><a title="a2_solution.Strategy.get_next_action" href="#a2_solution.Strategy.get_next_action">get_next_action</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="a2_solution.ScaredyCat" href="#a2_solution.ScaredyCat">ScaredyCat</a></code></h4>
+</li>
+<li>
+<h4><code><a title="a2_solution.TeamRocket" href="#a2_solution.TeamRocket">TeamRocket</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

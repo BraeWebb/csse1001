@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Functional Decomposition</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/tutorials/functional-decomposition.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <h1 id="functional-decomposition">Functional Decomposition</h1>
+
+<h4 id="leap-years">Leap Years</h4>
+
+<p>Convert the leap year program you wrote in week 2 to a function. The function should take a single integer parameter representing a year (e.g. 2018), and return: <code class="highlighter-rouge">True</code> if the year is a leap year, and <code class="highlighter-rouge">False</code> if not.</p>
+
+<p>Write a docstring comment for your function that explains how it is to be used.</p>
+
+<p>As a reminder, a leap year occurs when the year is a multiple of four, unless the year is a multiple of 100. However, if the year is a multiple of 400, then it is a leap year. For instance, 2016 and 2000 are leap years, but 2100 is not.</p>
+
+<h4 id="turtle-logic">Turtle Logic</h4>
+
+<p>In this task, we will use the <code class="highlighter-rouge">turtle</code> graphics module for drawing basic shapes, by moving a ‘turtle’ across the screen, drawing a path as it travels. We can use the turtle functionality if we put the line <code class="highlighter-rouge">import turtle</code> at the top of our file. The turtle module contains many functions, we will use the following:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">turtle.forward(distance)</code> moves the turtle forward by a given distance.</li>
+  <li><code class="highlighter-rouge">turtle.back(distance)</code> moves the turtle backwards.</li>
+  <li><code class="highlighter-rouge">turtle.left(angle)</code> turns the turtle left by <code class="highlighter-rouge">angle</code> degrees.</li>
+  <li><code class="highlighter-rouge">turtle.right(angle)</code> turns the turtle right.</li>
+  <li><code class="highlighter-rouge">turtle.setheading(angle)</code> sets the turtle’s direction in degrees (0 is east, 90 is north, 180 is west, 270 is south).</li>
+  <li><code class="highlighter-rouge">turtle.reset()</code> removes all drawings and moves the turtle back to its original position and orientation.</li>
+  <li><code class="highlighter-rouge">turtle.exitonclick()</code> sets the window to close when clicked.</li>
+  <li><code class="highlighter-rouge">turtle.bye()</code> closes the window. Clicking the close icon on the window may not work.</li>
+</ul>
+
+<div class="important">
+
+  <p><strong>Note</strong>: See <a href="https://docs.python.org/3.6/library/turtle.html">https://docs.python.org/3.6/library/turtle.html</a> for a more complete description of the <code class="highlighter-rouge">turtle</code> module.</p>
+
+</div>
+
+<p>The turtle begins facing ‘east’ (i.e. to the right). For example, the following code produces the image below.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">turtle</span>
+
+<span class="k">def</span> <span class="nf">demo</span><span class="p">()</span> <span class="p">:</span>
+    <span class="s">"""Turtle demo."""</span>
+    <span class="n">turtle</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">turtle</span><span class="o">.</span><span class="n">left</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span>
+    <span class="n">turtle</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+    <span class="n">turtle</span><span class="o">.</span><span class="n">right</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+    <span class="n">turtle</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+    <span class="n">turtle</span><span class="o">.</span><span class="n">exitonclick</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span> <span class="p">:</span>
+    <span class="n">demo</span><span class="p">()</span>
+</code></pre></div>  </div>
+
+</div>
+
+<p><img src="images/_02/turtle_1.png" alt="" /></p>
+
+<p>Create a file which contains the following functions. NOTE:</p>
+<ul>
+  <li>Put the line <code class="highlighter-rouge">import turtle</code> at the top of your code.</li>
+  <li>DO NOT save your file as <code class="highlighter-rouge">turtle.py</code>, this will cause the import to fail. Choose a different file name, but make sure you add the <code class="highlighter-rouge">.py</code>. If you do save your file as turtle.py, you must delete or rename your file.</li>
+  <li>Be sure to call <code class="highlighter-rouge">turtle.exitonclick()</code> after drawing, either by putting at the end of your main function or manually running it through IDLE (otherwise, the turtle window will crash when running in IDLE).</li>
+</ul>
+
+<ol>
+  <li>
+    <p><code class="highlighter-rouge">rectangle(width, height)</code>, which draws a rectangle with the given side lengths. Ensure that the cursor finishes pointing east.</p>
+
+    <p><img src="images/_02/turtle_2.png" alt="" /></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">rotated_rectangle(width, height, angle)</code>, which draws a rectangle rotated anticlockwise by the given angle. Ensure that the cursor finishes pointing east.</p>
+
+    <p><img src="images/_02/turtle_3.png" alt="" /></p>
+
+    <p><strong>Hint</strong>: This can be done in only four lines of code, including the <code class="highlighter-rouge">def ...</code>, and not including the function comment.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">polygon(radius, num_sides)</code>, which draws a regular polygon with n sides, and side length <code class="highlighter-rouge">radius * sin(π / num_sides)</code>.</p>
+
+    <p><img src="images/_02/turtle_4.png" alt="" /></p>
+
+    <p><strong>Hint</strong>: If the turtle moves anti-clockwise, it will turn a total of 360°, in <code class="highlighter-rouge">n</code> equal movements. The <code class="highlighter-rouge">math</code> module contains trigonometric functions and mathematical constants. Remember to <code class="highlighter-rouge">import math</code>.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">interact()</code>, which first asks the user for a distance, then repeatedly asks for a direction to move, from the options <code class="highlighter-rouge">n/s/e/w</code> (north/south/east/west respectively), and then moves in that direction by the given distance. If the user enters <code class="highlighter-rouge">q</code>, the turtle window closes and the function ends. If the user enters any other input, an error message is printed, as in the example.</p>
+
+    <p><img src="images/_02/turtle_5.png" alt="" /></p>
+  </li>
+</ol>
+
+<div class="extra">
+
+  <p><strong>Challenge: Square Spirals</strong>
+Write a function <code class="highlighter-rouge">spiral(num_lines, step_size)</code>, which draws a square spiral with <code class="highlighter-rouge">num_lines</code> lines, which starting from the centre have length <code class="highlighter-rouge">s, s, 2s, 2s, 3s, 3s, …,</code> where <code class="highlighter-rouge">s = step_size</code> (note that this is also the distance between two adjacent parallel lines). The example below shows a spiral of 20 lines, which makes five full revolutions, with a step size of 20.</p>
+
+  <p><img src="images/_02/turtle_6.png" alt="" /></p>
+
+</div>
+
+    </div>
+</body>
+
+</html>

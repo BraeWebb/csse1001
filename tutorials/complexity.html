@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Complexity</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/tutorials/complexity.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <h1 id="complexity">Complexity</h1>
+
+<h2 id="student-evaluation-of-tutors">Student Evaluation of Tutors</h2>
+<p>UQ and ITEE takes pride in the quality of its teaching staff and encourages you to provide constructive feedback of the course tutors through the SETutor survey process.</p>
+
+<p>Take the first five minutes of this tutorial to complete the survey for the tutor(s) with whom you have had the most contact this semester. The survey links are available on BlackBoard, in the Administrative Items folder under Learning Resources.</p>
+
+<h2 id="uniqify">Uniqify</h2>
+<p>For this task, we want to write a function which removes duplicates from a list, analyse the computational complexity of the function, and then improve it.</p>
+<ol>
+  <li>
+    <p>Write a function <code class="highlighter-rouge">uniqify(items)</code> which takes a list, and returns a list containing each element of <code class="highlighter-rouge">items</code> without any duplicates of the elements in <code class="highlighter-rouge">items</code>. For example:</p>
+
+    <div class="viz">
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">uniqify</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</code></pre></div>      </div>
+    </div>
+
+    <p>Now, suppose that <code class="highlighter-rouge">items</code> has length <code class="highlighter-rouge">n</code>. Approximate the number of ‘steps’ of computation the function requires to finish (in terms of <code class="highlighter-rouge">n</code>). Express your final answer as a computational complexity class (constant / logarithmic / linear / quadratic / exponential).</p>
+  </li>
+  <li>
+    <p>Discuss how the complexity could be improved if the <code class="highlighter-rouge">items</code> list was sorted to begin with. Write a function <code class="highlighter-rouge">uniqify2</code> which removes duplicates from a list, by first sorting the list.</p>
+
+    <p><strong>Note</strong>: the order of elements in the output list is unimportant, as long as each appears only once.</p>
+
+    <p><strong>Hint</strong>: <code class="highlighter-rouge">sorted(items)</code> will give a copy of <code class="highlighter-rouge">items</code> in sorted order, without modifying the original list. It runs in <script type="math/tex">O(n log⁡(n))</script> time.</p>
+
+    <div class="viz">
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">uniqify2</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+</code></pre></div>      </div>
+    </div>
+
+    <p>Then, repeat the same analysis as above to determine the computational complexity of <code class="highlighter-rouge">uniqify2</code>, in terms of the length of the input list <code class="highlighter-rouge">n</code>.</p>
+  </li>
+  <li>
+    <p>In this course, we have already encountered a data type which contains a notion of <em>uniqueness</em>. Discuss how to use this to write a function <code class="highlighter-rouge">uniqify3</code> which does the same task, with a better time complexity. Then, write such a function, and determine its complexity.</p>
+  </li>
+  <li>
+    <p>Is it possible to solve this task with a faster time complexity than in <code class="highlighter-rouge">uniqify3</code>? Justify your answer.</p>
+  </li>
+</ol>
+
+<p>The following code snippet will run the three <code class="highlighter-rouge">uniqify</code> functions multiple times on a large input, and measure the running time. Copy and paste the code into the source file containing the three function definitions, and run it. It may take a few minutes to finish, so move on to the next task while you are waiting.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">timeit</span>
+
+<span class="k">for</span> <span class="n">func</span><span class="p">,</span> <span class="n">number</span> <span class="ow">in</span> <span class="p">[(</span><span class="s">'uniqify3'</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="p">(</span><span class="s">'uniqify2'</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="p">(</span><span class="s">'uniqify'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span> <span class="o">+</span> <span class="n">func</span> <span class="o">+</span> <span class="s">':'</span><span class="p">)</span>
+    <span class="n">old</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">for</span> <span class="n">N</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">8000</span><span class="p">,</span> <span class="mi">16000</span><span class="p">,</span> <span class="mi">32000</span><span class="p">,</span> <span class="mi">64000</span><span class="p">]</span> <span class="p">:</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">func</span> <span class="o">+</span> <span class="s">'(range(N))'</span><span class="p">,</span>
+			        <span class="s">'from __main__ import N,'</span> <span class="o">+</span> <span class="n">func</span><span class="p">,</span>
+			        <span class="n">number</span><span class="o">=</span><span class="n">number</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">/</span> <span class="n">number</span>
+        <span class="k">print</span> <span class="p">(</span><span class="s">'n = {:&gt;5}: {:.4f} ms'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span> <span class="o">+</span>
+               <span class="p">(</span><span class="s">''</span> <span class="k">if</span> <span class="n">old</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="s">' = {:.2f} times slower'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">time</span><span class="o">/</span><span class="n">old</span><span class="p">)))</span>
+        <span class="n">old</span> <span class="o">=</span> <span class="n">time</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="aside">
+
+  <h4 id="aside-sets">Aside: Sets</h4>
+  <p>If the data in our collection must be unique, then lists are not the most optimal type to use. Python offers a data type called a <a href="https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset">set</a>, where every element is unique. Sets behave similarly to dictionaries, but without having a value associated with each unique element.</p>
+</div>
+
+<h2 id="additional-examples">Additional Examples</h2>
+<p>The next section of the tutorial contains two functions. For each function, using similar methods to the uniqify section, analyse the time complexity of the function by estimating the number of ‘steps’ in the code. Note that this code is not necessarily the optimal way to provide the functionality but is instead provided as practice for analysing complexity.</p>
+
+<ol>
+  <li>
+    <p>The <code class="highlighter-rouge">is_n_digits</code> function takes two integers, <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">n</code>, and returns <code class="highlighter-rouge">True</code> if <code class="highlighter-rouge">x</code> is an <code class="highlighter-rouge">n</code>-digit number. Analyse the time complexity of the <code class="highlighter-rouge">is_n_digits</code> function in terms of the size of the <code class="highlighter-rouge">n</code> parameter:</p>
+
+    <div class="viz">
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">is_n_digits</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">guess</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="mi">10</span><span class="o">**</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">guess</span> <span class="o">==</span> <span class="n">x</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+</code></pre></div>      </div>
+    </div>
+  </li>
+  <li>
+    <p>The <code class="highlighter-rouge">search</code> function takes a list of <code class="highlighter-rouge">numbers</code>, <strong>sorted in ascending order</strong>, and a number, <code class="highlighter-rouge">x</code>, and returns <code class="highlighter-rouge">True</code> if <code class="highlighter-rouge">x</code> is an element of <code class="highlighter-rouge">numbers</code> and <code class="highlighter-rouge">False</code> otherwise. Analyse the time complexity of the search function in terms of the length of the list, <code class="highlighter-rouge">numbers</code>:</p>
+
+    <div class="viz">
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">numbers</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">numbers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span>
+
+    <span class="n">mid</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">numbers</span><span class="p">[</span><span class="n">mid</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">search</span><span class="p">(</span><span class="n">numbers</span><span class="p">[:</span><span class="n">mid</span><span class="p">],</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">search</span><span class="p">(</span><span class="n">numbers</span><span class="p">[</span><span class="n">mid</span><span class="p">:],</span> <span class="n">x</span><span class="p">)</span>
+</code></pre></div>      </div>
+    </div>
+  </li>
+</ol>
+
+<h2 id="past-exam-practice">Past Exam Practice</h2>
+<p>Attempt some of the past exam questions, accessible from the UQ Library website. If there is time, the tutors will suggest questions to attempt. The tutorial in week 13 will go over some questions and solutions for a past exam.</p>
+
+    </div>
+</body>
+
+</html>

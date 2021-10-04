@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Recursion</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/tutorials/recursion.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <h1 id="recursion">Recursion</h1>
+<div class="important">
+
+  <h4 id="review-recursion">Review: Recursion</h4>
+  <p>A recursive function is one which makes a call to itself in its body, with a different input. That inner function call might then call itself again, with a third input. This repeats until no self-calls are made; this is known as a <em>base case</em> (without a base case, the function will call itself endlessly).</p>
+
+  <p>A recursive function on a list will often use a small list (length 0 or 1) as a base case, and the recursive case will often call itself with a list slice that excludes one element (but not always). For example, the following function computes the sum of a list of numbers:</p>
+
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">if</span> <span class="nb">list</span> <span class="o">==</span> <span class="p">[]</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">add</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>In the recursive case of this function, the <code class="highlighter-rouge">add</code> function calls itself with element 0 excluded (<code class="highlighter-rouge">list[1:]</code>). It then combines the result of the recursive call with the excluded element (<code class="highlighter-rouge">list[0]</code>).</p>
+
+  <p>You may find this <a href="https://www.youtube.com/watch?v=Px8dgjKeh5I">YouTube video</a> helpful in trying to understand recursion.</p>
+</div>
+
+<h2 id="minimums">Minimums</h2>
+<p>Write a recursive function which takes a list of numbers and returns the smallest element in the list. If the list is empty, raise a <code class="highlighter-rouge">ValueError</code>.</p>
+
+<h2 id="debugging-recursive-functions">Debugging Recursive Functions</h2>
+<p>The following function aims to find the sum of a list, but it does not always work. Determine why and modify the function definition to fix this error.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add2</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">if</span> <span class="nb">list</span> <span class="o">==</span> <span class="p">[]</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">add2</span><span class="p">(</span><span class="nb">list</span><span class="p">[:</span><span class="n">mid</span><span class="p">])</span> <span class="o">+</span> <span class="n">add2</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="n">mid</span><span class="p">:])</span>
+</code></pre></div>  </div>
+</div>
+
+<h2 id="family-trees">Family Trees</h2>
+<p>One of the common uses of recursive functions is with recursive data structures, like trees. Consider a family tree: a person can have children, and their children can have children, and their children can have children etc. This shows that this family tree is a recursive data structure and we will now write some recursive functions to take advantage of this structure.</p>
+
+<p>For this task, use the provided Person class (<code class="highlighter-rouge">week11_person.py</code>) which models a family tree. Write 2 recursive methods for this class:</p>
+<ol>
+  <li><code class="highlighter-rouge">num_descendants</code>: which takes no arguments and returns the total number of descendants that the person has (ie. number of children + number of grandchildren + number of great-grandchildren etc.)</li>
+  <li><code class="highlighter-rouge">has_descendant</code>: which takes another Person object as a parameter and returns True if the provided Person object is a descendant of this Person and False otherwise (ie. if the person is a child, or grandchild etc.)</li>
+</ol>
+
+<h2 id="files-and-folders">Files and Folders</h2>
+<p>In a computer’s file system, directories (i.e. folders) can contain files, as well as other directories. This self-similarity (directories contain other directories) suggests that we should use recursive functions to traverse the file system.</p>
+
+<p>For this task, write a function <code class="highlighter-rouge">list_files</code> which takes the name of a directory as input, and returns a list of all filenames that can be accessed from that directory (i.e. all the files in that directory, and its sub-directories, and its sub-sub-directories, and so on). Identify the base case of your function.</p>
+
+<p>An example of using this function follows (obviously, the output will depend on what is in the directory you use as input; this is a fabricated example).</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">list_files</span><span class="p">(</span><span class="s">'H:/csse1001/'</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'H:/csse1001/assign1.py'</span><span class="p">,</span>
+ <span class="s">'H:/csse1001/assign1soln.py'</span><span class="p">,</span>
+ <span class="s">'H:/csse1001/assign2.py'</span><span class="p">,</span>
+ <span class="s">'H:/csse1001/lectures/recursion.py'</span><span class="p">,</span>
+ <span class="s">'H:/csse1001/lectures/notes/add.py'</span><span class="p">,</span>
+ <span class="s">'H:/csse1001/lectures/notes/search_tree.py'</span><span class="p">,</span>
+ <span class="s">'H:/csse1001/tutorials/week2.py'</span><span class="p">,</span>
+ <span class="s">'H:/csse1001/tutorials/week3.py'</span><span class="p">,</span>
+ <span class="s">'H:/csse1001/tutorials/week11.py'</span><span class="p">,</span>
+ <span class="s">'H:/csse1001/mypytutor/MyPyTutor.py'</span><span class="p">,</span>
+ <span class="s">'H:/csse1001/mypytutor/MyPyTutor.pyw'</span><span class="p">,</span>
+ <span class="s">'H:/csse1001/mypytutor/CSSE1001Answers/Introduction.py'</span><span class="p">]</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="important">
+
+  <h4 id="hint">Hint:</h4>
+  <p>To interact with files and folders, Python provides a library called <code class="highlighter-rouge">os</code>. The functions <code class="highlighter-rouge">os.listdir</code>, <code class="highlighter-rouge">os.path.join</code>, and <code class="highlighter-rouge">os.path.isdir</code> may be useful; see their <code class="highlighter-rouge">help</code> documentation, and the following examples.</p>
+
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">os</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>   <span class="c1"># Get the name of the directory we are working in.
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">directory</span>
+<span class="s">'H:/csse1001'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'assign1.py'</span><span class="p">,</span> <span class="s">'assign1soln.py'</span><span class="p">,</span> <span class="s">'assign2.py'</span><span class="p">,</span> <span class="s">'lectures'</span><span class="p">,</span> <span class="s">'tutorials'</span><span class="p">,</span> <span class="s">'mypytutor'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s">'assign1.py'</span><span class="p">)</span>
+<span class="s">'H:/csse1001/assign1.py'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="s">'H:/csse1001/assign1.py'</span><span class="p">)</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="s">'H:/csse1001/lectures'</span><span class="p">)</span>
+<span class="bp">True</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>It may help to use the <code class="highlighter-rouge">list.extend</code> method; if <code class="highlighter-rouge">a</code> and <code class="highlighter-rouge">b</code> are lists, <code class="highlighter-rouge">a.extend(b)</code> will append every element from <code class="highlighter-rouge">b</code> into <code class="highlighter-rouge">a</code>:</p>
+
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<h2 id="tower-of-hanoi">Tower of Hanoi</h2>
+<p>Tower of Hanoi is a simple game. There are 3 pegs and N number of disks. The disks start on one peg and are arranged in decreasing size from bottom to top. The objective of the game is to move the disks from the first peg to the last peg. The rules are that you cannot place a larger disk on top of a smaller disk, and that you can only move one disk at a time. See this <a href="https://www.youtube.com/watch?v=5_6nsViVM00">YouTube video</a> for details of the game and the algorithm to solve the game.</p>
+
+<p>Write a recursive function that outputs all of the moves required to win the game. The function should have a parameter that indicates the number of disks. The function may need other parameters.</p>
+
+<div class="extra">
+
+  <h4 id="challenge-prove-it">Challenge: Prove it!</h4>
+  <ol>
+    <li>See the <code class="highlighter-rouge">add</code> function defined in the Review section above. Use mathematical induction to prove that this function always returns the correct value (the sum of <code class="highlighter-rouge">list</code>).</li>
+    <li>Use strong mathematical induction to prove that your modified <code class="highlighter-rouge">add2</code> function always returns the correct value. Identify where the proof fails for the original <code class="highlighter-rouge">add2</code> function.</li>
+  </ol>
+</div>
+
+    </div>
+</body>
+
+</html>

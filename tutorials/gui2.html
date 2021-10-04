@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Graphical User Interfaces – Part 2</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/tutorials/gui2.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <h1 id="graphical-user-interfaces--part-2">Graphical User Interfaces – Part 2</h1>
+<h2 id="find-my-position">Find My Position</h2>
+
+<p>In this tutorial, we will build an application which allows the user to draw straight lines with their mouse. To start with, download and run the file <code class="highlighter-rouge">week10_gui2_starter.py</code>, which creates a <code class="highlighter-rouge">Canvas</code>, a <code class="highlighter-rouge">Frame</code> (using a custom <code class="highlighter-rouge">SettingsFrame</code> class that inherits from <code class="highlighter-rouge">Frame</code>), and a <code class="highlighter-rouge">Menu</code>. The <code class="highlighter-rouge">SettingsFrame</code> contains a <code class="highlighter-rouge">Label</code> and a <code class="highlighter-rouge">Button</code>.</p>
+
+<p>In the finished application, users will be able to click on the canvas, move the mouse to see a preview of the line, then click again to finish drawing the line. The user will also be able to turn the preview on or off. Your tutor will demonstrate how a finished version should work.</p>
+
+<p>Modify the program so that moving the cursor over the canvas changes the “Current Position” label to the position of the cursor, as in the following example. (Hint: You will need to edit the provided <code class="highlighter-rouge">evt_motion</code> and <code class="highlighter-rouge">set_position</code> methods.)</p>
+
+<div style="text-align:center">
+  <p><img src="images/_09/09_01.png" alt="" /></p>
+</div>
+
+<p>Next, modify the <code class="highlighter-rouge">SettingsFrame</code> class so that, if the “Preview On” button is clicked, it will turn grey and change its text to “Preview Off” (as in the screen shot above), and if clicked again, it will go back to green with “Preview On”.</p>
+
+<p>Also write the method <code class="highlighter-rouge">is_preview_on</code> to return <code class="highlighter-rouge">True</code> or <code class="highlighter-rouge">False</code> depending on the preview setting (we will use this method later when we write the code which draws the preview lines).</p>
+
+<div class="important">
+
+  <h4 id="hint">Hint:</h4>
+  <p>When a mouse event occurs, the <code class="highlighter-rouge">.x</code> and <code class="highlighter-rouge">.y</code> attributes tell us where the mouse is; use this to configure the label. The string <code class="highlighter-rouge">.format</code> method could be useful to format the information.</p>
+
+  <p>To keep track of whether the preview option is on, create an extra boolean attribute of the class!</p>
+</div>
+
+<h2 id="the-line-must-be-drawn-here">The Line Must Be Drawn <em>Here</em>!</h2>
+<p>Modify the program so that when the user clicks in two locations, the application will draw a line between those two points. A third and fourth click should draw a second line, two further clicks should draw a third line, and so on.</p>
+<div style="text-align:center">
+  <p><img src="images/_09/09_02.png" alt="" /></p>
+</div>
+
+<div class="important">
+
+  <h4 id="hint-1">Hint:</h4>
+  <p>Bind a method to <code class="highlighter-rouge">'&lt;Button-1&gt;'</code> to find out when the mouse is clicked. You may need to create attributes in the class to store certain information, such as whether or not the user has made the first click of a line, and where that click was made. 
+Use the Canvas’ <code class="highlighter-rouge">create_line</code> method to draw a line, for instance:
+	<code class="highlighter-rouge">self._canvas.create_line((100, 100), (200, 200)). </code></p>
+</div>
+
+<h2 id="i-need-to-see-where-im-going">I Need to See Where I’m Going</h2>
+<p>Modify the program so after the first click, the user will see a ‘preview’ of their line which follows the cursor, but only if the preview button is set to “On” (use the <code class="highlighter-rouge">is_preview_on</code> method that we wrote earlier to tell if the preview line should be drawn; recall that this method returns <code class="highlighter-rouge">True</code> if the line should be drawn).</p>
+
+<div class="important">
+
+  <h4 id="hint-2">Hint:</h4>
+  <p>One way to accomplish this is to first add a method which deletes all items on the Canvas (<code class="highlighter-rouge">self._canvas.delete(tk.ALL)</code>), then redraws all items that should be present. To do this, create a list attribute in the class to store information about all the lines in the application (for example, the two pairs of coordinates), so that the entire drawing can be remade from the list.</p>
+
+  <p>Another way to do this is to just change the coordinates of the preview line whenever the mouse moves. To do this, store the return value of the call to <code class="highlighter-rouge">create_line</code> which creates the preview line (this return value is an integer which the canvas uses to uniquely identify the line). Then, to move the preview line, call the canvas’ <code class="highlighter-rouge">coords</code> method: <code class="highlighter-rouge">self._canvas.coords(ID, x1, y1, x2, y2)</code> with the line’s ID as the first parameter, and the new coordinates as the four remaining parameters.</p>
+
+  <p>Depending on what information is stored in the class, you may need to modify the <code class="highlighter-rouge">clear</code> method to reset this information (otherwise previously deleted lines might reappear).</p>
+</div>
+
+    </div>
+</body>
+
+</html>

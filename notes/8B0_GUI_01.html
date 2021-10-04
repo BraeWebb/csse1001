@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Graphical User Interfaces – Part 1</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/8B0_GUI_01.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p> Three people have just fallen past that window</p>
+</blockquote>
+
+<h1 id="graphical-user-interfaces--part-1">Graphical User Interfaces – Part 1</h1>
+<h2 id="introduction">Introduction</h2>
+<p><strong>A graphical user interface (GUI)</strong> allows users to interact with a computer using, for example, a mixture of icons, displays of text and graphics, and graphical elements called <strong>widgets</strong>. Most tools these days have one or more GUIs and so it is important for software engineers to be able to design and implement GUIs. In this section we introduce some GUI basics via examples. We do not go into details of what makes good GUI design – this is left to other courses.</p>
+
+<p>Most programming languages provide a mechanism for users to be able to write GUIs. The Python community have developed several GUI libraries and most of them are portable across different platforms. The library we will use in this section is <code class="highlighter-rouge">tkInter</code> which is a Python library that provides access to the <code class="highlighter-rouge">Tk</code> widget toolkit. <code class="highlighter-rouge">tkInter</code> is part of the default Python installation, and IDLE’s GUI is written in <code class="highlighter-rouge">tkInter</code>.</p>
+
+<div class="important">
+
+  <h4 id="note-running-gui-applications">Note: Running GUI Applications</h4>
+  <p>Do not run any GUI applications within IDLE — i.e. do not use <strong>Run Module</strong>. Instead, run the program from outside IDLE. In Windows, for example, simply double click on the program icon to run the program. The problem is that the main loop of IDLE’s Python interpreter and our GUI application’s main loop do not play well together. We can, of course, still use IDLE to edit (and save) our programs.</p>
+
+  <h4 id="running-gui-applications-in-windows">Running GUI applications in Windows:</h4>
+  <p>Double-clicking on a file with a <code class="highlighter-rouge">.py</code> extension will start <code class="highlighter-rouge">Python.exe</code> (creating a new console window). The script will then be loaded and this will result in the creation of the tkInter application window. For debugging purposes, the console window is where error messages and prints are written. To stop the console from appearing, rename the file to give it a <code class="highlighter-rouge">.pyw</code> extension. This will cause <code class="highlighter-rouge">Pythonw.exe</code> to start. This version of Python does not start up a console window.</p>
+
+  <p>In Windows if an error is raised while creating the GUI then the program will close and so will the console window. This means that the error message will not be able to be seen. If this happens, run the program from inside <code class="highlighter-rouge">IDLE</code>, this will allow the message to be seen. Fix the problem, then continue to run from outside <code class="highlighter-rouge">IDLE</code>.</p>
+</div>
+
+<div class="extra">
+
+  <h4 id="aside-useful-websites">Aside: Useful Websites</h4>
+  <p>Online introductions to tkInter which may be useful can be found at <a href="http://thinkingtkinter.sourceforge.net">http://thinkingtkinter.sourceforge.net</a></p>
+</div>
+
+<h2 id="gui-structure">GUI Structure</h2>
+<p>We mentioned that a GUI is composed of widgets, it is really made by <strong>packing</strong> widgets into other containers and widgets. The <code class="highlighter-rouge">tkinter</code> library has many widgets that can be used as well as commands to pack the widgets to make the GUI look the way we want.</p>
+
+<p>Let’s first have a look at a very simple example for our first GUI, we will revisit the Hello World example we met earlier in the course. This example will consist simply of a window with a <strong>Label widget</strong> that has the text <code class="highlighter-rouge">"Hello World!"</code> in it. We will also give the window a similar title. The following is the code that will create this for us.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'HelloWorld Example'</span><span class="p">)</span>
+
+<span class="n">hw</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">'Hello World!'</span><span class="p">)</span>
+<span class="n">hw</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The first line of code is an import that imports the <code class="highlighter-rouge">tkinter</code> library and gives it the alias <code class="highlighter-rouge">tk</code>. This form of import allows “renaming” long named modules into shorter, easier to type names. The second line creates a variable <code class="highlighter-rouge">root</code> that has the value of an <strong>instance of the Tk class</strong>. This Tk instance is the main window that our GUI is created in, it can be thought of as our first widget that all other widgets are going to be in. By convention, the variable name <code class="highlighter-rouge">root</code> is used to store the Tk instance. The next line calls the <code class="highlighter-rouge">title</code> method of the Tk class. This method takes a string argument that becomes the title of the window. The next line creates another variable, <code class="highlighter-rouge">hw</code>, and stores a <strong><code class="highlighter-rouge">Label</code></strong> class instance in it. The <code class="highlighter-rouge">Label</code> constructor takes as a first argument the parent widget that it is to be contained in, in this case we want to contain our label inside our main window. The second argument sets the <code class="highlighter-rouge">text</code> input to the string <code class="highlighter-rouge">'Hello World!'</code>. The second last line calls the <code class="highlighter-rouge">pack</code> method of the Label class. All widgets have this <code class="highlighter-rouge">pack</code> method and by calling it we are telling <code class="highlighter-rouge">Tk</code> that we want the widget to be displayed in its parent widget. The last line calls the <code class="highlighter-rouge">mainloop</code> method of the <code class="highlighter-rouge">Tk</code> class. This method starts the main loop of Tk. This is responsible for sizing and displaying widgets and handling events such as mouse events, keyboard events and timer events. This loop will continue until the window is closed.</p>
+
+<div class="aside">
+
+  <h4 id="aside-grid">Aside: <code class="highlighter-rouge">grid</code></h4>
+  <p>The other main method that can be used, other than <code class="highlighter-rouge">pack</code>, for arranging <code class="highlighter-rouge">Tk</code> widgets is <code class="highlighter-rouge">grid</code>, which involves structuring widgets in a grid layout with a fixed number of rows and columns. We will not be using <code class="highlighter-rouge">grid</code> in this course.</p>
+</div>
+
+<p>Let’s now save our code as <code class="highlighter-rouge">hello_world_gui.py</code> and have a look at our first GUI. <strong>Remember not to run it in <code class="highlighter-rouge">IDLE</code></strong>. Also remember that the window will look different depending on the operating system it is being used on.</p>
+
+<p><img src="images/8B0_GUI_01.png" alt="" /></p>
+
+<p>The first thing we notice is that the window already has the minimize, maximize and close buttons. tkInter creates these automatically for us. We also notice that the window can be resized as normal so we can make it look as follows.</p>
+
+<p><img src="images/8B0_GUI_02.png" alt="" /></p>
+
+<p>Note that when we resize the window to make it bigger the label will centre itself horizontally but stay at the top of the window. This is the default positioning used by pack. Soon we will see how to use pack to get different positioning.</p>
+
+<div class="important">
+
+  <h4 id="basic-gui-code">Basic GUI Code</h4>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Title String'</span><span class="p">)</span>
+
+<span class="n">var_1</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Widget</span><span class="p">(</span><span class="n">parent_widget</span><span class="p">,</span> <span class="p">[</span><span class="n">config_args</span><span class="p">])</span>
+<span class="n">var_1</span><span class="o">.</span><span class="n">pack</span><span class="p">([</span><span class="n">pack_args</span><span class="p">])</span>
+    <span class="o">.</span>
+    <span class="o">.</span>
+    <span class="o">.</span>
+<span class="n">var_n</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Widget</span><span class="p">(</span><span class="n">parent_widget</span><span class="p">,</span> <span class="p">[</span><span class="n">config_args</span><span class="p">])</span>
+<span class="n">var_n</span><span class="o">.</span><span class="n">pack</span><span class="p">([</span><span class="n">pack_args</span><span class="p">])</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>This is the basic GUI code layout for <code class="highlighter-rouge">tkInter</code>. Here <em><code class="highlighter-rouge">Widget</code></em> is the type of widget that is to be created, <em><code class="highlighter-rouge">parent_widget</code></em> is the widget that the current widget is to be packed into, <em><code class="highlighter-rouge">config_args</code></em> allow optional configuration of the widget upon creation, and <em><code class="highlighter-rouge">pack_args</code></em> are used to arrange the widget inside its parent widget (we will have a look at these options soon). These arguments follow the form <em><code class="highlighter-rouge">argument_name=argument_value</code></em>.</p>
+</div>
+
+<h2 id="layout">Layout</h2>
+<h3 id="side">Side</h3>
+
+<p>Having all the widgets of our GUI set to the top-centre of the screen, as in the previous example, is not particularly useful. This is especially true when we start getting many widgets and want more complex layouts. The <strong>pack</strong> method we used in the previous example has many optional arguments that allow us to place the widgets almost wherever we want them.</p>
+
+<p>Let’s have a look at some simple packing examples that will place Label widgets at different edges of the screen.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Packing"</span><span class="p">)</span>
+
+<span class="n">right</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I want to sit to the right"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"light blue"</span><span class="p">)</span>
+<span class="n">right</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">)</span>
+
+<span class="n">left</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="s">"It's to the left for me"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"green"</span><span class="p">)</span>
+<span class="n">left</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">bottom</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I want to lie on the bottom"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"red"</span><span class="p">)</span>
+<span class="n">bottom</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTTOM</span><span class="p">)</span>
+
+<span class="n">bottom2</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I also want to lie on the bottom"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"pink"</span><span class="p">)</span>
+<span class="n">bottom2</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTTOM</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This code is very similar to our Hello World example before but we have three labels instead of one. We have also added an extra argument to the Label, <code class="highlighter-rouge">bg</code>, which is short for background; it sets the background colour of the widget to the colour specified in the given string.</p>
+
+<p>This colour string can be in words, as long as the colour is in the list of possible colours. Alternatively, we can specify the <strong>RGB value</strong> of the colour, which represents the amount of red, green and blue in the colour. This is done with a hash (<code class="highlighter-rouge">#</code>) followed by six <strong>hexadecimal</strong> digits. A hexadecimal number is a number in base 16 rather than base 10 (decimal numbers). Because hexadecimal numbers are base 16 we need hexadecimal digits for the numbers <code class="highlighter-rouge">10,11,12,13,14,15</code>. These are, respectively, <code class="highlighter-rouge">a,b,c,d,e,f</code>. So, the hexadecimal number <code class="highlighter-rouge">ff</code> is the (decimal) number 255 – i.e. <code class="highlighter-rouge">15*16+15</code>. In a hexadecimal number representing a colour, the first two digits represent the red component, the next two the green component, and the last two the blue component. So <code class="highlighter-rouge">#ffffff</code> is maximum red, green and blue – i.e. white and, conversely, <code class="highlighter-rouge">#000000</code> is black.</p>
+
+<p>Also notice that there is now an optional argument inside the <code class="highlighter-rouge">pack</code> method calls. This is the <strong><code class="highlighter-rouge">side</code></strong> argument, which tells the widget to sit towards the edge of the given direction (<code class="highlighter-rouge">TOP</code>, <code class="highlighter-rouge">BOTTOM</code>, <code class="highlighter-rouge">LEFT</code>, <code class="highlighter-rouge">RIGHT</code>). Also notice that the side names are in all caps. This is because these are constants in the <code class="highlighter-rouge">tkInter</code> library.</p>
+
+<div class="aside">
+
+  <h4 id="aside-colour-options">Aside: Colour Options</h4>
+  <p>The list of possible named colours for Tk can be found at <a href="http://www.science.smith.edu/dftwiki/images/3/3d/TkInterColorCharts.png"></a></p>
+</div>
+
+<p>After saving the code to <code class="highlighter-rouge">pack_side.py</code>, we can test have a look at the result.</p>
+
+<p><img src="images/8B0_GUI_03.png" alt="" /></p>
+
+<p>Notice how the widgets are tightly packed. Tk will keep the window to a size that just fits in all the widgets. Let’s experiment with expanding the window.</p>
+
+<p><img src="images/8B0_GUI_04.png" alt="" /></p>
+
+<p>Notice the positioning of the widgets. Using <code class="highlighter-rouge">side</code> places widgets into four quadrants of the window. Widgets are also arranged in the order they are packed: the red label was packed before the pink one, so the red one was placed on the bottom before the pink one. Also notice that the background colour only fills up the area of the text in the Label widget, and the remainder of the window is the unused grey background. When the window expands, <code class="highlighter-rouge">tkInter</code> allocates more space for the widgets to sit in. Because the widgets don’t change size, they sit in the centre, and the extra space is filled in with grey background. The image above has been digitally altered and reproduced below, with black boxes indicating the space which is allocated for that widget to occupy. Because the blue and green labels were packed first, the red and pink labels do not get the entire width of the window, only what was remaining when they were packed.</p>
+
+<p><img src="images/8B0_GUI_05.png" alt="" /></p>
+
+<h3 id="anchor">Anchor</h3>
+
+<p>When the window expands, each of the widgets is left in the centre of its allocated space. The pack option <code class="highlighter-rouge">anchor</code> can be used to specify the direction the widget will sit when the widget is given more space. The <code class="highlighter-rouge">anchor</code> argument uses the compass system, valid arguments are <code class="highlighter-rouge">N</code>, <code class="highlighter-rouge">E</code>, <code class="highlighter-rouge">S</code>, <code class="highlighter-rouge">W</code>, <code class="highlighter-rouge">NE</code>, <code class="highlighter-rouge">SE</code>, <code class="highlighter-rouge">SW</code>, <code class="highlighter-rouge">NW</code>, <code class="highlighter-rouge">CENTER</code> (note the American spelling). Here is an example of widgets arranged using <code class="highlighter-rouge">anchor</code>:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Packing"</span><span class="p">)</span>
+
+<span class="n">right</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I want to sit to the right"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"light blue"</span><span class="p">)</span>
+<span class="n">right</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">E</span><span class="p">)</span>
+
+<span class="n">left</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="s">"It's to the left for me"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"green"</span><span class="p">)</span>
+<span class="n">left</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">W</span><span class="p">)</span>
+
+<span class="n">bottom</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I want to lie on the bottom"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"red"</span><span class="p">)</span>
+<span class="n">bottom</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">S</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>We save our code to <code class="highlighter-rouge">pack_anchor.py</code> and have a look at the result.</p>
+
+<p><img src="images/8B0_GUI_06.png" alt="" /></p>
+
+<p>We have packed all the labels with the argument <code class="highlighter-rouge">side=TOP</code>, so they appear stacked from top to bottom in the order they were packed. If the <code class="highlighter-rouge">side</code> argument is not given, it defaults to <code class="highlighter-rouge">TOP</code>, so we could have left it out of the packing arguments, but we have included it as an explicit reminder that we want the labels to be arranged top-to-bottom. Let’s expand the window and see what it looks like.</p>
+
+<p><img src="images/8B0_GUI_07.png" alt="" /></p>
+
+<p>Notice how the widgets have moved left and right but not changed the vertical position. <code class="highlighter-rouge">anchor</code> has “pinned” the widgets in the direction specified. For clarity, we again digitally modify this image to show the space that each widget has been given. Notice that the red label has been anchored to the south side, but because it consumes all its allocated space vertically, we cannot observe any difference.</p>
+
+<p><img src="images/8B0_GUI_08.png" alt="" /></p>
+
+<h3 id="expand">Expand</h3>
+
+<p>We have already observed that <code class="highlighter-rouge">tkInter</code> allocates the minimal space needed to contain the widget, even when the window is resized. The <strong><code class="highlighter-rouge">expand</code></strong> packing option allows widgets to be allocated as much space as possible when the window is resized. The following example (<code class="highlighter-rouge">pack_expand.py</code>) makes use of this option.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Packing"</span><span class="p">)</span>
+
+<span class="n">right</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I want to sit to the right"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"light blue"</span><span class="p">)</span>
+<span class="n">right</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">)</span>
+
+<span class="n">left</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="s">"It's to the left for me"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"green"</span><span class="p">)</span>
+<span class="n">left</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">bottom</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I want to lie on the bottom"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"red"</span><span class="p">)</span>
+<span class="n">bottom</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTTOM</span><span class="p">)</span>
+
+<span class="n">bottom2</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I also want to lie on the bottom"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"pink"</span><span class="p">)</span>
+<span class="n">bottom2</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTTOM</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This is equivalent to the first example, but the <code class="highlighter-rouge">left</code> label is packed with the argument <code class="highlighter-rouge">expand=True</code>. By default, <code class="highlighter-rouge">expand</code> is <code class="highlighter-rouge">False</code>, so for simplicity, we leave it out when it is not required. When we resize the window, we see this:</p>
+
+<p><img src="images/8B0_GUI_09.png" alt="" /></p>
+
+<p>With digital modifications to the image above, we show that the space allocated around the green label expands in both directions when the window is resized, while the red and pink labels do not gain any more space. We can also clearly see that the green label has been anchored to the centre.</p>
+
+<p><img src="images/8B0_GUI_10.png" alt="" /></p>
+
+<p>When multiple widgets have the <code class="highlighter-rouge">expand=True</code> option, they all expand equally. For example, if this option were turned on for the pink and red labels, resizing the window vertically would give each one the same amount of extra space (equivalent to half the distance the window is resized). This will be demonstrated in the section below.</p>
+
+<h3 id="fill">Fill</h3>
+<p>When we resize the window, the widgets themselves stay the same size, but <code class="highlighter-rouge">tkInter</code> allocates more space to surround the widgets, based on their <code class="highlighter-rouge">anchor</code> and <code class="highlighter-rouge">expand</code> values. The <strong><code class="highlighter-rouge">fill</code></strong> option specifies whether the widget should grow to fill the space allocated for it. Valid arguments are <code class="highlighter-rouge">X</code>, <code class="highlighter-rouge">Y</code>, <code class="highlighter-rouge">BOTH</code>, <code class="highlighter-rouge">NONE</code>, which represent filling in the horizontal (<code class="highlighter-rouge">X</code>) and vertical (<code class="highlighter-rouge">Y</code>) dimensions, both dimensions, or neither (which is the default option). The following example is similar to previous examples, and makes use of the <code class="highlighter-rouge">fill</code> parameter:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Packing"</span><span class="p">)</span>
+
+<span class="n">right</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I want to sit to the right"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"light blue"</span><span class="p">)</span>
+<span class="n">right</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">left</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="s">"It's to the left for me"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"green"</span><span class="p">)</span>
+<span class="n">left</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span>
+
+<span class="n">bottom</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I want to lie on the bottom"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"red"</span><span class="p">)</span>
+<span class="n">bottom</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTTOM</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">)</span>
+
+<span class="n">bottom2</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I also want to lie on the bottom"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"pink"</span><span class="p">)</span>
+<span class="n">bottom2</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTTOM</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This code can be downloaded as <code class="highlighter-rouge">pack_fill.py</code>. When we run this code and resize the window, we get this result:</p>
+
+<p><img src="images/8B0_GUI_11.png" alt="" /></p>
+
+<p>As with the previous examples, we add black borders to show the space allocated around each widget:</p>
+
+<p><img src="images/8B0_GUI_12.png" alt="" /></p>
+
+<p>Note that the pink and red labels have been expanded, and together they now occupy the full height of the screen. The red label has been filled in both dimensions, taking up the entire space it can use. The pink label has been filled vertically, so it uses the full height available to it, but there is still grey background to the left and right of it. The green label has also been filled vertically, but because it does not expand horizontally, it appears to fill its entire space. The blue label has been filled in the <code class="highlighter-rouge">X</code> dimension, but because the label does not expand, this has no effect.</p>
+
+<h3 id="padding">Padding</h3>
+
+<p>For finer control of the size and spacing of widgets, we can use the padding options, <code class="highlighter-rouge">padx</code>, <code class="highlighter-rouge">pady</code>, <code class="highlighter-rouge">ipadx</code>, <code class="highlighter-rouge">ipady</code>, which allow us to specify an amount of space to include around the widget, on the inside and outside of the widget (specified as a number of pixels). The following example demonstrates the use of these options.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Packing"</span><span class="p">)</span>
+
+<span class="n">right</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I want space to the side"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"light blue"</span><span class="p">)</span>
+<span class="n">right</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="n">left</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="s">"I am very wide"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"green"</span><span class="p">)</span>
+<span class="n">left</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">ipadx</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="n">bottom</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I want space above and below"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"red"</span><span class="p">)</span>
+<span class="n">bottom</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="n">bottom2</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"I am very tall"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"pink"</span><span class="p">)</span>
+<span class="n">bottom2</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">ipady</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This is available to download as <code class="highlighter-rouge">pack_pad.py</code>. When we run this code, we get the result shown in the first image below. The second image has been modified to include borders around the labels, shown in purple.</p>
+
+<!-- <div style="text-align:center">
+<img src=images/8B0_GUI_13.png width="200">
+<img src=images/8B0_GUI_14.png width="200">
+</div> -->
+
+<p align="center">
+
+<img src="images/8B0_GUI_13.png" alt="" />
+<img src="images/8B0_GUI_14.png" alt="" />
+</p>
+
+<p>The <code class="highlighter-rouge">padx</code> adds space to the left and right of the label, shown by the blue label. If any widgets were to be added to the sides of this label, or if the blue label were to be resized, this space would remain the same. Similarly, the <code class="highlighter-rouge">pady</code> inserts padding above and below the red label, and the other labels are moved to accommodate the extra space. The <code class="highlighter-rouge">ipadx</code> and <code class="highlighter-rouge">ipady</code> options insert padding around the widget, but on the inside of the widget, which makes the labels appear larger, as shown with the green and pink labels.</p>
+
+<div class="important">
+
+  <h4 id="packing-options">Packing Options</h4>
+  <p>The <code class="highlighter-rouge">pack</code> method of tkInter widgets supports the following optional arguments, which affect how the widgets are arranged and displayed on the screen:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Option</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong><code class="highlighter-rouge">side</code></strong></td>
+        <td>Specify which edge to pack this widget against. Can be <code class="highlighter-rouge">TOP</code>, <code class="highlighter-rouge">BOTTOM</code>, <code class="highlighter-rouge">LEFT</code> or <code class="highlighter-rouge">RIGHT</code> (if not specified, defaults to <code class="highlighter-rouge">TOP</code>). Multiple widgets can be packed on the same side to appear next to each other.</td>
+      </tr>
+      <tr>
+        <td><strong><code class="highlighter-rouge">anchor</code></strong></td>
+        <td>Specify where to position this widget, inside the space which  is allocated for it. Can be <code class="highlighter-rouge">N</code>, <code class="highlighter-rouge">NE</code>, <code class="highlighter-rouge">E</code>, <code class="highlighter-rouge">SE</code>, <code class="highlighter-rouge">S</code>, <code class="highlighter-rouge">SW</code>, <code class="highlighter-rouge">W</code>, <code class="highlighter-rouge">NW</code> or <code class="highlighter-rouge">CENTER</code> (defaults to <code class="highlighter-rouge">CENTER</code>).</td>
+      </tr>
+      <tr>
+        <td><strong><code class="highlighter-rouge">expand</code></strong></td>
+        <td>Specify (with a boolean value) if the space allocated around the widget should grow and shrink as the window is resized. Note that without the <code class="highlighter-rouge">fill</code> option, the widget itself will not be resized, but there will be more space around it.</td>
+      </tr>
+      <tr>
+        <td><strong><code class="highlighter-rouge">fill</code></strong></td>
+        <td>Specify if the widget should fill in the space allocated around it, in one or both of the <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> dimensions. Can be <code class="highlighter-rouge">BOTH</code>, <code class="highlighter-rouge">X</code>, <code class="highlighter-rouge">Y</code> or <code class="highlighter-rouge">NONE</code> (defaults to <code class="highlighter-rouge">NONE</code>). When used with <code class="highlighter-rouge">expand=</code>True, the widget will grow when the window is resized; this is useful for widgets which should always take up as much of the screen as possible, such as the main view area of the application.</td>
+      </tr>
+      <tr>
+        <td><strong><code class="highlighter-rouge">padx</code></strong>, <strong><code class="highlighter-rouge">pady</code></strong>, <strong><code class="highlighter-rouge">ipadx</code></strong>, <strong><code class="highlighter-rouge">ipady</code></strong></td>
+        <td>Specify the amount of space to place inside or around this widget, in pixels. <code class="highlighter-rouge">padx</code> and <code class="highlighter-rouge">pady</code> will place a certain amount of background space around the widget. <code class="highlighter-rouge">ipadx</code> and <code class="highlighter-rouge">ipady</code> will add space inside the widget, making it larger.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Experimenting with different combinations of packing order, and different combinations of <code class="highlighter-rouge">side</code>, <code class="highlighter-rouge">anchor</code>, <code class="highlighter-rouge">expand</code>, <code class="highlighter-rouge">fill</code>, and the <code class="highlighter-rouge">pad</code> options, will assist in understanding the behaviour of these settings.</p>
+</div>
+
+<h2 id="frames">Frames</h2>
+
+<p>The <code class="highlighter-rouge">pack</code> options, <code class="highlighter-rouge">side</code> and <code class="highlighter-rouge">anchor</code>, only have limited capability for layout. To give us many more options we use a widget called <strong><code class="highlighter-rouge">Frame</code></strong>. The <code class="highlighter-rouge">Frame</code> widget is a blank widget used for simply containing widgets. This is very useful for creating simple through to complex GUI layouts as it can give us the ability to partition widgets into groups and position each group.</p>
+
+<p>In the next section, we are going to build a simple game which involves moving a circle around the screen. We will have four buttons to represent up/down/left/right controls, and a blank “game screen” area which will show the movement of the circle. For now, we will investigate the layout of the GUI, using Labels. Shortly, we will replace these labels with other kinds of widgets.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+<span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Look what we can do with frames"</span><span class="p">)</span>
+
+<span class="c1"># "Button" labels
+</span>
+<span class="n">controls</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+
+<span class="n">up</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"UP"</span><span class="p">)</span>
+<span class="n">up</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">)</span>
+
+<span class="n">left</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"LEFT"</span><span class="p">)</span>
+<span class="n">left</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">down</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"DOWN"</span><span class="p">)</span>
+<span class="n">down</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">right</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"RIGHT"</span><span class="p">)</span>
+<span class="n">right</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">controls</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="c1"># screen Label
+</span>
+<span class="n">screen</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"screen"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"light blue"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">38</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">screen</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Similar to the <code class="highlighter-rouge">Label</code>, the arguments to the <code class="highlighter-rouge">Frame</code> constructor are the parent widget (in this case, <code class="highlighter-rouge">root</code>), and any configuration options.</p>
+
+<p>The code for the Labels is still mostly the same as we have seen before. The biggest difference is the parent widget is no longer <code class="highlighter-rouge">root</code>. For the “buttons” we have given the parent as <code class="highlighter-rouge">controls</code>. This makes the labels get packed into the <code class="highlighter-rouge">controls Frame</code>. For the <code class="highlighter-rouge">screen</code> label, we set a width and height to make it fairly large and square. Experimenting with different values for <code class="highlighter-rouge">width</code> and <code class="highlighter-rouge">height</code> will eventually give an acceptable size. We also set the screen to expand and fill when the window changes size.</p>
+
+<p>Let’s now save our code to <code class="highlighter-rouge">frame_game.py</code> and see what we have created. For clarity, we also show a digitally altered image indicating the borders of the labels (in green) and the frame (in red).</p>
+
+<p align="center">
+
+<img src="images/8B0_GUI_15.png" alt="" />
+<img src="images/8B0_GUI_16.png" alt="" />
+</p>
+
+<p>The four control labels have been arranged within the frame as if they were arranged in their own window. The frame can then be placed within the window, and all four buttons will stay grouped together. If this layout was attempted using the <code class="highlighter-rouge">side</code> and <code class="highlighter-rouge">anchor</code> options alone, it would be very difficult.</p>
+
+<h2 id="buttons">Buttons</h2>
+
+<p>Having <code class="highlighter-rouge">Labels</code> representing buttons does not have much point. Let’s now introduce the real thing, the <strong><code class="highlighter-rouge">Button</code></strong> widget. We now rewrite our code from above using the <code class="highlighter-rouge">Button</code> widget instead of <code class="highlighter-rouge">Label</code> widgets. We also want the buttons to appear the same size, so we will set a width for each one. Because all four should have the same width, we will store the width value as a constant, <code class="highlighter-rouge">BUTTON_WIDTH</code>, to ensure we are always using the same width.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="n">BUTTON_WIDTH</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+<span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Buttons are good"</span><span class="p">)</span>
+
+<span class="c1"># Buttons
+</span><span class="n">controls</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+
+<span class="n">up</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"UP"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">BUTTON_WIDTH</span><span class="p">)</span>
+<span class="n">up</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">)</span>
+
+<span class="n">left</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"LEFT"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">BUTTON_WIDTH</span><span class="p">)</span>
+<span class="n">left</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">down</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"DOWN"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">BUTTON_WIDTH</span><span class="p">)</span>
+<span class="n">down</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">right</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"RIGHT"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">BUTTON_WIDTH</span><span class="p">)</span>
+<span class="n">right</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">)</span>
+
+<span class="n">controls</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="c1"># screen Label
+</span>
+<span class="n">screen</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"screen"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"light blue"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">38</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">screen</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Creating the <code class="highlighter-rouge">Button</code> widgets is again rather simple as they use similar arguments to other widgets we have used. Let’s now save our code as <code class="highlighter-rouge">game_screen.py</code> and have a look at our new GUI.</p>
+
+<p><img src="images/8B0_GUI_17.png" alt="" /></p>
+
+<h3 id="making-buttons-work">Making Buttons Work</h3>
+<p>We would like to add functionality to our buttons, so that pressing the button will execute a task. We do this by writing a function that <code class="highlighter-rouge">tkInter</code> can call when the button is pressed. When we create the <code class="highlighter-rouge">Button</code>, we tell it what function to use through the <code class="highlighter-rouge">command</code> argument. For now, we will get the buttons to simply print to the console. We write four functions, one for each button:</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="n">BUTTON_WIDTH</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+<span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Buttons are good"</span><span class="p">)</span>
+
+<span class="c1"># Functions for the buttons to call
+</span>
+<span class="k">def</span> <span class="nf">push_up</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"UP"</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">push_down</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"DOWN"</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">push_left</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"LEFT"</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">push_right</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"RIGHT"</span><span class="p">)</span>
+
+<span class="c1"># Buttons
+</span>
+<span class="n">controls</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+
+<span class="n">up</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"UP"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">push_up</span><span class="p">)</span>
+<span class="n">up</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">)</span>
+
+<span class="n">left</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"LEFT"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">push_left</span><span class="p">)</span>
+<span class="n">left</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">down</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"DOWN"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">push_down</span><span class="p">)</span>
+<span class="n">down</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">right</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">controls</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"RIGHT"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">push_right</span><span class="p">)</span>
+<span class="n">right</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">controls</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="c1"># screen Label
+</span>
+<span class="n">screen</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"screen"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"light blue"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">38</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">screen</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The <strong><code class="highlighter-rouge">command</code></strong> argument takes a function, which is called when the button is pressed. We do not want to execute the function, we want to take the function itself and give it to the <code class="highlighter-rouge">Button</code>. To do this, <strong>we do not place parentheses after the function name</strong>. By passing the function itself to the <code class="highlighter-rouge">Button</code>, we give the <code class="highlighter-rouge">Button</code> the ability to call the function at any time (in particular, whenever the button is pressed). In this situation, the function is known as a <strong>callback</strong> function, because we give the <code class="highlighter-rouge">Button</code> the ability to call back to a function in the application code.</p>
+
+<p>This code is available as <code class="highlighter-rouge">game_screen1.py</code>. Each time we press a button it prints out to the console.</p>
+
+<p><img src="images/8B0_GUI_18.png" alt="" /></p>
+
+<h2 id="the-entry-widget">The Entry Widget</h2>
+<p>We have seen how to interact with the user through buttons, but what about other methods, such as text? <code class="highlighter-rouge">tkInter</code> has a widget for this called the <strong><code class="highlighter-rouge">Entry</code></strong> widget. The <code class="highlighter-rouge">entry</code> widget is a small box that the user can enter text into.</p>
+
+<p>We will start with a simple application that evaluates an expression and prints the result to the console. We will require a <code class="highlighter-rouge">Label</code> to label our <code class="highlighter-rouge">Entry</code> widget, the <code class="highlighter-rouge">Entry</code> widget, and a <code class="highlighter-rouge">Button</code> to evaluate the expression. The code is as follows:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Expression Evaluator'</span><span class="p">)</span>
+
+<span class="n">label</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">'Enter Expression: '</span><span class="p">)</span>
+<span class="n">label</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">entry</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">entry</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">evaluate</span><span class="p">():</span>
+    <span class="n">expression</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"The Result is: {0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"An error occurred: {0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+<span class="n">calc</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"Evaluate"</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">evaluate</span><span class="p">)</span>
+<span class="n">calc</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The second widget we create is the <code class="highlighter-rouge">Entry</code> widget. We have also used the optional argument <code class="highlighter-rouge">width</code> to specify that we want the text area to be 20 characters wide. We then wrote the <code class="highlighter-rouge">evaluate</code> function to take the input and print the result. In the first line we used the <code class="highlighter-rouge">get</code> method of the <code class="highlighter-rouge">Entry</code> widget. This method returns what is in the text area as a string. In this case it is our expression. The next line uses Python’s <code class="highlighter-rouge">eval</code> function. <code class="highlighter-rouge">eval</code> takes a string representing a Python expression and evaluates it, returning the result.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">eval</span><span class="p">(</span><span class="s">"2+5*4"</span><span class="p">)</span>
+<span class="mi">22</span>
+</code></pre></div>  </div>
+</div>
+
+<p>It is possible that the user has entered an invalid expression or an expression that will raise an exception, so we place a <code class="highlighter-rouge">try-except</code> statement around it to print out the error message. The last thing the evaluate function does is print out the result with a message. Let’s save our code as <code class="highlighter-rouge">simple_evaluator.py</code> and test it.</p>
+
+<p><img src="images/8B0_GUI_19.png" alt="" /></p>
+
+<p>It would be good, however, to be able to do more than just print to the console.</p>
+
+<h2 id="changing-widgets">Changing Widgets</h2>
+
+<p>All widgets also have a method that allows us to change the way a widget looks. This method is the <strong><code class="highlighter-rouge">config</code></strong> method. It has the same optional arguments as the constructor of the widget. Let’s extend our code so that instead of printing the result to the console, it changes the text in a <code class="highlighter-rouge">Label</code> so that the result is in the application itself. If there is an error message to show, we will also change the background colour to red. To make this work, we must also change the background colour back to grey when we are showing a result, otherwise the label would stay red after an error message is shown.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Expression Evaluator'</span><span class="p">)</span>
+
+<span class="n">label</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">'Enter Expression: '</span><span class="p">)</span>
+<span class="n">label</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">entry</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">entry</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">evaluate</span><span class="p">():</span>
+    <span class="n">expression</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
+        <span class="n">answer</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">"The Result is: {0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">bg</span><span class="o">=</span><span class="s">"grey"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">answer</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">"An error occurred: {0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">bg</span><span class="o">=</span><span class="s">"red"</span><span class="p">)</span>
+
+<span class="n">calc</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"Evaluate"</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">evaluate</span><span class="p">)</span>
+<span class="n">calc</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">answer</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">""</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"grey"</span><span class="p">)</span>
+<span class="n">answer</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This code is almost the same, we have just added a new <code class="highlighter-rouge">Label</code> and changed the last line in the <code class="highlighter-rouge">evaluate</code> function. The change to the last line calls <code class="highlighter-rouge">config</code> on our new <code class="highlighter-rouge">Label</code>, <code class="highlighter-rouge">answer</code> and sets the text to the result.</p>
+
+<p>Now saving our code as <code class="highlighter-rouge">simple_evaluator_nc.py</code>, we can have a look at our new application.</p>
+
+<p><img src="images/8B0_GUI_20.png" alt="" /></p>
+
+<p><img src="images/8B0_GUI_21.png" alt="" /></p>
+
+<p>When an error message is shown, the label will keep the error message visible until a new expression is entered. This may be discomforting for the user, so we consider ways to fix this issue. One option would be to add a second button that resets the label back to grey and clears the message. It is also possible to reset the label whenever the user resumes typing in the <code class="highlighter-rouge">Entry</code> box.</p>
+
+<p>So far we have covered a lot of different GUI widgets and aspects of creating GUIs. Yet we have been writing our code in a rather linear fashion. In the remainder of this section, and in the next section, we will look at restructuring our GUI programs using classes. This is to make the source code easier to read and maintain.</p>
+
+<h2 id="gui-design-using-classes">GUI Design Using Classes</h2>
+
+<p>Classes can be used to simplify our GUI code, especially as the GUI and program gets more complex. We are going to rewrite our expression evaluator using a class. The code is below:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="k">class</span> <span class="nc">EvalApp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="s">"""Simple application to allow a user to enter an expression and evaluate it.
+    """</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">master</span><span class="p">):</span>
+        <span class="s">"""Initialise the expression evaluator's application window.
+
+        Parameters:
+            master (Tk): Main window for application.
+        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_master</span> <span class="o">=</span> <span class="n">master</span>
+        <span class="n">master</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Expression Evaluator'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="n">expressionLbl</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">master</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">'Enter Expression: '</span><span class="p">)</span>
+        <span class="n">expressionLbl</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="n">master</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num</span><span class="p">))</span>
+
+        <span class="n">evalBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">master</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"Evaluate"</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">)</span>
+        <span class="n">evalBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">master</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">""</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"grey"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Evaluates the expression in the Entry widget and 
+           displays the result in the result Label.
+        """</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_num</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">"The Result is: {0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num</span><span class="p">),</span>
+                                <span class="n">bg</span><span class="o">=</span><span class="s">"grey"</span><span class="p">)</span>
+        <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">"An error occurred: {0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">bg</span><span class="o">=</span><span class="s">"red"</span><span class="p">)</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">EvalApp</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The most noticeable change is the order of the code, the class needs to be written first so that the class is defined before we try to use it. The next thing to notice is the use of <strong><code class="highlighter-rouge">master</code></strong> as a parameter in the class’ constructor, and as the parent class for the widgets. <code class="highlighter-rouge">master</code> is used by convention to signify the “highest level” class. <code class="highlighter-rouge">master</code> is passed the value of <code class="highlighter-rouge">Tk</code> when the <code class="highlighter-rouge">EvalApp</code> object is created. We have added a <code class="highlighter-rouge">self._num</code> instance variable as well, this is the same as the result variable we used before, we also use it when creating the <code class="highlighter-rouge">Entry</code> widget to give our application a slightly more professional look. The first widget we create is a <code class="highlighter-rouge">Label</code>, but we do not assign it as an instance variable. As we just want this widget to display and not access it later, we do not need to store it in the class structure. We do the same for the <code class="highlighter-rouge">Button</code> widget.</p>
+
+<p>When we create the <code class="highlighter-rouge">Entry</code> widget this time we also use the <strong><code class="highlighter-rouge">insert</code></strong> method. <code class="highlighter-rouge">insert</code> inserts a string into the <code class="highlighter-rouge">Entry</code> widget at a location, in this case the string of <code class="highlighter-rouge">self._num</code> at the end of any text in there. The rest of the class is mostly the same code we had before.</p>
+
+<p>After the class definition we have the <code class="highlighter-rouge">Tk</code> code. In this case we only need three lines because our class does all the work. The first and last line we already know. The middle line creates an instance of our class passing <code class="highlighter-rouge">root</code> into the constructor. As <code class="highlighter-rouge">root</code> is an instance of <code class="highlighter-rouge">Tk</code>, we are passing in a <code class="highlighter-rouge">Tk</code> object.</p>
+
+<p>We can now save our code as <code class="highlighter-rouge">evaluator_class.py</code> and have a look.</p>
+
+<p><img src="images/8B0_GUI_22.png" alt="" /></p>
+
+<p>Apart from the small changes to the GUI that we made it looks and works exactly the same as what we had before.</p>
+
+    </div>
+</body>
+
+</html>

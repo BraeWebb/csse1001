@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Python Programming</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/python-programming.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p>Uhh, you do realise, uh, he has to be, uh,… well, dead,… by the terms of the card, uh, before he donates his liver.</p>
+  <p class="indent">— Monty Python’s The Meaning of Life</p>
+</blockquote>
+
+<h2 id="python-programming">Python Programming</h2>
+
+<h3 id="writing-software">Writing Software</h3>
+<p>Software is often written by using a program called an <strong>Integrated Development Environment</strong>, or <strong>IDE</strong>. An IDE typically consists of an editor (often with syntax highlighting and layout support), a compiler or interpreter, class or library browsers and other tools to aid in software development and maintenance.</p>
+
+<p>In this course we will be using <strong>IDLE</strong>, which is an IDE for Python.</p>
+
+<p>When IDLE is started it will look something like this.</p>
+
+<p><img src="images/04-idle-01.png" alt="" /></p>
+
+<p>The window shown contains the running interpreter. The <code class="highlighter-rouge">&gt;&gt;&gt;</code> is the interpreter prompt – the interpreter is waiting for user input. <strong>Note</strong>: This image is taken from Windows 10 and will appear different depending on the Operating System you are using.</p>
+
+<p>Below is a simple example of an interaction with the interpreter – note the syntax highlighting used by IDLE. The user inputs an expression at the prompt (followed by pressing Enter) and the interpreter responds by printing the result and another prompt.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span><span class="o">+</span><span class="mi">3</span>
+<span class="mi">5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">6</span><span class="o">*</span><span class="mi">7</span>
+<span class="mi">42</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="s">"I don't like spam!"</span><span class="p">)</span>
+<span class="n">I</span> <span class="n">don</span><span class="s">'t like spam!</span><span class="err">
+</span></code></pre></div>  </div>
+</div>
+
+<h3 id="using-idle-to-write-code">Using IDLE to write code</h3>
+<p>Once we get beyond simple examples in the interpreter, we typically want to be able to save our code so we can use it again later. We can do this by writing our code in a file. IDLE has an editor window that enables us to write our code and save it into a file.</p>
+
+<p>In the <strong>File</strong> menu choose <strong>New Window</strong>.</p>
+
+<p>This will open a new window similar to the one below in which to enter the code.</p>
+
+<p><img src="images/04-idle-02.png" alt="" /></p>
+
+<p>In this window we will write our code. Let’s start with the simplest program used in programming, the “Hello World!” program.</p>
+
+<p>Type the following code into the new window that you just opened.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'Hello World!'</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+<p>When you have finished choose <strong>Save As</strong> from the <strong>File</strong> menu and save the file in a folder in which you want to do Python development. Name the file <code class="highlighter-rouge">hello.py</code>.
+It is important to use the <code class="highlighter-rouge">.py</code> extension for Python files. Apart from making it easier for us to spot the Python files, various operating systems and some tools also recognise the extension.
+You will notice that if the <code class="highlighter-rouge">.py</code> extension is missing the colours of the code that you write and have written will no longer be present in the IDLE editor window. If this happens re-save the file with the <code class="highlighter-rouge">.py</code> extension.
+Now under the <strong>Run</strong> menu choose <strong>Run Module</strong> (or alternatively press <strong>F5</strong>) to run the program that we have just written. The output will appear in IDLE similar to the following image.</p>
+
+<p><img src="images/04-idle-03.png" alt="" /></p>
+
+<p>As can be seen the <code class="highlighter-rouge">print</code> function of Python displays the data that is the input to the <code class="highlighter-rouge">print</code> function (data inside the brackets) in the interpreter. In this case, the string <code class="highlighter-rouge">'Hello World!'</code> is displayed.</p>
+
+<h3 id="code-layout--good-programming-practices">Code Layout – Good Programming Practices</h3>
+<p>Most editors will automatically lay out the code with the use of whitespace (a combination of spaces and tabs). In most programming languages, however, whitespace is (mostly) unimportant, as it does not affect the code.</p>
+
+<p>So why bother with layout then?</p>
+
+<p>It is for <strong>human readability</strong>. Software engineers typically work in teams and so they need to share code. Consistency is important as it makes it easier for one human to understand what another human has written (we are not machines). It also helps for maintenance and modification of the code at a later date – if we were looking at code we wrote 6 months ago, it’s unlikely we would remember it, so we would want it to be easy to read.</p>
+
+<p>Python takes layout one step further:</p>
+
+<h4 id="whitespaces-affect-the-semantics">Whitespaces affect the semantics!</h4>
+<p>When writing a block of code (the body of a function definition for example), some way of determining the start and end of code blocks is required. In many languages, keywords or some form of brackets are used to mark the start and end of a block.</p>
+
+<h4 id="python-uses-indentation">Python uses indentation.</h4>
+<p>When a new block is started (indicated by a <code class="highlighter-rouge">:</code>, the level of indentation is increased (typically one tab stop or 4 spaces). After the last statement in the block the indentation level is decremented.</p>
+
+<p>It is also regarded as <strong>good coding practice</strong> to keep the width of any code written to within <strong>80 characters wide</strong>. There are multiple reasons for this including:</p>
+<ul>
+  <li>It is easy to read – 80 characters is an easy to read line width especially for something that we are already straining our brains to read, such as code.</li>
+  <li>Screen sizes are different – If we write code on a wide screen and do not care about line width and later read it on a standard width monitor then it may not necessarily fit (even with the window enlarged), producing unexpected line wrapping.</li>
+  <li>An A4 page, in portrait layout, with normal margins and font size is approximately 80 characters wide – if we keep within this then our code should print without any unwanted line-wrap</li>
+  <li>Windows that are used for writing code have a default width of just over the 80 characters wide. If the 80 characters width is changed then the window needs to be resized to fit.</li>
+</ul>
+
+    </div>
+</body>
+
+</html>

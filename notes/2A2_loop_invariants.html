@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Loop Invariants</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/2A2_loop_invariants.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p> Then you must cut down the mightiest tree in the forest… with… a herring!</p>
+</blockquote>
+
+<h1 id="loop-invariants">Loop Invariants</h1>
+
+<p>It is not always easy to tell if a loop will create the correct result in every circumstance. Therefore, we use a <strong>loop invariant</strong> that states if this condition is True then the result should be correct. For this to work completely the invariant needs to be True at the start, at the end of the loop body and if the loop condition is False the invariant must still be True.</p>
+
+<p>Here is an example that finds the prime factors of a number and puts them into a list. This function will use the <code class="highlighter-rouge">next_prime</code> function found in <code class="highlighter-rouge">prime.py</code>.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">prime</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">def</span> <span class="nf">factorise</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Returns a list of the prime factors of 'n'.
+
+    Parameters:
+        n (int): Number for which factors are to be found.
+
+    Preconditions:
+        n &gt;= 2
+
+    Return:
+        list&lt;int&gt;: Prime factors of 'n'.
+    """</span>
+    <span class="n">prime</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="p">:</span>
+        <span class="c1"># Loop Invariant: product(factors) * n == initial n
+</span>        <span class="k">while</span> <span class="n">n</span> <span class="o">%</span> <span class="n">prime</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">/=</span> <span class="n">prime</span>
+        <span class="n">prime</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">factors</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This function starts with the current prime number set to 2, as 2 is the first prime number, and an empty list to store the primes in. We then start a while loop that keeps iterating as long as n &gt; 1. We do not want to go less than 2 as there are no primes less than 2. It is here, in a comment, that we introduce our loop invariant. In this case it is that the product of all the primes found so far multiplied by the current number that we are operating on equals the initial number. We then start another while loop that keeps appending the current prime number to the factors list while the current number is divisible by that prime, also dividing the current number by that prime to move onto the next number. Back in the first while loop we use the <code class="highlighter-rouge">next_prime</code> function to move onto the next prime number. The last thing the function does is return the list of factors.</p>
+
+<p>Saving as <code class="highlighter-rouge">factorise.py</code> we can run a few tests to show this function working.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">factorise</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">factorise</span><span class="p">(</span><span class="mi">340</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">17</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">17</span>
+<span class="mi">340</span>
+</code></pre></div>  </div>
+</div>
+
+    </div>
+</body>
+
+</html>

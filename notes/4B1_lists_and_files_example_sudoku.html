@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Sudoku Example</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/4B1_lists_and_files_example_sudoku.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p> We interrupt this film to apologise for this unwarranted attack by the supporting feature. </p>
+  <p> Luckily, we have been prepared for this eventuality, and are now taking steps to remedy it. </p>
+</blockquote>
+
+<h1 id="sudoku-example">Sudoku Example</h1>
+
+<p>We are now going to have a look at an example that will incorporate list and file processing. This example will be of a Sudoku game stored in the file <code class="highlighter-rouge">sgame.txt</code>. The pretty-printed form of this game is <code class="highlighter-rouge">sgame.pdf</code>.</p>
+
+<p>The first step is to write a function that takes the name of a file that contains a Sudoku game and returns a representation of the game. The data structure we use to store the game is a list of lists — the entries are rows and each entry in a row represents a column entry of the row. To do this we also write a function to turn a string representing a row into a row.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">row2list</span><span class="p">(</span><span class="n">row_string</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Convert a string representing a row in a Sudoku game into a list.
+
+    Parameters:
+        row_string (string): Represents a single row in a Sudoku game.
+
+    Return:
+        list&lt;string&gt;: Containing the numbers in a row of a Sudoku game.
+
+    Preconditions:
+        Numbers in 'row_string' are single digits
+        and there is a single space separating the numbers.
+    """</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_string</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">row</span>
+</code></pre></div>  </div>
+</div>
+<p>This function initialises an empty list for collecting the row entries. Then uses a <code class="highlighter-rouge">for</code> loop with <code class="highlighter-rouge">range</code> that goes through every second number, up to but not including 18. As each entry is a space apart in the string we only want every second character in that string. The character at each entry position is then appended into the <code class="highlighter-rouge">row</code> list.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">read_game</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Read the data for a Sudoku game from 'filename'.
+
+    Parameters:
+        filename (string): Name of the file from which to read the game data.
+
+    Return:
+        list&lt;list&lt;string&gt;&gt;: Representation of a Sudoku game as a matrix
+                            (list of lists) of strings.
+
+    Preconditions:
+        The files can be opened for reading and writing.
+        File contains 9 lines and each line represents one row of the game.
+    """</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+    <span class="n">game</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">file</span> <span class="p">:</span>
+        <span class="n">game</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row2list</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+    <span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">game</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This function opens the file in universal read mode and then initialises an empty list representing the game data structure. Then for every line in the file the <code class="highlighter-rouge">row2list</code> function is called on the line to get the row list. That row list is then appended to the <code class="highlighter-rouge">game</code> list to create the full game.</p>
+
+<p>Our code currently looks like <code class="highlighter-rouge">sudoku1.py</code>. A couple of tests of the functions are below.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">row2list</span><span class="p">(</span><span class="s">'1 2 3 4 5 6 7 8 9'</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'1'</span><span class="p">,</span> <span class="s">'2'</span><span class="p">,</span> <span class="s">'3'</span><span class="p">,</span> <span class="s">'4'</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">'6'</span><span class="p">,</span> <span class="s">'7'</span><span class="p">,</span> <span class="s">'8'</span><span class="p">,</span> <span class="s">'9'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">row2list</span><span class="p">(</span><span class="s">'1 2   4 5 6 7 8  '</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'1'</span><span class="p">,</span> <span class="s">'2'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'4'</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">'6'</span><span class="p">,</span> <span class="s">'7'</span><span class="p">,</span> <span class="s">'8'</span><span class="p">,</span> <span class="s">' '</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">read_game</span><span class="p">(</span><span class="s">'sgame.txt'</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+		
+<span class="p">[</span><span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'1'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'9'</span><span class="p">,</span> <span class="s">' '</span><span class="p">]</span>
+<span class="p">[</span><span class="s">'7'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'1'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'3'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">' '</span><span class="p">]</span>
+<span class="p">[</span><span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'9'</span><span class="p">,</span> <span class="s">'8'</span><span class="p">,</span> <span class="s">'1'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'6'</span><span class="p">]</span>
+<span class="p">[</span><span class="s">' '</span><span class="p">,</span> <span class="s">'9'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'4'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">]</span>
+<span class="p">[</span><span class="s">' '</span><span class="p">,</span> <span class="s">'8'</span><span class="p">,</span> <span class="s">'4'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'6'</span><span class="p">,</span> <span class="s">'1'</span><span class="p">,</span> <span class="s">' '</span><span class="p">]</span>
+<span class="p">[</span><span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'2'</span><span class="p">,</span> <span class="s">' '</span><span class="p">]</span>
+<span class="p">[</span><span class="s">'6'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">'9'</span><span class="p">,</span> <span class="s">'3'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">]</span>
+<span class="p">[</span><span class="s">' '</span><span class="p">,</span> <span class="s">'7'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'4'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'2'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'1'</span><span class="p">]</span>
+<span class="p">[</span><span class="s">' '</span><span class="p">,</span> <span class="s">'2'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'3'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+</code></pre></div>  </div>
+</div>
+<p>Now we need functions to extract a given row, column or 3x3 block. Adding the following functions to our code will give us this functionality. Keep in mind that the game data structure can be thought of as a 2-dimensional matrix.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_row</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">game</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Return the indicated 'row' from 'game'.
+
+    Parameters:
+        row (int): Index of the row to extract from 'game'.
+        game (list&lt;list&lt;string&gt;&gt;): Matrix representation of the Sudoku game grid.
+		
+    Return:
+        list&lt;string&gt;: The numbers in a row of a Sudoku game.
+
+    Preconditions:
+        0 &lt;= 'row' &lt;= 8
+        'game' is a list representation of a Sudoku game.
+    """</span>
+    <span class="k">return</span> <span class="n">game</span><span class="p">[</span><span class="n">row</span><span class="p">]</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This function simply needs to return the row<sup>th</sup> index of game as game is a list of rows.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_column</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">game</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Return the column indicated by 'col' from 'game'.
+
+    Parameters:
+        col (int): Index of the column to extract from 'game'.
+        game (list&lt;list&lt;string&gt;&gt;): Matrix representation of the Sudoku game grid.
+		
+    Return:
+        list&lt;string&gt;: The numbers in a column of a Sudoku game.
+
+    Preconditions:
+        0 &lt;= 'col' &lt;= 8
+        'game' is a list representation of a Sudoku game.
+   """</span>
+    <span class="n">column</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">game</span> <span class="p">:</span>
+        <span class="n">column</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">column</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This is a bit more tricky than <code class="highlighter-rouge">get_row</code> as we do not have a list of columns. Therefore, the function needs to go through every row and collect the values at the column index of the row.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_block</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">game</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Return the 3x3 block starting at index [row, col] from 'game'.
+
+    Parameters:
+        row (int): Row index of the start of the block to extract from 'game'.
+        col (int): Column index of the start of the block to extract from 'game'.
+        game (list&lt;list&lt;string&gt;&gt;): Matrix representation of the Sudoku game grid.
+		
+    Return:
+        list&lt;string&gt;: The numbers in a 3x3 block of a Sudoku game.
+
+    Preconditions:
+        0 &lt;= r &lt; 3 and 0 &lt;= c &lt; 3
+        'game' is a list representation of a Sudoku game.
+    """</span>
+    <span class="n">block</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">block_row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">row</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">row</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">game</span><span class="p">[</span><span class="n">block_row</span><span class="p">][</span><span class="mi">3</span><span class="o">*</span><span class="n">col</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="n">col</span><span class="o">+</span><span class="mi">3</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">block</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This function is even more complicated. We need to be able to get a 3x3 block, therefore we need to get three adjacent rows and the three adjacent entries from each of those rows. The for loop gets the rows using range to generate indices that correspond to the block required. The <code class="highlighter-rouge">3*row</code> is used as the block rows are numbered 0, 1 or 2 down the game data structure. This moves the start index to the required starting row of the board that corresponds to the start of that block. The end row is simply 3 more rows down. As <code class="highlighter-rouge">game</code> is a list of lists representing rows it can be directly indexed to get the row of interest. Then slicing can be used on that row to get the 3 adjacent columns. This is done using the same system as obtaining the rows. The <code class="highlighter-rouge">extend</code> method of lists modifies the list it is called on by joining the list in its argument to the first list to form one list.</p>
+
+<p>Our Sudoku code now looks like <code class="highlighter-rouge">sudoku2.py</code>. Here are some tests of the functions that we have just written.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">game</span> <span class="o">=</span> <span class="n">read_game</span><span class="p">(</span><span class="s">'sgame.txt'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">get_row</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">game</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'7'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'1'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'3'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">' '</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">get_column</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">game</span><span class="p">)</span>
+<span class="p">[</span><span class="s">' '</span><span class="p">,</span> <span class="s">'7'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'6'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">get_block</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">game</span><span class="p">)</span>
+<span class="p">[</span><span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'6'</span><span class="p">,</span> <span class="s">'1'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="s">'2'</span><span class="p">,</span> <span class="s">' '</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+</code></pre></div>  </div>
+</div>
+
+<p>To finish off this problem we look at the problem of determining what possible values can be put in an empty square. To do this, we need to determine what are the possibilities based on entries already in a given row, column or block. This can be done by finding the difference between the given entries and the valid entries. Below are the functions that will allow us to do this.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">list_diff</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Return the list of entries in list1 that are not in list2 (list1 - list2).
+
+    A general-purpose list function that works for lists of any type of elements.
+    """</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">list1</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">element</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">list2</span> <span class="p">:</span>
+            <span class="n">diff</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">diff</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This function creates an empty result list, <code class="highlighter-rouge">diff</code>. The function then goes through every <code class="highlighter-rouge">element</code> in <code class="highlighter-rouge">list1</code> and checks if it is in <code class="highlighter-rouge">list2</code>. If <code class="highlighter-rouge">element</code> is not in <code class="highlighter-rouge">list2</code> then <code class="highlighter-rouge">element</code> is appended to our result list <code class="highlighter-rouge">diff</code>.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># all the valid choices
+</span><span class="n">ALL_CHOICES</span> <span class="o">=</span> <span class="p">[</span><span class="s">'1'</span><span class="p">,</span> <span class="s">'2'</span><span class="p">,</span> <span class="s">'3'</span><span class="p">,</span> <span class="s">'4'</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">'6'</span><span class="p">,</span> <span class="s">'7'</span><span class="p">,</span> <span class="s">'8'</span><span class="p">,</span> <span class="s">'9'</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">choices</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">game</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Return choices that are possible at position indicated by [row, column].
+
+    Identify and return all the choices that are possible at position 
+    [row, column] in 'game' - i.e. each choice should not occur in the 
+    indicated 'row', 'column' or in the block containing this position.
+
+    Parameters:
+        row (int): Row index of the position to check.
+        column (int): Column index of the position to check.
+        game (list&lt;list&lt;string&gt;&gt;): Matrix representation of the Sudoku game grid.
+		
+    Return:
+        list&lt;string&gt;: The valid choices at this position.
+
+    Preconditions:
+        0 &lt;= row &lt;= 8 and 0 &lt;= column &lt;= 8  game[row][column] == ' '
+    """</span>
+    <span class="n">block_row</span> <span class="o">=</span> <span class="n">row</span> <span class="o">/</span> <span class="mi">3</span>
+    <span class="n">block_col</span> <span class="o">=</span> <span class="n">column</span> <span class="o">/</span> <span class="mi">3</span>
+    <span class="n">choices</span> <span class="o">=</span> <span class="n">list_diff</span><span class="p">(</span><span class="n">ALL_CHOICES</span><span class="p">,</span> <span class="n">get_row</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">game</span><span class="p">))</span>
+    <span class="n">choices</span> <span class="o">=</span> <span class="n">list_diff</span><span class="p">(</span><span class="n">choices</span><span class="p">,</span> <span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">game</span><span class="p">))</span>
+    <span class="n">choices</span> <span class="o">=</span> <span class="n">list_diff</span><span class="p">(</span><span class="n">choices</span><span class="p">,</span> <span class="n">get_block</span><span class="p">(</span><span class="n">block_row</span><span class="p">,</span> <span class="n">block_col</span><span class="p">,</span> <span class="n">game</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">choices</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This function starts by finding the block that the coordinate [row, column] is in and setting this to <code class="highlighter-rouge">block_row</code> and <code class="highlighter-rouge">block_col</code>. Then it finds all the choices for the row by calling <code class="highlighter-rouge">list_diff</code> with the list <code class="highlighter-rouge">ALL_CHOICES</code> and the list obtained from <code class="highlighter-rouge">get_row</code> as arguments. Then choices is updated by passing it into <code class="highlighter-rouge">list_diff</code> along with the result from <code class="highlighter-rouge">get_column</code> and assigning the result back into <code class="highlighter-rouge">choices</code>, this removes all the non-possible choices from the column from the <code class="highlighter-rouge">choices</code> list. This is again done with the block. This then leaves all the choices available for that square so <code class="highlighter-rouge">choices</code> is returned.</p>
+
+<p>Finally, our sudoku code looks like <code class="highlighter-rouge">sudoku.py</code>. Here results of some tests of the last few function we wrote.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">list_diff</span><span class="p">(</span><span class="n">ALL_CHOICES</span><span class="p">,</span> <span class="n">get_row</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">game</span><span class="p">))</span>
+<span class="p">[</span><span class="s">'2'</span><span class="p">,</span> <span class="s">'3'</span><span class="p">,</span> <span class="s">'4'</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">'6'</span><span class="p">,</span> <span class="s">'7'</span><span class="p">,</span> <span class="s">'8'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">list_diff</span><span class="p">(</span><span class="n">ALL_CHOICES</span><span class="p">,</span> <span class="n">get_column</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">game</span><span class="p">))</span>
+<span class="p">[</span><span class="s">'1'</span><span class="p">,</span> <span class="s">'2'</span><span class="p">,</span> <span class="s">'3'</span><span class="p">,</span> <span class="s">'4'</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">'8'</span><span class="p">,</span> <span class="s">'9'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">list_diff</span><span class="p">(</span><span class="n">ALL_CHOICES</span><span class="p">,</span> <span class="n">get_block</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">game</span><span class="p">))</span>
+<span class="p">[</span><span class="s">'2'</span><span class="p">,</span> <span class="s">'3'</span><span class="p">,</span> <span class="s">'4'</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">'6'</span><span class="p">,</span> <span class="s">'8'</span><span class="p">,</span> <span class="s">'9'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">list_intersection</span><span class="p">([</span><span class="s">'2'</span><span class="p">,</span> <span class="s">'3'</span><span class="p">,</span> <span class="s">'4'</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">'6'</span><span class="p">,</span> <span class="s">'7'</span><span class="p">,</span> <span class="s">'8'</span><span class="p">],</span>
+                      <span class="p">[</span><span class="s">'1'</span><span class="p">,</span> <span class="s">'2'</span><span class="p">,</span> <span class="s">'3'</span><span class="p">,</span> <span class="s">'4'</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">'8'</span><span class="p">,</span> <span class="s">'9'</span><span class="p">])</span>
+<span class="p">[</span><span class="s">'2'</span><span class="p">,</span> <span class="s">'3'</span><span class="p">,</span> <span class="s">'4'</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">'8'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">choices</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">game</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'2'</span><span class="p">,</span> <span class="s">'3'</span><span class="p">,</span> <span class="s">'4'</span><span class="p">,</span> <span class="s">'5'</span><span class="p">,</span> <span class="s">'8'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+</code></pre></div>  </div>
+</div>
+
+    </div>
+</body>
+
+</html>

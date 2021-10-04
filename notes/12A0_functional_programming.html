@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Functional Programming</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/12A0_functional_programming.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p>And now for something completely different.</p>
+  <p class="indent">– John Cleese</p>
+</blockquote>
+
+<h1 id="functional-programming-list-comprehension-iterators-generators">Functional Programming, List Comprehension, Iterators, Generators</h1>
+<h2 id="functional-programming">Functional Programming</h2>
+<p><strong>Functional Programming</strong> is a programming paradigm in which problems are decomposed into collections of functions (in the mathematical sense) and computation is expression evaluation. Functional Programming languages are examples of declarative languages in which the programmer writes a specification of the problem to be solved and the <strong>declarative</strong> language implementation determines how to solve the problem given the specification. In functional languages the specification is a collection of definitions of mathematical functions and the problem to be solved is expressed as a mathematical expression to be evaluated based on the given function definitions.</p>
+
+<p>In <strong>pure</strong> functional programming there is no state (program variables) that can be modified. A consequence of this is that it is much easier to reason about the correctness of programs written in that style than in procedural languages where state changes. An example of a popular (pure) functional programming language is <a href="https://www.haskell.org/">Haskell</a>.</p>
+
+<p>Python is not a functional programming language but it does borrow some ideas from functional languages such as anonymous functions, higher-order programming, list comprehension and lazy evaluation that, for example, provide powerful list processing techniques. We will look at examples shortly.</p>
+
+<h2 id="iterators">Iterators</h2>
+<p>We are familiar with the concept of for-loops by now. They take a collection of data and look at it one piece at a time from start to end. An object that can be iterated over is called an <strong>iterable</strong>. For example, strings, tuples, lists, and dictionaries are all iterables. But how do they work? How can we write our own iterables? How can we take advantage of iterables to do more powerful things?</p>
+
+<p>All <code class="highlighter-rouge">iterables</code> can create a ‘stream of data’ that can be accessed one element at a time, called an <strong>iterator</strong>. Python uses the iterator to perform for-loops. Iterators are made using the <code class="highlighter-rouge">iter</code> function, and the “one element at a time” access is done using the <code class="highlighter-rouge">next</code> function. <code class="highlighter-rouge">next</code> will return the next piece of data. If there is no more data, then a <code class="highlighter-rouge">StopIteration</code> exception will be raised. Here is an example using a string. In this case, <code class="highlighter-rouge">x</code> is an iterable, and <code class="highlighter-rouge">it</code> is an iterator.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; s = 'spam'
+&gt;&gt;&gt; it = iter(s)
+&gt;&gt;&gt; next(it)
+'s'
+&gt;&gt;&gt; next(it)
+'p'
+&gt;&gt;&gt; next(it)
+'a'
+&gt;&gt;&gt; next(it)
+'m'
+&gt;&gt;&gt; next(it)
+Traceback (most recent call last):
+  File "&lt;pyshell#6&gt;", line 1, in &lt;module&gt;
+    next(it)
+StopIteration
+</code></pre></div>  </div>
+</div>
+
+<p>Since iterators are only accessed one element at a time, there are a few advantages. If possible, iterators can be written to calculate the data ‘on the fly’ when requested, instead of calculating and storing all the data at once. This idea is called <strong>lazy evaluation</strong>. In fact, this approach can be used to generate an infinite stream of data. As long as we do not want to get all the elements (which would lead to infinite computation) this idea can lead to elegant solutions to problems that can be difficult to express with finite structures.</p>
+
+<p>Where can lazy evaluation be useful? The <code class="highlighter-rouge">range</code> and <code class="highlighter-rouge">enumerate</code> functions are example of this. Recall that <code class="highlighter-rouge">range</code> and <code class="highlighter-rouge">enumerate</code> return a special class that is a sequence of numbers and objects. The reason for this is that these two functions are mainly used in just performing a for-loop over the data. Therefore, they are iterator types, making use of them for very large data sets avoids using up too much of the computer’s resources.</p>
+
+<div class="important">
+
+  <h4 id="iterables-and-iterators">Iterables and Iterators</h4>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">iter</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+<span class="nb">iter</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+<span class="nb">next</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </div>
+
+  <h4 id="semantics">Semantics</h4>
+  <p>An <strong>iterable</strong> is an object which can be iterated over (for example, used in for-loops). An <strong>iterator</strong> is an object which produces a stream or sequence of data one element at a time. <code class="highlighter-rouge">iter(iterable)</code> will create a new iterator. <code class="highlighter-rouge">iter(iterator)</code> will return the same iterator.
+<code class="highlighter-rouge">next(iterator)</code> will return the next value in the sequence. If the sequence has finished, this function will raise <code class="highlighter-rouge">StopIteration</code>.</p>
+</div>
+
+<p>How do we write an iterable class, and the corresponding iterator? An <code class="highlighter-rouge">iterable</code> class must have an <code class="highlighter-rouge">__iter__</code> method to support the <code class="highlighter-rouge">iter</code> function. The method should return an iterator. The iterator object must have a <code class="highlighter-rouge">next</code> method which either returns the next value or raises <code class="highlighter-rouge">StopIteration</code>. The iterator must also have an <code class="highlighter-rouge">__iter__</code> method which returns the iterator itself; this is so that the iterator itself can also be iterated over. To demonstrate, here is an example (<code class="highlighter-rouge">geometric.py</code>) involving a geometric sequence, which is a sequence where each term is multiplied by a fixed ratio.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">GeometricSequence</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""A geometric sequence of numbers.
+
+    The sequence of numbers:
+    start, start * ratio, start * ratio**2, ..., start * ratio**(length-1)
+    Without a length parameter, the sequence is infinite.
+    """</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ratio</span> <span class="o">=</span> <span class="n">ratio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_len</span> <span class="o">=</span> <span class="n">length</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">GeometricIterator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ratio</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_len</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">GeometricIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""An iterator on a geometric sequence."""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span> <span class="p">:</span>
+        <span class="c1"># Store values for later
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_ratio</span> <span class="o">=</span> <span class="n">ratio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_len</span> <span class="o">=</span> <span class="n">length</span>
+        <span class="c1"># Store information about position in the sequence
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_pos</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">start</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="c1"># Check if the sequence has finished
+</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_len</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pos</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_len</span> <span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">StopIteration</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
+        <span class="c1"># Update for next time.
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ratio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pos</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">tmp</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">powers_two</span> <span class="o">=</span> <span class="n">GeometricSequence</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">powers_two</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+<span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+<span class="mi">8</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">powers_two</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">" "</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1000</span> <span class="p">:</span>
+        <span class="k">break</span>
+
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">8</span> <span class="mi">16</span> <span class="mi">32</span> <span class="mi">64</span> <span class="mi">128</span> <span class="mi">256</span> <span class="mi">512</span> <span class="mi">1024</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">seq</span> <span class="o">=</span> <span class="n">GeometricSequence</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">seq</span> <span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">" "</span><span class="p">)</span>
+
+<span class="mi">2</span> <span class="mi">6</span> <span class="mi">18</span> <span class="mi">54</span> <span class="mi">162</span> <span class="mi">486</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">54</span> <span class="ow">in</span> <span class="n">seq</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">20</span> <span class="ow">in</span> <span class="n">seq</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">GeometricSequence</span><span class="p">(</span><span class="s">'*'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)))</span>
+<span class="o">*</span> <span class="o">**</span> <span class="o">****</span> <span class="o">********</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Notice that the for-loop in the first example exits with a <code class="highlighter-rouge">break</code>. Since the sequence is infinite, there is no way to exit the loop other than specifying a condition we are interested in (which depends on the problem we are solving). The second sequence is defined with a length of 6, so after enough calls to <code class="highlighter-rouge">next</code>, a <code class="highlighter-rouge">StopIteration</code> is raised and the for loop exits naturally. The second sequence can also perform <code class="highlighter-rouge">in</code> tests. Be careful of performing <code class="highlighter-rouge">in</code> tests on infinite sequences like <code class="highlighter-rouge">powers_two</code>, because it will never stop looking through the sequence if the value is not there. The third example shows a geometric sequence of strings instead of numbers.</p>
+
+<h2 id="generators">Generators</h2>
+<p>That last example was pretty big for code that generates a simple sequence, especially having to write two classes. As always, Python has found a simpler way of doing it.</p>
+
+<p><strong>Generators</strong> are iterators that use a syntax very similar to functions, using a <code class="highlighter-rouge">yield</code> statement instead of <code class="highlighter-rouge">return</code>. When a normal function in Python is called, the body is executed, and there is a return statement (possibly implicit) that stops the function and returns control back to the caller. When a generator function is called, the body of the function is not executed, instead we get a generator object. When <code class="highlighter-rouge">next</code> is called on the generator object, the function body begins executing and when the <code class="highlighter-rouge">yield</code> statement is reached the value supplied to <code class="highlighter-rouge">yield</code> is returned. The execution of the function is suspended at this point and the local state of the function is preserved. When <code class="highlighter-rouge">next</code> is again called the program resumes from the point of suspension and continues until the next <code class="highlighter-rouge">yield</code> statement is reached. In this way, the generator code is constantly starting and stopping, generating values through repetitive <code class="highlighter-rouge">yield</code> statements. Below is an example of a generator that illustrates this behaviour using the geometric sequence concept from before, which is also in <code class="highlighter-rouge">geometric2.py</code>.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">geometric</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="p">:</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">start</span>
+    <span class="k">while</span> <span class="n">length</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">pos</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="p">:</span>
+        <span class="k">yield</span> <span class="n">value</span>
+        <span class="n">value</span> <span class="o">*=</span> <span class="n">ratio</span>
+        <span class="n">pos</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">powers_two</span> <span class="o">=</span> <span class="n">geometric</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">powers_two</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">powers_two</span><span class="p">)</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">powers_two</span><span class="p">)</span>
+<span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="n">geometric</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">162</span><span class="p">,</span> <span class="mi">486</span><span class="p">]</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Here is another simple example. The <code class="highlighter-rouge">print</code> statements are added to show how the execution of the generator body works.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def gen_range(n) :
+    print('start')
+    for i in range(n) :
+        print('before yield: i =', i)
+        yield i
+        print('after yield: i =', i)
+
+&gt;&gt;&gt; gen = gen_range(3)
+&gt;&gt;&gt; gen
+&lt;generator object gen_range at 0x011DC350&gt;
+&gt;&gt;&gt; next(gen)
+start
+before yield: i = 0
+0
+&gt;&gt;&gt; next(gen)
+after yield: i = 0
+before yield: i = 1
+1
+&gt;&gt;&gt; next(gen)
+after yield: i = 1
+before yield: i = 2
+2
+&gt;&gt;&gt; next(gen)
+after yield: i = 2
+Traceback (most recent call last):
+  File "&lt;pyshell#5&gt;", line 1, in &lt;module&gt;
+    next(gen)
+StopIteration
+</code></pre></div>  </div>
+</div>
+
+<div class="important">
+
+  <h4 id="generator-syntax">Generator Syntax</h4>
+  <p>The syntax for writing a generator is the same as for functions, except the body of the generator uses <code class="highlighter-rouge">yield</code> statements in the function body, and cannot return a value. The syntax for a yield statement is</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">yield</span> <span class="n">value</span>
+</code></pre></div>    </div>
+  </div>
+
+  <h4 id="semantics-1">Semantics</h4>
+  <p>Calling the function does not execute the body, but returns an iterator. Calling <code class="highlighter-rouge">next</code> on that iterator will begin executing the function body, stopping at the first yield statement and returning the associated <em><code class="highlighter-rouge">value</code></em>. Subsequent uses of <code class="highlighter-rouge">next</code> resumes from the point where the function body was stopped. <code class="highlighter-rouge">StopIteration</code> is raised when the function body ends.</p>
+</div>
+
+<h2 id="list-comprehensions">List Comprehensions</h2>
+<p>We already know how to construct lists out of other iterables, using loops and append. For example, if we have a file containing a collection of numbers, such as the <code class="highlighter-rouge">data1.txt</code> file, and we want to read in the numbers into a list, then we would do something like this:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'data1.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>For what is arguably a simple operation, it takes a few lines of code, and it might not be immediately obvious what it does. There is a way of doing the same thing with a better syntax, called a <strong>list comprehension</strong>:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'data1.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+</code></pre></div>  </div>
+</div>
+
+<p>This syntax is much easier to type and read, and it is more efficient. What if we wanted to ignore certain lines in the dataset? For example, if there are blank lines in the file, we want to skip those lines and not attempt to add <code class="highlighter-rouge">float(line)</code> to the list. We can ignore the unwanted values by adding an <code class="highlighter-rouge">if</code> test to the comprehension, as shown below.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'data1.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span> <span class="k">if</span> <span class="n">line</span><span class="p">]</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Recall that <code class="highlighter-rouge">if</code> line is equivalent to <code class="highlighter-rouge">if line != ""</code>. Below are three more examples of list comprehension in action. In the first, we simply copy the list <code class="highlighter-rouge">l</code>. In the second we produce the list of squares of <code class="highlighter-rouge">l</code> and in the third we produce the list of squares of the even elements of <code class="highlighter-rouge">l</code>. The last example is more complex, it shows how comprehensions can be used to generate a list of prime numbers.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">l</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">l</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">l</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">81</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">l</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">64</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span> <span class="k">if</span> <span class="mi">0</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">i</span><span class="p">)]]</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">47</span><span class="p">]</span>
+</code></pre></div>  </div>
+</div>
+
+<p>A list comprehension can handle more than one nested loop. The first two examples below are shown as both a loop and a comprehension.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">letters</span> <span class="o">=</span> <span class="s">"spam"</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">letters</span> <span class="p">:</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">nums</span> <span class="p">:</span>
+            <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pairs</span>
+<span class="p">[(</span><span class="s">'s'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'s'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'s'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'p'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'p'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'p'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'a'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'a'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'a'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'m'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'m'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'m'</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">letters</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pairs</span>
+<span class="p">[(</span><span class="s">'s'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'s'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'s'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'p'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'p'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'p'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'a'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'a'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'a'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'m'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'m'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'m'</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sums</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span>
+                <span class="n">sums</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sums</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="o">+</span><span class="n">k</span><span class="o">+</span><span class="n">l</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="s">'01'</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="s">'01'</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="s">'01'</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="s">'01'</span><span class="p">]</span>
+<span class="p">[</span><span class="s">'0000'</span><span class="p">,</span> <span class="s">'0001'</span><span class="p">,</span> <span class="s">'0010'</span><span class="p">,</span> <span class="s">'0011'</span><span class="p">,</span> <span class="s">'0100'</span><span class="p">,</span> <span class="s">'0101'</span><span class="p">,</span> <span class="s">'0110'</span><span class="p">,</span> <span class="s">'0111'</span><span class="p">,</span> <span class="s">'1000'</span><span class="p">,</span> <span class="s">'1001'</span><span class="p">,</span> <span class="s">'1010'</span><span class="p">,</span> <span class="s">'1011'</span><span class="p">,</span> <span class="s">'1100'</span><span class="p">,</span> <span class="s">'1101'</span><span class="p">,</span> <span class="s">'1110'</span><span class="p">,</span> <span class="s">'1111'</span><span class="p">]</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="important">
+
+  <h4 id="list-comprehension-syntax">List Comprehension Syntax</h4>
+  <p>The syntax for list comprehension takes one of the following forms:</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">expression</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">]</span>
+<span class="p">[</span><span class="n">expression</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">iterable</span> <span class="k">if</span> <span class="n">test</span><span class="p">]</span>
+</code></pre></div>    </div>
+  </div>
+  <p>In general, there can be any number of “<code class="highlighter-rouge">for var in iterable</code>” forms used as shown below, and each one may have an optional “<code class="highlighter-rouge">if test</code>” after it.</p>
+
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">expression</span> <span class="k">for</span> <span class="n">var1</span> <span class="ow">in</span> <span class="n">iterable1</span> <span class="k">for</span> <span class="n">var2</span> <span class="ow">in</span> <span class="n">iterable2</span> <span class="k">for</span> <span class="n">var3</span> <span class="ow">in</span> <span class="n">iterable3</span> <span class="o">...</span><span class="p">]</span>
+<span class="p">[</span><span class="n">expression</span> <span class="k">for</span> <span class="n">var1</span> <span class="ow">in</span> <span class="n">iterable1</span> <span class="k">if</span> <span class="n">test1</span> <span class="k">for</span> <span class="n">var2</span> <span class="ow">in</span> <span class="n">iterable2</span> <span class="k">if</span> <span class="n">test2</span> <span class="o">...</span><span class="p">]</span>
+
+</code></pre></div>    </div>
+  </div>
+
+  <h4 id="semantics-2">Semantics</h4>
+  <p>The comprehension is equivalent to constructing a list using for-loops and if statements.</p>
+
+  <p>If there is only one iterable (the first two forms above), set <code class="highlighter-rouge">var</code> to each element of <em><code class="highlighter-rouge">iterable</code></em> and evaluate <em><code class="highlighter-rouge">expression</code></em> and add it to the list. If there is an <code class="highlighter-rouge">if test</code>, then include only those expressions where the <em><code class="highlighter-rouge">test</code></em> is <code class="highlighter-rouge">True</code>.</p>
+
+  <p>If there are multiple iterables, then it is equivalent to nested for-loops, where <code class="highlighter-rouge">for var1 in iterable1</code> is the outermost loop.</p>
+</div>
+<p>We can also use a similar notation to that of list comprehension to create generators using <strong>generator expressions</strong>, simply by replacing the square brackets in the list comprehension by round brackets <code class="highlighter-rouge">()</code>. All of the examples of list comprehensions above can be turned into generator expressions by using round brackets. Often the result of a comprehension will be iterated over, and using a generator expression in this situation is more efficient. Below is an example.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+<span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+<span class="mi">9</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="aside">
+
+  <h4 id="aside-more-comprehensions">Aside: More Comprehensions</h4>
+  <p>There are also two other types of comprehensions in Python. One is the dictionary comprehension, which can be used to make a dictionary, using <code class="highlighter-rouge">{}</code> braces instead of <code class="highlighter-rouge">[]</code> brackets, as well as a <code class="highlighter-rouge">key: value</code> expression.</p>
+
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
+<span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="mi">81</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="s">'CSSE1001'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">x</span><span class="p">}</span>
+<span class="p">{</span><span class="s">'1'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'0'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'C'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'E'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'S'</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">x</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">)}</span>
+<span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s">'C'</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s">'S'</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s">'S'</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s">'E'</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s">'1'</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s">'0'</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s">'0'</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s">'1'</span><span class="p">}</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>Another is the set comprehension. A <strong>set</strong> is a data type that represents an unordered collection of unique elements. They are efficient at checking whether or not an element is in a collection. Here are some examples of sets and set comprehensions:</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
+<span class="p">{</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">4</span> <span class="ow">in</span> <span class="n">s</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">5</span> <span class="ow">in</span> <span class="n">s</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="s">'CSSE1001'</span><span class="p">}</span>
+<span class="p">{</span><span class="s">'1'</span><span class="p">,</span> <span class="s">'0'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'E'</span><span class="p">,</span> <span class="s">'S'</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="n">i</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
+<span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">36</span><span class="p">}</span>
+
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<h2 id="higher-order-functions">Higher-Order Functions</h2>
+<p>Now that we have seen iterators, list comprehension and generators we return to functional programming. Let’s say that we have two very similar functions in our code. The first sums all the elements in a list, the second multiplies them. (There is already a built-in <a href="https://docs.python.org/3/library/functions.html#sum">sum</a> function, for the purposes of this section, we will ignore it and write our own.)</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">my_sum</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lst</span> <span class="p">:</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="k">def</span> <span class="nf">product</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lst</span> <span class="p">:</span>
+        <span class="n">result</span> <span class="o">*=</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>  </div>
+</div>
+<p>At the start of this course, we learnt to <code class="highlighter-rouge">abstract</code> similar code so that it does not need to be repeated, and turn the slight differences into parameters of the function, so we should be able to perform the same process here, and abstract these functions into a “combine” function which reduces a list into one value.</p>
+
+<p>There are two extra arguments that the <code class="highlighter-rouge">combine</code> function needs: an initial value to set <code class="highlighter-rouge">result</code> to, and an operation to combine elements with. A way that we can do this is to use a function as a parameter which represents the operation to perform on <code class="highlighter-rouge">result</code> and <code class="highlighter-rouge">x</code>. Now we can write the abstracted function.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">lst</span><span class="p">,</span> <span class="n">initial</span><span class="p">)</span> <span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">initial</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lst</span> <span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">operation</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This function is different to ones we have seen before, since the <code class="highlighter-rouge">operation</code> parameter is actually another function. A function which uses other functions in the parameter or return values, such as <code class="highlighter-rouge">combine</code>, is called a <strong>higher-order function</strong>. We have seen this before, when creating tkInter Button widgets: <code class="highlighter-rouge">Button(frame, command=function)</code>, and using the <code class="highlighter-rouge">bind</code> method: <code class="highlighter-rouge">widget.bind("&lt;Button-1&gt;", function)</code>. Notice that what is really happening here is that the function is being treated as an object that can be used in the function call. Not all programming languages offer the ability to do this, but it is still very useful.</p>
+
+<h2 id="anonymous-functions">Anonymous Functions</h2>
+<p>So how do we use the <code class="highlighter-rouge">combine</code> function? If we want to sum a list of numbers, we can do this:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">combine</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="n">lst</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="mi">15</span>
+</code></pre></div>  </div>
+</div>
+
+<p>It works! But, that seems like a lot of effort, having to define an addition function just so that the combine function works. Then for every other operation, we would need another trivial function definition just so that the combine function can use it. It would be helpful if there was a way of specifying simple functions without needing to write a <code class="highlighter-rouge">def</code> statement. Functions like this are called <strong>anonymous functions</strong>. The Python syntax to write an anonymous function is called a <strong>lambda form</strong>. The name lambda comes from <a href="https://en.wikipedia.org/wiki/Lambda_calculus">the Lambda Calculus</a> upon which functional languages are built. The equivalent of the <code class="highlighter-rouge">add</code> function above is just:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Here it is used with <code class="highlighter-rouge">combine</code>. Some more examples of lambda expressions are shown below.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">combine</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">,</span> <span class="n">lst</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="mi">15</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">double</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">double</span>
+<span class="o">&lt;</span><span class="n">function</span> <span class="o">&lt;</span><span class="k">lambda</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x011F2270</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">double</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="mi">6</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">double</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="mi">16</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">multiply</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">multiply</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="mi">12</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">multiply</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'abc'</span><span class="p">)</span>
+<span class="s">'abcabc'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">zero</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">zero</span>
+<span class="o">&lt;</span><span class="n">function</span> <span class="o">&lt;</span><span class="k">lambda</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x011F22F0</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">zero</span><span class="p">()</span>
+<span class="mi">0</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="important">
+
+  <h4 id="lambda-expression-syntax">Lambda Expression Syntax</h4>
+  <p>The syntax for a lambda form is:</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">lambda</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="o">...</span><span class="p">:</span> <span class="n">expression</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>There may be zero or more <code class="highlighter-rouge">args</code>.</p>
+  <h4 id="semantics-3">Semantics</h4>
+  <p>The lambda form is a function which can be treated as an expression. This means it can be assigned to variables, used in function calls and return values, or used in larger expressions. It is often used as a way of defining simple functions instead of using the <code class="highlighter-rouge">def</code> statement. It is equivalent to the function definition below, except that the lambda expression does not have the name <code class="highlighter-rouge">f</code>.</p>
+
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">return</span> <span class="n">expression</span>
+
+</code></pre></div>    </div>
+  </div>
+  <p>Note that the only thing a lambda function can do is evaluate and return an expression. A function that requires loops or large blocks of code should be created using a <code class="highlighter-rouge">def</code> statement.</p>
+</div>
+
+<p>As a final thought, we can redefine the original <code class="highlighter-rouge">my_sum</code> and <code class="highlighter-rouge">product</code> functions using <code class="highlighter-rouge">combine</code>, and specifying what the operation and initial value are. The third <code class="highlighter-rouge">concat</code> function concatenates a list of strings into one string. As a challenge, try thinking of other operations that can be used with <code class="highlighter-rouge">combine</code>.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">my_sum</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">return</span> <span class="n">combine</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">,</span> <span class="n">lst</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">product</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">return</span> <span class="n">combine</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="n">lst</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">concat</span><span class="p">(</span><span class="n">strings</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">return</span> <span class="n">combine</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">,</span> <span class="n">strings</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>These examples can be downloaded, including the original definitions of <code class="highlighter-rouge">my_sum</code>, <code class="highlighter-rouge">product</code> and <code class="highlighter-rouge">combine</code>: <code class="highlighter-rouge">higher_order.py</code></p>
+
+<div class="aside">
+
+  <h4 id="aside-reduce-and-operator">Aside: reduce and operator</h4>
+  <p>The <code class="highlighter-rouge">combine</code> function is a very useful function, so it is no surprise that there is a Python library for functional programming (called <code class="highlighter-rouge">functools</code>), which has a function that does the same thing, called <code class="highlighter-rouge">functools.reduce</code>. In functional programming languages, this operation is known as a <em>fold</em>.</p>
+
+  <p>The most common use of <code class="highlighter-rouge">reduce</code> is with operations like <code class="highlighter-rouge">+</code> and <code class="highlighter-rouge">*</code>, so it would be nice to have these as functions instead of having to write <code class="highlighter-rouge">lambda x,y: x+y</code>. The <a href="https://docs.python.org/3/library/operator.html">operator</a> module provides many operators as functions. Try <code class="highlighter-rouge">import operator</code>.</p>
+</div>
+
+<h2 id="returning-functions">Returning Functions</h2>
+<p>Another form of higher-order functions are those that return a function. Imagine a situation with lots of similar incrementing functions:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">add5</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">5</span>
+
+<span class="k">def</span> <span class="nf">add10</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">10</span>
+</code></pre></div>  </div>
+</div>
+<p>We want to abstract these, but in particular we want to write a function that takes a number <code class="highlighter-rouge">n</code> (like 1, 5 or 10), and gives back a function that adds <code class="highlighter-rouge">n</code>. A function that adds <code class="highlighter-rouge">n</code> to its input <code class="highlighter-rouge">x</code> is simply:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">n</span>
+</code></pre></div>  </div>
+</div>
+<p>Then this lambda expression is what we must return. The “add n” function is shown below with examples.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add_n</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">n</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add_n</span><span class="p">(</span><span class="mi">3</span><span class="p">)(</span><span class="mi">4</span><span class="p">)</span>
+<span class="mi">7</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add_n</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="mi">2</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add1</span> <span class="o">=</span> <span class="n">add_n</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add5</span> <span class="o">=</span> <span class="n">add_n</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add10</span> <span class="o">=</span> <span class="n">add_n</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+<p>Another way to think of this is as a <strong>partial application</strong>, because when we call the <code class="highlighter-rouge">add_n</code> function, we are not giving it all the information it needs to work out an answer. So instead, <code class="highlighter-rouge">add_n</code> gives back another function which waits for the remaining input.</p>
+
+<h2 id="itertools">Itertools</h2>
+<p>We have seen some of the potential of using iterators and generators. Python includes a module called <code class="highlighter-rouge">itertools</code> that contains a variety of useful iterators. Here we will briefly explore some of these. There are more details in the Python <a href="https://docs.python.org/3/library/itertools.html">documentation</a>.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">count</span>
+</code></pre></div>  </div>
+</div>
+<p>The <code class="highlighter-rouge">count</code> function returns an iterator that counts numbers from a given starting number (or 0 if no number is given).</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">count</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="mi">5</span>
+</code></pre></div>  </div>
+</div>
+
+<p><code class="highlighter-rouge">map</code> applies a function to each value in an iterable. In the first example below, it uses a squaring function on the values of <code class="highlighter-rouge">count(1)</code> which has the effect of making an iterator of square numbers. <code class="highlighter-rouge">filter</code> applies a test to each value in the iterable, and only gives back the values that pass the test. In the second example below, only the numbers which satisfy <code class="highlighter-rouge">x%2 == 0</code> are allowed. The third example shows a combination of both a filter and a map.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">squares</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">squares</span><span class="p">)</span>
+<span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">squares</span><span class="p">)</span>
+<span class="mi">9</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">evens</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">evens</span><span class="p">)</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">evens</span><span class="p">)</span>
+<span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">evens</span><span class="p">)</span>
+<span class="mi">6</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">even_squares</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">even_squares</span><span class="p">)</span>
+<span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">even_squares</span><span class="p">)</span>
+<span class="mi">16</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">even_squares</span><span class="p">)</span>
+<span class="mi">36</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"This is a short sentence"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:(</span><span class="n">x</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+<span class="p">[(</span><span class="s">'This'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s">'is'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'a'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'short'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s">'sentence'</span><span class="p">,</span> <span class="mi">8</span><span class="p">)]</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The <code class="highlighter-rouge">product</code>, <code class="highlighter-rouge">permutations</code>, <code class="highlighter-rouge">combinations</code> and <code class="highlighter-rouge">combinations_with_replacement</code> functions provide the Cartesian product and other combinatoric selections of elements.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span><span class="p">,</span> <span class="n">permutations</span><span class="p">,</span> <span class="n">combinations</span><span class="p">,</span> <span class="n">combinations_with_replacement</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="s">'ABC'</span><span class="p">,</span> <span class="s">'123'</span><span class="p">))</span>
+<span class="p">[(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'1'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'2'</span><span class="p">),</span> <span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'3'</span><span class="p">),</span> <span class="p">(</span><span class="s">'B'</span><span class="p">,</span> <span class="s">'1'</span><span class="p">),</span> <span class="p">(</span><span class="s">'B'</span><span class="p">,</span> <span class="s">'2'</span><span class="p">),</span> <span class="p">(</span><span class="s">'B'</span><span class="p">,</span> <span class="s">'3'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'1'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'2'</span><span class="p">),</span> <span class="p">(</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'3'</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="s">'01'</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">3</span><span class="p">)]</span>
+<span class="p">[</span><span class="s">'000'</span><span class="p">,</span> <span class="s">'001'</span><span class="p">,</span> <span class="s">'010'</span><span class="p">,</span> <span class="s">'011'</span><span class="p">,</span> <span class="s">'100'</span><span class="p">,</span> <span class="s">'101'</span><span class="p">,</span> <span class="s">'110'</span><span class="p">,</span> <span class="s">'111'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="n">permutations</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+<span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="n">combinations</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="n">combinations_with_replacement</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+</code></pre></div>  </div>
+</div>
+
+<p>To finish this section we give two more advanced examples using this module.</p>
+
+<h3 id="adding-line-numbers">Adding Line Numbers</h3>
+<p>For the first example we want to write a function that takes a text file as input and prints out the contents of the file with each line prepended with the line number. Here is the code (<code class="highlighter-rouge">add_linenum.py</code>).</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="n">in_file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">in_file</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="s">"{0:4d}: {1}"</span><span class="o">.</span><span class="nb">format</span><span class="p">,</span> <span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">f</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+<p>This program is designed to be run from the command line as follows:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">python</span> <span class="n">add_linenum</span><span class="o">.</span><span class="n">py</span> <span class="n">name_of_text_file</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The <code class="highlighter-rouge">sys</code> module, among other things, provides a mechanism to access the arguments of the command. The attribute <code class="highlighter-rouge">argv</code> is the list of arguments. The 0’th argument is the name of the command itself (in this case <code class="highlighter-rouge">add_linenum.py</code>) and the first argument is the name of the file we want processed. The first step is to open the file. Now <code class="highlighter-rouge">f</code> is a generator and so we can use the iterator functions on it. We use <code class="highlighter-rouge">map</code> with three arguments: a function that takes two arguments and two iterators. The result will be an iterator that uses the function to pairwise combine the contents of the two input iterators. Note that, by using the infinite iterator <code class="highlighter-rouge">count</code> we do not have to go to the trouble of constructing some list that has the same length as the contents of the file.</p>
+
+<h3 id="sieve-of-eratosthenes">Sieve of Eratosthenes</h3>
+<p>The final example is to implement the <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Sieve of Eratosthenes</a> for computing the list of prime numbers using generators. This is a very complicated but dramatic example of the power of lazy evaluation (using generators)! Here is the code (<code class="highlighter-rouge">sieve.py</code>).</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="k">def</span> <span class="nf">isnotdiv</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="p">(</span><span class="n">v</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">primes</span><span class="p">()</span> <span class="p">:</span>
+    <span class="n">ints</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">while</span> <span class="bp">True</span> <span class="p">:</span>
+        <span class="n">prime</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">ints</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">prime</span>
+        <span class="n">ints</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">isnotdiv</span><span class="p">(</span><span class="n">prime</span><span class="p">),</span> <span class="n">ints</span><span class="p">)</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">prime</span> <span class="o">=</span> <span class="n">primes</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+<span class="mi">5</span>
+</code></pre></div>  </div>
+</div>
+
+    </div>
+</body>
+
+</html>

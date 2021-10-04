@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Graphical User Interfaces – Part 1</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/tutorials/gui1.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <h1 id="graphical-user-interfaces--part-1">Graphical User Interfaces – Part 1</h1>
+<h2 id="blue-and-green">Blue and Green</h2>
+<p>In this week’s tutorial, we will build a small application which has a <code class="highlighter-rouge">Label</code> and some commands to change the colour of the label. 
+Download the file <code class="highlighter-rouge">week09_gui1_starter.py</code>, which contains code to run a simple application which greets the user when they click the button. Run this code and examine how it works. Modify this code to show the following layout:</p>
+
+<div style="text-align:center">
+  <p><img src="images/_08/08_01.png" alt="" /></p>
+</div>
+
+<p>Note that there should be a vertical padding of 10 pixels around the buttons (so that the buttons do not touch the bottom of the window). If the user increases the window size, the buttons should stay at the bottom, and the label should stay roughly in the centre of the window. 
+Next, modify the class so that clicking the buttons modify the text and colour of the label, as follows:</p>
+
+<div style="text-align:center">
+    <img src="images/_08/08_02.png" width="500" />
+    <img src="images/_08/08_03.png" width="500" />
+</div>
+
+<div class="important">
+
+  <h4 id="hint">Hint:</h4>
+  <p>Use packing options, such as <code class="highlighter-rouge">anchor</code>, <code class="highlighter-rouge">expand</code>, <code class="highlighter-rouge">fill</code>, and <code class="highlighter-rouge">padx</code>/<code class="highlighter-rouge">pady</code>/<code class="highlighter-rouge">ipadx</code>/<code class="highlighter-rouge">ipady</code>, to achieve the desired layout. You may also need to use frames.
+Use the <code class="highlighter-rouge">.config</code> method to modify the text and colour (<code class="highlighter-rouge">bg</code> for background colour) of the <code class="highlighter-rouge">Label</code>.</p>
+</div>
+
+<h2 id="what-is-your-favourite-colour">What… is Your Favourite Colour?</h2>
+<p>We will now expand the program to allow the user to enter their own choice of colour. Modify the program to show the following layout:</p>
+<div style="text-align:center">
+  <p><img src="images/_08/08_04.png" alt="" /></p>
+</div>
+
+<p>There should be a 10 pixel padding around all four sides of the bottom row, and the 10 pixel vertical padding on the middle row should be removed (otherwise, if there was 10 pixels of padding on both rows, it would look like a total gap of 20 pixels — the gap which appears in the screen shot is padding on top of the bottom row, not padding below the middle row). If the user increases the window size, the <code class="highlighter-rouge">Entry</code> widget should grow horizontally.</p>
+
+<div class="important">
+
+  <h4 id="hint-simple-text-box">Hint: Simple Text Box</h4>
+  <p>Tkinter’s <code class="highlighter-rouge">Entry</code> widget allows the user to type a single line of text into an application. The <code class="highlighter-rouge">.get()</code> method retrieves the current value from the <code class="highlighter-rouge">Entry</code>. 
+See <code class="highlighter-rouge">the notes on the Entry Widget</code>.</p>
+</div>
+<p>Next, modify the class so that the ‘Change it!’ button changes the colour and text of the label based on the text in the entry widget. For example,</p>
+
+<div style="text-align:center">
+  <p><img src="images/_08/08_05.png" alt="" /></p>
+</div>
+
+<p>(Try some of <a href="https://www.tcl.tk/man/tcl8.5/TkCmd/colors.html#M3">these colours</a> in your program!)</p>
+
+<h2 id="thats-not-a-colour">That’s Not a Colour!</h2>
+<p>Modify the program so that if the text in the entry widget is not a colour, an error box appears, for example:</p>
+<div style="text-align:center">
+  <p><img src="images/_08/08_06.png" alt="" /></p>
+</div>
+
+<div class="important">
+
+  <h4 id="hint-tkinter-error-messages">Hint: Tkinter Error Messages</h4>
+  <p>To display an error message box, we use the <code class="highlighter-rouge">messagebox</code> library. First, import <code class="highlighter-rouge">messagebox</code> from <code class="highlighter-rouge">tkinter</code>, then <code class="highlighter-rouge">messagebox.showerror("title", "message")</code> will display an error box with the given title and message.</p>
+
+  <p>If a widget’s <code class="highlighter-rouge">config</code> method is called with an invalid background colour, then it will raise a <code class="highlighter-rouge">tk.TclError</code>. So, we can tell if a colour is valid by trying to configure the label, and checking if <code class="highlighter-rouge">config</code> raises this error.</p>
+</div>
+
+
+    </div>
+</body>
+
+</html>

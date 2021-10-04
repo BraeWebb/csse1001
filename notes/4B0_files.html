@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Files</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/4B0_files.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p> Brave Sir Robin ran away, bravely ran away away. </p>
+  <p> When danger reared his ugly head, he bravely turned his tail and fled. </p>
+  <p> Yes, brave Sir Robin turned about, he turned his tail, he chickened out.</p>
+  <p> Bravely taking to his feet, he beat a very brave retreat. </p>
+  <p> A brave retreat by Sir Robin.</p>
+</blockquote>
+
+<h1 id="io">I/O</h1>
+<h2 id="files">Files</h2>
+
+<p>It is very common in programming that input is received from a file instead of, or as well as, user input. It is therefore necessary to be able to open, read and save to files. Python has a <strong>file object</strong> that enables us to perform these tasks.</p>
+
+<h3 id="reading-a-file">Reading a File</h3>
+
+<p>To show how to use the file object in Python here are a few examples using the <code class="highlighter-rouge">text.txt</code> file.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; f = open('text.txt', 'r')
+&gt;&gt;&gt; type(f)
+&lt;class '_io.TextIOWrapper'&gt;
+&gt;&gt;&gt; f.read()
+'Python is fun,\nit lets me play with files.\nI like playing with files,\nI can 
+do some really fun stuff.\n\nI like Python!\n'
+&gt;&gt;&gt; f.close()
+&gt;&gt;&gt; f.read()
+Traceback (most recent call last):
+  File "&lt;pyshell#5&gt;", line 1, in &lt;module&gt;
+    f.read()
+ValueError: I/O operation on closed file
+&gt;&gt;&gt;
+</code></pre></div>  </div>
+</div>
+
+<p>The first line shows opening a file using the <code class="highlighter-rouge">open</code> function and assigns it to the variable <code class="highlighter-rouge">f</code>. The open statement takes two string parameters; one is the name of the file to be opened. (The file name may include the path to the file if it is in a different directory to the Python program.) The other is the open mode, we will discuss this soon. The second example shows that <code class="highlighter-rouge">f</code> is a file object. The third example shows one of the multiple methods for getting the data from the file. The fourth example shows closing the file, <strong>it is important to close a file after the program is finished with it</strong>. The last example shows that it is not possible to perform operations on a closed file.</p>
+
+<div class="important">
+
+  <h4 id="open-syntax"><code class="highlighter-rouge">open</code> Syntax</h4>
+  <p><code class="highlighter-rouge">open(filename, mode)</code>
+Where <code class="highlighter-rouge">filename</code> is a string which is the name of the file and <code class="highlighter-rouge">mode</code> is a string indicating the opening mode.</p>
+
+  <h4 id="semantics">Semantics</h4>
+  <p><code class="highlighter-rouge">mode</code> is usually ‘r’ or ‘w’ for read or write respectively. <code class="highlighter-rouge">filename</code> can either be relative to the current working directory (i.e the directory or folder from which the program is executed) or can contain the full path to the file.</p>
+</div>
+
+<h3 id="more-reading">More Reading</h3>
+
+<p>As before, <code class="highlighter-rouge">dir(f)</code>, will list all the methods available for use with files. The more useful ones for us are the ones that allow us to read from and write to the file. Below are some examples of the read methods we have not seen yet.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; f = open('text.txt', 'r')
+&gt;&gt;&gt; dir(f)
+['_CHUNK_SIZE', '__class__', '__del__', '__delattr__', '__dict__', '__dir__', '__doc__', '__enter__', '__eq__', '__exit__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__iter__', '__le__', '__lt__', '__ne__', '__new__', '__next__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '_checkClosed', '_checkReadable', '_checkSeekable', '_checkWritable', '_finalizing', 'buffer', 'close', 'closed', 'detach', 'encoding', 'errors', 'fileno', 'flush', 'isatty', 'line_buffering', 'mode', 'name', 'newlines', 'read', 'readable', 'readline', 'readlines', 'seek', 'seekable', 'tell', 'truncate', 'writable', 'write', 'writelines']
+&gt;&gt;&gt; f.readline()
+'Python is fun,\n'
+&gt;&gt;&gt; f.readline()
+'it lets me play with files.\n'
+&gt;&gt;&gt; f.readline()
+'I like playing with files,\n'
+&gt;&gt;&gt; f.readline()
+'I can do some really fun stuff.\n'
+&gt;&gt;&gt; f.readline()
+'\n'
+&gt;&gt;&gt; f.readline()
+'I like Python!\n'
+&gt;&gt;&gt; f.readline()
+''
+&gt;&gt;&gt; f.close()
+&gt;&gt;&gt; f = open('text.txt', 'r')
+&gt;&gt;&gt; f.readlines()
+['Python is fun,\n', 'it lets me play with files.\n', 'I like playing with files,\n', 'I can do some really fun stuff.\n', '\n', 'I like Python!\n']
+&gt;&gt;&gt; f.close()
+&gt;&gt;&gt; f = open('text.txt', 'r')
+&gt;&gt;&gt; for line in f :
+	print(line)
+
+Python is fun,
+
+it lets me play with files.
+
+I like playing with files,
+
+I can do some really fun stuff.
+
+
+
+I like Python!
+
+&gt;&gt;&gt; f.close()
+&gt;&gt;&gt;
+</code></pre></div>  </div>
+</div>
+
+<p>The first few examples are the use of <code class="highlighter-rouge">readline</code>, it returns one line of the file each time it is called. When there are no lines left <code class="highlighter-rouge">readline</code> returns an empty string. The next example is of <code class="highlighter-rouge">readlines</code> (notice the extra s). <code class="highlighter-rouge">readlines</code> returns a list with each element in the list being a string of each line in the file. Notice how each line of the file ends in a <code class="highlighter-rouge">\n</code>. This is the new line character; it is the character that is, invisibly, inserted when we hit the Enter (return) key. The last example is the use of a <code class="highlighter-rouge">for</code> loop to directly iterate over the file one line at a time. Notice how there is an extra line in between each line that we print. This is caused by the new line character, <code class="highlighter-rouge">\n</code>. <code class="highlighter-rouge">print</code> interprets the new line and inserts it, but <code class="highlighter-rouge">print</code> also inserts its own new line, therefore we end up with two new lines printed.</p>
+
+<h3 id="writing">Writing</h3>
+<p>Now let’s have a look at a method for writing to a file:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"lets_write.txt"</span><span class="p">,</span> <span class="s">"w"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">"I'm writing in the file</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="mi">25</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="s">'look'</span><span class="p">,</span> <span class="s">'more'</span><span class="p">,</span> <span class="s">'words'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">text</span> <span class="p">:</span>
+	<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Now if we look at the file it should look like <code class="highlighter-rouge">lets_write1.txt</code>. Notice how we need to put in newlines manually when required, they are not automatically inserted. The write method returns the number of bytes or characters that it wrote to the file, in our example the string <code class="highlighter-rouge">"I'm writing in the file\n"</code> is 25 characters long. Also, notice how we did not have to first create the destination file. Opening the file for writing creates the file if it does not already exist.</p>
+
+<p>Let’s look at another method of writing to a file:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"lets_write.txt"</span><span class="p">,</span> <span class="s">"w"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="s">'many, many </span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="s">'lines</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="s">'are</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="s">'easily</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="s">'inserted</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span>
+        <span class="s">'this way!'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Now if we look at the file again it should look like <code class="highlighter-rouge">lets_write2.txt</code>. First, notice that the data we wrote before to the file is no longer there, this is because ‘w’ writes from the start of the file and <strong>writes over anything that is already there</strong>. Notice again that the newlines had to be inserted manually.</p>
+
+<h3 id="read-and-write">Read and Write</h3>
+<p>Let’s look at an example that uses both reading and writing, with some functionality to process the data. We are going to write a function that will take two filenames as arguments and turn all the characters in one file into uppercase and write them into the other file. Here is the code:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">make_all_caps</span><span class="p">(</span><span class="n">in_filename</span><span class="p">,</span> <span class="n">out_filename</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Convert all characters in 'in_filename' to caps and save to 'out_filename'.
+
+    Parameters:
+        in_filename (string): Name of the file from which to read the data.
+        out_filename (string): Name of the file to which the data is to be saved.
+
+    Preconditions:
+        The files can be opened for reading and writing.
+    """</span>
+    <span class="n">fin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">in_filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+    <span class="n">fout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_filename</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fin</span> <span class="p">:</span>
+        <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+    <span class="n">fin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The first thing we do is open the <code class="highlighter-rouge">in_filename</code> in Universal read mode for portability. We then open the <code class="highlighter-rouge">out_filename</code> in write mode. Next, we use a <code class="highlighter-rouge">for</code> loop to iterate over the lines in <code class="highlighter-rouge">fin</code>. The body of the <code class="highlighter-rouge">for</code> loop writes the uppercase version (using strings <code class="highlighter-rouge">upper</code> method) of each line of the input file (<code class="highlighter-rouge">fin</code>) to the output file (<code class="highlighter-rouge">fout</code>). Both files are then closed so that the file pointers are not left open. 
+Saving as <code class="highlighter-rouge">make_all_caps.py</code> we can run an example using our <code class="highlighter-rouge">text.txt</code> file from earlier.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">make_all_caps</span><span class="p">(</span><span class="s">'text.txt'</span><span class="p">,</span> <span class="s">'text_caps.txt'</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>If we now have a look at <code class="highlighter-rouge">text_caps.txt</code>. it should have the contents of <code class="highlighter-rouge">text.txt</code> all in upper-case.</p>
+
+<p>Files often have blank lines in them in one form or another. When dealing with files it is generally easier to ignore blank lines than to attempt to process them. However, blank lines are not really blank, they contain the new line character ‘\n’.</p>
+
+<p>Let’s modify our code above to remove blank lines from the file as well as make it all upper case.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">all_caps_no_blanks</span><span class="p">(</span><span class="n">in_filename</span><span class="p">,</span> <span class="n">out_filename</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Changes every character in 'in_filename' to all caps, 
+       removes blank lines and saves to 'out_filename'.
+
+    Parameters:
+        in_filename (string): Name of the file from which to read the data.
+        out_filename (string): Name of the file to which the data is to be saved.
+
+    Preconditions:
+        The files can be opened for reading and writing.
+    """</span>
+    <span class="n">fin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">in_filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+    <span class="n">fout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_filename</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fin</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">line</span> <span class="o">!=</span> <span class="s">'</span><span class="se">\n</span><span class="s">'</span> <span class="p">:</span>
+            <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+    <span class="n">fin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Notice the change to the function is the addition of the <code class="highlighter-rouge">if</code> statement to check if the current <code class="highlighter-rouge">line</code> is equal to a new line character. If it is not then we write the upper case version of the line to the <code class="highlighter-rouge">fout</code> file. 
+Now if we run <code class="highlighter-rouge">all_caps_no_blanks1.py</code> on our <code class="highlighter-rouge">text.txt</code> file like below:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">all_caps_no_blanks</span><span class="p">(</span><span class="s">'text.txt'</span><span class="p">,</span> <span class="s">'text_caps_nb.txt'</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>We should now have a file that looks like <code class="highlighter-rouge">text_caps_nb.txt</code>.</p>
+
+<p>Blank lines might not just include new line characters, they may also include other forms of whitespace, such as spaces and tabs. If we run the previous function on <code class="highlighter-rouge">words.txt</code> we will notice that there are still blank lines as some of them have spaces.</p>
+
+<p>We can modify the example again to work in these cases using the string method <code class="highlighter-rouge">strip</code>. <code class="highlighter-rouge">strip</code> returns a copy of the string with all whitespace removed from the beginning and end of the string. If the string incorporates only whitespace then an empty string is returned.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">all_caps_no_blanks</span><span class="p">(</span><span class="n">in_filename</span><span class="p">,</span> <span class="n">out_filename</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Changes every character in 'in_filename' to all caps, 
+       removes blank lines and saves to 'out_filename'.
+
+    Parameters:
+        in_filename (string): Name of the file from which to read the data.
+        out_filename (string): Name of the file to which the data is to be saved.
+
+    Preconditions:
+        The files can be opened for reading and writing.
+    """</span>
+    <span class="n">fin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">in_filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+    <span class="n">fout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_filename</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fin</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="p">:</span>
+            <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+    <span class="n">fin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Now if we run <code class="highlighter-rouge">all_caps_no_blanks2.py</code> on our <code class="highlighter-rouge">words.txt</code> file and <code class="highlighter-rouge">words_allcaps_nb.txt</code> then it should be capitalised with no blank lines.</p>
+
+<p>Notice how the <code class="highlighter-rouge">if</code> statement is simply <code class="highlighter-rouge">if line.strip()</code>. This is because the boolean representation of an empty string is <code class="highlighter-rouge">False</code> while a string with anything in it is <code class="highlighter-rouge">True</code>. The same can be said for objects such as lists, tuples and more.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">(</span><span class="s">''</span><span class="p">)</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">(</span><span class="s">' '</span><span class="p">)</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">(</span><span class="s">'sfg'</span><span class="p">)</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">([])</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">(())</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="bp">True</span>
+</code></pre></div>  </div>
+</div>
+
+    </div>
+</body>
+
+</html>

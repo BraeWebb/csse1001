@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Graphical User Interfaces – Part 2</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/9B0_GUI_02.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p> Three people have just fallen past that window</p>
+</blockquote>
+
+<h1 id="graphical-user-interfaces--part-2">Graphical User Interfaces – Part 2</h1>
+<h2 id="structuring-gui-code">Structuring GUI Code</h2>
+
+<p>When writing GUI code, we often want to group widgets. This typically happens when we want these widgets to appear together in our GUI and/or when these widgets, as a group, have a role in the program. We can think of this as creating our own widget. We will take our game screen example from the previous section as an example. The four directional buttons could be grouped together into a single “controls” widget that can be dealt with separately. To do this, we will write a class that inherits from <code class="highlighter-rouge">Frame</code> and contains our directional buttons.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="k">class</span> <span class="nc">Controls</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">):</span>
+    <span class="s">"""Widget containing four directional buttons."""</span>
+
+    <span class="n">BUTTON_WIDTH</span> <span class="o">=</span> <span class="mi">10</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="s">"""Set up the four directional buttons in the frame.
+
+        Parameters:
+            parent (Tk): Window in which this widget is to be placed.
+        """</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="n">upBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"UP"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span>
+                          <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">push_up</span><span class="p">)</span>
+        <span class="n">upBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">)</span>
+        <span class="n">leftBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"LEFT"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span>
+                            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">push_left</span><span class="p">)</span>
+        <span class="n">leftBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="n">downBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"DOWN"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span>
+                            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">push_down</span><span class="p">)</span>
+        <span class="n">downBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="n">rightBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"RIGHT"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span>
+                             <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">push_right</span><span class="p">)</span>
+        <span class="n">rightBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">push_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"UP"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">push_down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"DOWN"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">push_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"LEFT"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">push_right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"RIGHT"</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">GameApp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="s">"""Basic game window design."""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">master</span><span class="p">):</span>
+        <span class="s">"""Initialise the game window layout
+           with four directional buttons widget and a screen.
+
+        Parameters:
+            master (Tk): Main window for application.
+        """</span>
+        <span class="n">master</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Buttons are good"</span><span class="p">)</span>
+        <span class="n">controls</span> <span class="o">=</span> <span class="n">Controls</span><span class="p">(</span><span class="n">master</span><span class="p">)</span>
+        <span class="n">controls</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="n">screen</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">master</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"screen"</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"light blue"</span><span class="p">,</span> 
+                          <span class="n">width</span><span class="o">=</span><span class="mi">38</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">)</span>
+
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">GameApp</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The first class we wrote is our <code class="highlighter-rouge">Controls</code> class, to represent the directional buttons widget. This class inherits from <code class="highlighter-rouge">Frame</code>, so the <code class="highlighter-rouge">__init__</code> method calls <code class="highlighter-rouge">Super().__init__</code> with the argument <strong><code class="highlighter-rouge">parent</code></strong>. Conventionally <code class="highlighter-rouge">parent</code> is the name used for the widget that will contain this one, i.e. its parent. In this case, the <code class="highlighter-rouge">Controls</code> widget will be contained inside the root Tk object. We might consider another application where the <code class="highlighter-rouge">Controls</code> widget is packed inside a different container widget, such as another <code class="highlighter-rouge">Frame</code>.</p>
+
+<p>The <code class="highlighter-rouge">__init__</code> method then creates our four buttons. Again, as we are not expecting to update or get information from our buttons we do not need to store them in class variables. We want to pack the buttons into the <code class="highlighter-rouge">Controls</code> instance (recall that <code class="highlighter-rouge">Controls</code> is just a specialisation of a <code class="highlighter-rouge">Frame</code>, so we can pack widgets into it). To do this, we set the parent widget of the buttons as <code class="highlighter-rouge">self</code>, the <code class="highlighter-rouge">Controls</code> object.</p>
+
+<p>The <code class="highlighter-rouge">Controls</code> class contains four more methods, which are used as the callbacks for the buttons. By writing these methods in the <code class="highlighter-rouge">Controls</code> class, we make it clear that they will only be used by the four buttons contained in this widget. It also gives these methods access to any information in the <code class="highlighter-rouge">Controls</code> object, which might be necessary if the buttons needed to do more complex tasks.</p>
+
+<p>In the <code class="highlighter-rouge">GameApp</code> class we now only need to create two widgets, our <code class="highlighter-rouge">Controls</code> widget and the <code class="highlighter-rouge">Label</code> widget. (Where we are using the <code class="highlighter-rouge">Label</code> to represent the game’s screen.)</p>
+
+<p>We can now save our code as <code class="highlighter-rouge">game_screen_classes.py</code> and have a look.</p>
+
+<p><img src="images/9B0_GUI_01.png" alt="" /></p>
+
+<p>Writing the code this way, where we group sets of related widgets into classes, makes the code look very simple, and it is. It is easy code to read, debug and modify, which is why this method is preferred.</p>
+
+<p>As well as <code class="highlighter-rouge">Frame</code>, tkInter includes other blank container widgets to arrange widgets inside. The <code class="highlighter-rouge">Toplevel</code> widget represents a new blank window. This can be useful for creating dialog boxes within an application, by creating a class which inherits from <code class="highlighter-rouge">Toplevel</code>.</p>
+
+<h2 id="the-canvas">The Canvas</h2>
+<p>We have already seen the <code class="highlighter-rouge">Label</code>, <code class="highlighter-rouge">Button</code> and <code class="highlighter-rouge">Entry</code> widgets and now we consider the <code class="highlighter-rouge">Canvas</code> widget. The <code class="highlighter-rouge">Canvas</code> widget represents a space for drawing objects on the screen, such as lines, ovals and polygons. The following example shows the use of some of the drawing methods available.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+
+<span class="k">class</span> <span class="nc">CanvasApp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">master</span><span class="p">):</span>
+        <span class="n">master</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Canvas"</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Canvas</span><span class="p">(</span><span class="n">master</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"white"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">)</span>
+
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">master</span><span class="p">)</span>
+        <span class="n">drawBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"Draw"</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">)</span>
+        <span class="n">drawBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="n">dltBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"Delete"</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">)</span>
+        <span class="n">dltBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="n">frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Example 1
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">create_line</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)])</span>
+
+        <span class="c1"># Example 2
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">create_polygon</span><span class="p">([(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="mi">330</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">140</span><span class="p">),</span> <span class="p">(</span><span class="mi">270</span><span class="p">,</span> <span class="mi">80</span><span class="p">)])</span>
+
+        <span class="c1"># Example 3
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">create_oval</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s">"red"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="c1"># Example 4
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="mi">350</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">431</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s">"blue"</span><span class="p">)</span>
+
+        <span class="c1"># Example 5
+</span>        <span class="n">centre</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="mi">50</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">create_oval</span><span class="p">(</span><span class="n">centre</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">radius</span><span class="p">,</span> <span class="n">centre</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">radius</span><span class="p">,</span>
+                                 <span class="n">centre</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">radius</span><span class="p">,</span> <span class="n">centre</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">radius</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="n">centre</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">radius</span><span class="p">,</span> <span class="n">centre</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">radius</span><span class="p">,</span>
+                                      <span class="n">centre</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">radius</span><span class="p">,</span> <span class="n">centre</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">radius</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">ALL</span><span class="p">)</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">CanvasApp</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This code is available as <code class="highlighter-rouge">canvas.py</code>. When we run the script, we see a blank white screen with two buttons. When we click on the “Draw” button, we see this result:</p>
+
+<p><img src="images/9B0_GUI_02.png" alt="" /></p>
+
+<p>First, the <code class="highlighter-rouge">CanvasApp</code> creates and packs a <code class="highlighter-rouge">Canvas</code> with a white background, and a width and height of 500 pixels. Each of the drawing methods of the <code class="highlighter-rouge">Canvas</code> use a coordinate system in pixels, where <code class="highlighter-rouge">(0, 0)</code> is the top-left, the positive <code class="highlighter-rouge">x</code> direction is to the right, and the positive <code class="highlighter-rouge">y</code> direction is down the screen. Note that this is different from the standard Cartesian coordinate system where the positive <code class="highlighter-rouge">y</code> direction is up. The coordinates of the bottom-right corner of the canvas are the same as the width and height of the canvas.</p>
+
+<p>Note, we did not create a separate widget for the two control buttons, <code class="highlighter-rouge">Draw</code> and <code class="highlighter-rouge">Delete</code>. As there are only two buttons, this example did not call for the creation of a new widget.</p>
+
+<p>The first object drawn on the canvas is a line. The <code class="highlighter-rouge">create_line</code> method takes a sequence of x and y coordinates, and draws a straight line between each pair of coordinates. The example above shows a line drawn from <code class="highlighter-rouge">(0, 0)</code> in the top-left corner, through <code class="highlighter-rouge">(150, 50)</code>, ending at <code class="highlighter-rouge">(200, 200)</code>. <code class="highlighter-rouge">create_line</code> can also be used to draw a curve or freehand line, by drawing straight lines with many coordinates placed very close together. This does not make an exact curve, but it will appear very close to a curve when viewed on a monitor.</p>
+
+<p>The second object drawn here is a polygon. Similar to drawing a line, it takes a sequence of coordinates. The polygon is then drawn with these coordinates as the vertices, and then the polygon is filled in (coloured black by default). This example shows a kite shape, drawn in the order of the coordinates specified. Note that unlike the <code class="highlighter-rouge">create_line</code> method, <code class="highlighter-rouge">create_polygon</code> will join the last pair of coordinates back to the first (which is necessary to draw a closed polygon).</p>
+
+<p>Example 3 above draws a red oval. Here, we specify four coordinates, representing the leftmost <code class="highlighter-rouge">x</code>-coordinate, the uppermost <code class="highlighter-rouge">y</code>-coordinate, the rightmost <code class="highlighter-rouge">x</code>-coordinate, and the lowermost <code class="highlighter-rouge">y</code>-coordinate. Another way to visualise the drawing of the oval is to imagine a rectangle drawn around it, such as the square and circle arrangement in the above image. When drawing the oval, we specify the top-left and bottom-right corners of the surrounding rectangle, and the oval is drawn inside. Here, we also make use of two optional arguments, <code class="highlighter-rouge">outline</code> and <code class="highlighter-rouge">width</code>. Each of the <code class="highlighter-rouge">Canvas</code> “create” methods can accept optional arguments to specify other details, such as colour and line width. <code class="highlighter-rouge">outline</code> and <code class="highlighter-rouge">width</code> are used to specify the colour and width of the oval’s outline.</p>
+
+<p>Example 4 draws a blue rectangle. To do this, we specify the coordinates of the top-left and bottom-right corners of the rectangle. Here we have also used another optional argument, <code class="highlighter-rouge">fill</code>, to specify the internal colour of the rectangle. By default, ovals and rectangles are transparent. Notice though that the rectangle still has a black border, but it can be hard to spot, because it is only one pixel wide. To set the entire rectangle to the same colour, we would either set the <code class="highlighter-rouge">outline</code> to the same colour, or set the outline <code class="highlighter-rouge">width</code> to 0 to remove the outline entirely.</p>
+
+<p>In the final example, we draw a circle by specifying a centre and radius, then using simple arithmetic to create an oval at the desired coordinates. We also draw a square at the same coordinates. If we were writing an application that involved drawing a lot of circles, we might consider writing a method that takes a pair of coordinates and a radius, and draws a circle centred at those coordinates. This would make the drawing part of the application much easier to write.</p>
+
+<p>The <code class="highlighter-rouge">Canvas</code> has a <code class="highlighter-rouge">delete</code> method, which can be used to remove drawings from the screen. Clicking on the “Delete” button will call <code class="highlighter-rouge">self._canvas.delete(tk.ALL)</code>, which deletes all the drawings. Clicking on “Draw” will bring them back. Note that clicking on “Draw” multiple times will actually draw a complete set of new objects on the canvas each time, but because they all overlap, we only see one set of drawings.</p>
+
+<h2 id="customising-widgets">Customising Widgets</h2>
+<p>We will continue with the game example and replace the screen label with a <code class="highlighter-rouge">Canvas</code>. In doing this, we will need to think about the logic of the application. What will be the initial setup of the screen area? What information about the game will need to be stored in the program? How will user interactions change the internal state, and how do we show this change in the screen?</p>
+
+<p>In this simple example, the game involves a circle shown on the screen, initially in the centre. Pressing the four buttons will move the circle around the screen, drawing lines behind it to form a path. To do this, the application will need to keep track of where the circle is, and all the coordinates of where it has been. When updating a figure or drawing on a <code class="highlighter-rouge">Canvas</code> widget, it can often be easiest to clear the entire canvas, then redraw everything from scratch.</p>
+
+<p>Now that we have investigated the functionality required for the canvas, we realise that each of the buttons needs to take a number of steps to complete its task. Because this all seems to be the work of the <code class="highlighter-rouge">Canvas</code>, we will customise <code class="highlighter-rouge">Canvas</code> to have extra methods and attributes to fit our situation. That is, we will write a subclass of <code class="highlighter-rouge">Canvas</code> which has this functionality.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Screen</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Canvas</span><span class="p">):</span>
+    <span class="s">"""A customised Canvas that can move a circle and draw a path."""</span>
+    <span class="n">SIZE</span> <span class="o">=</span> <span class="mi">230</span>  <span class="c1"># The size of the screen.
+</span>    <span class="n">RADIUS</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># The radius of the circle
+</span>    <span class="n">MOVE</span> <span class="o">=</span> <span class="mi">10</span>   <span class="c1"># The amount to move on each step
+</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="s">"""Create and initialise a screen.
+
+        Parameters:
+            parent (Tk): Window in which this screen is to be placed.
+        """</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">"light blue"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SIZE</span><span class="p">,</span>
+                         <span class="n">height</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SIZE</span><span class="p">)</span>
+
+        <span class="c1"># Start in the centre, without any points in the path.
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SIZE</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SIZE</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_redraw</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Redraw the game screen after a move."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">ALL</span><span class="p">)</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">RADIUS</span><span class="p">,</span>
+                  <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">RADIUS</span><span class="p">,</span>
+                  <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">RADIUS</span><span class="p">,</span>
+                  <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">RADIUS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_oval</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s">"black"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+        <span class="s">"""Move the circle by a given amount. 
+
+        Parameters:
+            dx (int): Amount to move in the x-coordinate.
+            dy (int): Amount to move in the y-coordinate.
+        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">+=</span> <span class="n">dx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+=</span> <span class="n">dy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_redraw</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">move_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Move the circle up."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">MOVE</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">move_down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Move the circle down."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MOVE</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">move_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Move the circle left."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_move</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">MOVE</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">move_right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Move the circle right."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MOVE</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This <code class="highlighter-rouge">Screen</code> will store the current coordinates of the circle, and a list of coordinates it has been to. The private method <code class="highlighter-rouge">_redraw</code> will delete and redraw the circle and path on the screen, which is done at the beginning and after every movement. The methods <code class="highlighter-rouge">move_up</code>, <code class="highlighter-rouge">move_down</code>, <code class="highlighter-rouge">move_left</code> and <code class="highlighter-rouge">move_right</code> will perform the actions required by the four buttons. Note that, as <code class="highlighter-rouge">Screen</code> inherits from <code class="highlighter-rouge">Canvas</code>, it can make method calls such as <code class="highlighter-rouge">self.delete(tk.ALL)</code> and <code class="highlighter-rouge">self.create_oval</code> to draw on the canvas. We can now modify the <code class="highlighter-rouge">Controls</code> and <code class="highlighter-rouge">GameApp</code> classes to use a <code class="highlighter-rouge">Screen</code>:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Controls</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">):</span>
+    <span class="s">"""Widget containing four directional buttons."""</span>
+
+    <span class="n">BUTTON_WIDTH</span> <span class="o">=</span> <span class="mi">10</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="s">"""Set up the four directional buttons in the frame.
+
+        Parameters:
+            parent (Tk): Window in which this widget is to be placed.
+            screen (Screen): Screen which has the movement methods.
+        """</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="n">upBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"UP"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span>
+                          <span class="n">command</span><span class="o">=</span><span class="n">screen</span><span class="o">.</span><span class="n">move_up</span><span class="p">)</span>
+        <span class="n">upBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">)</span>
+        <span class="n">leftBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"LEFT"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span>
+                            <span class="n">command</span><span class="o">=</span><span class="n">screen</span><span class="o">.</span><span class="n">move_left</span><span class="p">)</span>
+        <span class="n">leftBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="n">downBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"DOWN"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span>
+                            <span class="n">command</span><span class="o">=</span><span class="n">screen</span><span class="o">.</span><span class="n">move_down</span><span class="p">)</span>
+        <span class="n">downBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="n">rightBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"RIGHT"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span>
+                             <span class="n">command</span><span class="o">=</span><span class="n">screen</span><span class="o">.</span><span class="n">move_right</span><span class="p">)</span>
+        <span class="n">rightBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">GameApp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="s">"""Basic game window design."""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">master</span><span class="p">):</span>
+        <span class="s">"""Initialise the game window layout with
+           four directional buttons and a screen.
+
+        Parameters:
+            master (Tk): Main window for application.
+        """</span>
+        <span class="n">master</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Game"</span><span class="p">)</span>
+        <span class="n">screen</span> <span class="o">=</span> <span class="n">Screen</span><span class="p">(</span><span class="n">master</span><span class="p">)</span>
+        <span class="n">controls</span> <span class="o">=</span> <span class="n">Controls</span><span class="p">(</span><span class="n">master</span><span class="p">,</span> <span class="n">screen</span><span class="p">)</span>
+        <span class="n">controls</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The updated <code class="highlighter-rouge">Controls</code> class now also requires the <code class="highlighter-rouge">Screen</code> object, and it uses this to access the four methods needed as <code class="highlighter-rouge">Button</code> callbacks. The <code class="highlighter-rouge">GameApp</code> is also modified to create a <code class="highlighter-rouge">Screen</code> instead of a <code class="highlighter-rouge">Label</code>. This code is available to download as <code class="highlighter-rouge">game_canvas.py</code>. When we interact with this program, we see this result:</p>
+
+<p><img src="images/9B0_GUI_03.png" alt="" /></p>
+
+<div class="aside">
+
+  <h4 id="aside-separating-the-controls-and-screen">Aside: Separating the <code class="highlighter-rouge">Controls</code> and <code class="highlighter-rouge">Screen</code></h4>
+  <p>The constructor of the <code class="highlighter-rouge">Controls</code> class above requires an object called <code class="highlighter-rouge">screen</code>, and it uses this to access <code class="highlighter-rouge">move_up</code>, <code class="highlighter-rouge">move_left</code>, <code class="highlighter-rouge">move_down</code> and <code class="highlighter-rouge">move_right</code>, which should be methods that perform the relevant actions. For this program, there is no problem, but what if we wanted to modify the program? There are several potential issues to watch out for.</p>
+
+  <p>If we modified (or replaced) the <code class="highlighter-rouge">Screen</code> and renamed the four movement methods, we would need to modify the code in <code class="highlighter-rouge">Controls</code>. Worse, if the methods were moved into separate classes, or made into top-level functions, we could no longer pass in a single object to <code class="highlighter-rouge">Controls</code> which can access all the methods. This is still not a major issue in an application this small, but in a larger application, many other classes could be dependent on the <code class="highlighter-rouge">Screen</code>, which would cause problems when we tried to change the <code class="highlighter-rouge">Screen</code>. We could also imagine a situation where multiple <code class="highlighter-rouge">Controls</code> widgets were needed, each requiring different method names.</p>
+
+  <p>To fix these issues, we can modify the <code class="highlighter-rouge">Controls</code> class to require the four callback functions directly; then the internals of <code class="highlighter-rouge">Controls</code> would still work, even if the methods were renamed or moved. We then have this result:</p>
+
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Controls</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">):</span>
+    <span class="n">BUTTON_WIDTH</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="n">down</span><span class="p">,</span> <span class="n">left</span> <span class="n">right</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">upBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"UP"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span>
+                          <span class="n">command</span><span class="o">=</span><span class="n">up</span><span class="p">)</span>
+        <span class="n">upBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">)</span>
+        <span class="n">leftBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"LEFT"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span>
+                            <span class="n">command</span><span class="o">=</span><span class="n">left</span><span class="p">)</span>
+        <span class="n">leftBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="n">downBtn</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"DOWN"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span>
+                            <span class="n">command</span><span class="o">=</span><span class="n">down</span><span class="p">)</span>
+        <span class="n">downBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="n">rightBtn</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"RIGHT"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_WIDTH</span><span class="p">,</span>
+                          <span class="n">command</span><span class="o">=</span><span class="n">right</span><span class="p">)</span>
+        <span class="n">rightBtn</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">GameApp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">master</span><span class="p">):</span>
+        <span class="n">master</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Game"</span><span class="p">)</span>
+        <span class="n">screen</span> <span class="o">=</span> <span class="n">Screen</span><span class="p">(</span><span class="n">master</span><span class="p">)</span>
+        <span class="n">controls</span> <span class="o">=</span> <span class="n">Controls</span><span class="p">(</span><span class="n">master</span><span class="p">,</span> <span class="n">screen</span><span class="o">.</span><span class="n">move_up</span><span class="p">,</span> <span class="n">screen</span><span class="o">.</span><span class="n">move_down</span><span class="p">,</span>
+                                    <span class="n">screen</span><span class="o">.</span><span class="n">move_left</span><span class="p">,</span> <span class="n">screen</span><span class="o">.</span><span class="n">move_right</span><span class="p">)</span>
+        <span class="n">controls</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>The <code class="highlighter-rouge">GameApp</code> is also modified to access the respective methods of <code class="highlighter-rouge">Screen</code>. In a sense, we have now completely separated the <code class="highlighter-rouge">Controls</code> and <code class="highlighter-rouge">Screen</code> classes, and the interaction between them is defined entirely by the <code class="highlighter-rouge">GameApp</code> class. In a larger application, moving all of this control to the one class will make it much easier to treat all the other classes as distinct from each other.</p>
+
+  <p>The implementation for this code is provided in <code class="highlighter-rouge">game_canvas_sep_controls.py</code>.</p>
+</div>
+
+<h2 id="events">Events</h2>
+<p>The program we wrote above feels difficult to use. In particular, the use of the four buttons is unintuitive. We would like the user to interact directly with the canvas using mouse gestures. <code class="highlighter-rouge">tkInter</code> provides a means of doing this using <strong>events</strong>. An event is a trigger which occurs when the user makes an action with the mouse or keyboard. For example, when the user makes a left click, <code class="highlighter-rouge">tkInter</code> will trigger a <code class="highlighter-rouge">&lt;Button-1&gt;</code> event, and when the user drags the mouse with a left click, <code class="highlighter-rouge">tkInter</code> will trigger a <code class="highlighter-rouge">&lt;B1-Motion&gt;</code> event. To use these types of event, we must <code class="highlighter-rouge">bind</code> the event to a callback function, similar to a callback function for a <code class="highlighter-rouge">Button</code>. Widgets have a method bind which takes an event name (as a string) and a callback function. The function must take one argument, typically called <code class="highlighter-rouge">event</code>, which contains information on the trigger that occurred. For example, if the mouse was clicked or moved, the <code class="highlighter-rouge">event</code> would contain the coordinates of the cursor.</p>
+
+<p>As an example, we will modify the game screen example so that clicking and dragging will move the circle. We should again consider the application logic: what should happen when the mouse is pressed or released? What should happen when the pressed mouse is dragged slightly? If the mouse is pressed, we should look to see if we have clicked on the circle, and if so mark it as being “selected”. When the mouse is dragged, we should see if the circle has been selected, and if so move it accordingly. When the mouse is released, then we mark the circle as “deselected”.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">class</span> <span class="nc">Screen</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Canvas</span><span class="p">):</span>
+    <span class="s">""</span><span class="n">Customised</span> <span class="n">Canvas</span> <span class="n">that</span> <span class="n">can</span> <span class="n">move</span> <span class="n">a</span> <span class="n">circle</span> <span class="ow">and</span> <span class="n">draw</span> <span class="n">a</span> <span class="n">path</span><span class="o">.</span><span class="s">"""
+    SIZE = 230   # The size of the screen.
+    RADIUS = 5   # The radius of the circle
+
+    def __init__(self, parent):
+        """</span><span class="n">Create</span> <span class="ow">and</span> <span class="n">initialise</span> <span class="n">a</span> <span class="n">screen</span><span class="o">.</span>
+
+        <span class="n">Parameters</span><span class="p">:</span>
+            <span class="n">parent</span> <span class="p">(</span><span class="n">Tk</span><span class="p">):</span> <span class="n">Window</span> <span class="ow">in</span> <span class="n">which</span> <span class="n">this</span> <span class="n">screen</span> <span class="ow">is</span> <span class="n">to</span> <span class="n">be</span> <span class="n">placed</span><span class="o">.</span>
+        <span class="s">"""
+        super().__init__(parent, bg="light blue", width=self.SIZE,
+                         height=self.SIZE)
+
+        # Start in the centre, without any points in the path.
+        self._x, self._y = (self.SIZE / 2, self.SIZE / 2)
+        self._path = [(self._x, self._y)]
+
+        self._circle_select = False   # Is the circle selected.
+        self.bind("&lt;Button-1&gt;", self._click_event)
+        self.bind("&lt;B1-Motion&gt;", self._move_event)
+
+        self._redraw()
+
+
+    def _redraw(self):
+        """</span><span class="n">Redraw</span> <span class="n">the</span> <span class="n">game</span> <span class="n">screen</span> <span class="n">after</span> <span class="n">a</span> <span class="n">move</span><span class="o">.</span><span class="s">"""
+        self.delete(tk.ALL)
+        coords = (self._x - self.RADIUS,
+                  self._y - self.RADIUS,
+                  self._x + self.RADIUS,
+                  self._y + self.RADIUS)
+        self.create_oval(coords, fill="black", width=0)
+        if len(self._path) &gt; 1:
+            self.create_line(self._path)
+
+    def _move(self, dx, dy):
+        """</span><span class="n">Move</span> <span class="n">the</span> <span class="n">circle</span> <span class="n">by</span> <span class="n">a</span> <span class="n">given</span> <span class="n">amount</span><span class="o">.</span> 
+
+        <span class="n">Parameters</span><span class="p">:</span>
+            <span class="n">dx</span> <span class="p">(</span><span class="nb">int</span><span class="p">):</span> <span class="n">Amount</span> <span class="n">to</span> <span class="n">move</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">x</span><span class="o">-</span><span class="n">coordinate</span><span class="o">.</span>
+            <span class="n">dy</span> <span class="p">(</span><span class="nb">int</span><span class="p">):</span> <span class="n">Amount</span> <span class="n">to</span> <span class="n">move</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">y</span><span class="o">-</span><span class="n">coordinate</span><span class="o">.</span>
+        <span class="s">"""
+        self._x += dx
+        self._y += dy
+        self._path.append((self._x, self._y))
+        self._redraw()
+
+    def _click_event(self, event):
+        """</span><span class="n">Sets</span> <span class="n">whether</span> <span class="n">the</span> <span class="n">circle</span> <span class="ow">is</span> <span class="n">selected</span><span class="o">.</span>
+        
+        <span class="n">Parameters</span><span class="p">:</span>
+            <span class="n">event</span> <span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Event</span><span class="p">):</span> <span class="n">Selection</span> <span class="n">event</span> <span class="k">with</span> <span class="n">mouse</span> <span class="n">coordinates</span><span class="o">.</span>        
+        <span class="s">"""
+        dist_to_circle = math.hypot(event.x - self._x, event.y - self._y)
+        self._circle_select = (dist_to_circle &lt; self.RADIUS)
+
+    def _move_event(self, event):
+        """</span><span class="n">Calculates</span> <span class="n">the</span> <span class="n">distance</span> <span class="n">to</span> <span class="n">move</span> <span class="n">the</span> <span class="n">circle</span> <span class="n">so</span> <span class="n">that</span> <span class="n">it</span> <span class="n">moves</span> 
+           <span class="n">With</span> <span class="n">the</span> <span class="n">mouse</span><span class="o">.</span>
+        
+        <span class="n">Parameters</span><span class="p">:</span>
+            <span class="n">event</span> <span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Event</span><span class="p">):</span> <span class="n">Drag</span> <span class="n">event</span> <span class="k">with</span> <span class="n">the</span> <span class="n">new</span> <span class="n">mouse</span> <span class="n">coordinates</span><span class="o">.</span>
+        <span class="s">"""
+        if self._circle_select:
+            dx = event.x - self._x
+            dy = event.y - self._y
+            self._move(dx, dy)
+
+
+class GameApp(object):
+    """</span><span class="n">Basic</span> <span class="n">game</span> <span class="n">to</span> <span class="n">move</span> <span class="n">a</span> <span class="n">circle</span> <span class="n">around</span> <span class="n">a</span> <span class="n">screen</span> <span class="k">with</span> <span class="n">the</span> <span class="n">mouse</span><span class="o">.</span><span class="s">"""
+    def __init__(self, master):
+        """</span><span class="n">Initialise</span> <span class="n">the</span> <span class="n">game</span> <span class="n">screen</span><span class="o">.</span>
+
+        <span class="n">Parameters</span><span class="p">:</span>
+            <span class="n">master</span> <span class="p">(</span><span class="n">Tk</span><span class="p">):</span> <span class="n">Main</span> <span class="n">window</span> <span class="k">for</span> <span class="n">application</span><span class="o">.</span>
+        <span class="s">"""
+        screen = Screen(master)
+        screen.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
+
+
+root = tk.Tk()
+app = GameApp(root)
+root.mainloop()
+</span></code></pre></div>  </div>
+</div>
+
+<p>We have removed the buttons as they are no longer needed, we will now have full control over the circle with the mouse. The first big change to notice is the addition of three new lines in the <code class="highlighter-rouge">Screen.__init__</code> method. The first line is simply a boolean value to tell if the circle is selected. The next two lines are calling the <strong><code class="highlighter-rouge">bind</code></strong> method. <code class="highlighter-rouge">bind</code> takes a string as the first argument for what type of event we are interested in. The second argument is the method to call when that event occurs. The two events we are interested in is <strong><code class="highlighter-rouge">Button-1</code></strong> (If the left mouse button is clicked) and <strong><code class="highlighter-rouge">B1-Motion</code></strong> (If the mouse is moved while the left mouse button is held down).</p>
+
+<p>Next, we have removed the four move methods of <code class="highlighter-rouge">Screen</code> and replaced them with two new methods. These methods are the methods called by our two bound events. Notice how each takes an argument <code class="highlighter-rouge">event</code>. This argument is the event. It is a class of Python and contains information about the event that occurred. We can use <code class="highlighter-rouge">event</code> to access the x, y location of the mouse when the event occurred by accessing the class variable. The <code class="highlighter-rouge">_click_event</code> method sets <code class="highlighter-rouge">self._circle_select</code> to a boolean value representing whether or not the mouse is inside the circle. The <code class="highlighter-rouge">_move_event</code> method calculates the distance between where the circle is and where the mouse is so that we can move the circle to the mouse’s location.</p>
+
+<p>We can now save our code as <code class="highlighter-rouge">game.py</code> and have a look at our new game.</p>
+
+<p><img src="images/9B0_GUI_04.png" alt="" /></p>
+
+<p>We can now move the circle any way that we wish at any time just by simply moving the mouse.</p>
+
+<div class="aside">
+
+  <h4 id="more-about-events">More About Events</h4>
+  <p>Here is a table of some of the events that can be used. (Sourced from <a href="http://www.python-course.eu/tkinter_events_binds.php">http://www.python-course.eu/tkinter_events_binds.php</a>)</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Events</th>
+        <th><strong>Description</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code class="highlighter-rouge">&lt;Button-1&gt;</code></td>
+        <td>A mouse button is pressed over the widget. Button 1 is the leftmost button, button 2 is the middle button (where available), and button 3 the rightmost button. When a mouse button is pressed down over a widget, Tkinter will automatically “grab” the mouse pointer, and mouse events will then be sent to the current widget as long as the mouse button is held down. The current position of the mouse pointer (relative to the widget) is provided in the <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> members of the event object passed to the callback.</td>
+      </tr>
+      <tr>
+        <td><code class="highlighter-rouge">&lt;B1-Motion&gt;</code></td>
+        <td>The mouse is moved, with mouse button 1 being held down (use B2 for the middle button, B3 for the right button). The current position of the mouse pointer is provided in the <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> members of the event object passed to the callback.</td>
+      </tr>
+      <tr>
+        <td><code class="highlighter-rouge">&lt;Return&gt;</code></td>
+        <td>The user pressed the Enter key. Virtually all keys on the keyboard can be bound to. For an ordinary 102-key PC-style keyboard, the special keys are <strong>Cancel</strong> (the Break key), <strong>BackSpace</strong>, <strong>Tab</strong>, <strong>Return</strong>(the Enter key), <strong>Shift_L</strong> (any Shift key), <strong>Control_L</strong> (any Control key), <strong>Alt_L</strong> (any Alt key), <strong>Pause</strong>, <strong>Caps_Lock</strong>, <strong>Escape</strong>, <strong>Prior</strong> (Page Up), <strong>Next</strong> (Page Down), <strong>End</strong>, <strong>Home</strong>, <strong>Left</strong>, <strong>Up</strong>, <strong>Right</strong>, <strong>Down</strong>, <strong>Print</strong>, <strong>Insert</strong>, <strong>Delete</strong>, <strong>F1</strong>, <strong>F2</strong>, <strong>F3</strong>, <strong>F4</strong>, <strong>F5</strong>, <strong>F6</strong>, <strong>F7</strong>, <strong>F8</strong>, <strong>F9</strong>, <strong>F10</strong>, <strong>F11</strong>, <strong>F12</strong>, <strong>Num_Lock</strong>, and <strong>Scroll_Lock</strong>.</td>
+      </tr>
+      <tr>
+        <td><code class="highlighter-rouge">&lt;Key&gt;</code></td>
+        <td>The user pressed any key. The key  is provided in the <code class="highlighter-rouge">char</code> member of the event object passed  to the callback (this is an empty string for special keys).</td>
+      </tr>
+      <tr>
+        <td><code class="highlighter-rouge">a</code></td>
+        <td>The user typed an “a”.  Most printable characters can be used as is. The exceptions are space (<code class="highlighter-rouge">&lt;space&gt;</code>) and less than (<code class="highlighter-rouge">&lt;less&gt;</code>). Note that <code class="highlighter-rouge">1</code> is a keyboard binding, while <code class="highlighter-rouge">&lt;1&gt;</code> is a button binding.</td>
+      </tr>
+      <tr>
+        <td><code class="highlighter-rouge">&lt;Configure&gt;</code></td>
+        <td>The widget changed size (or  location, on some platforms). The new size is provided in the <code class="highlighter-rouge">width</code> and <code class="highlighter-rouge">height</code> attributes of the event object  passed to the callback.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Some of the attributes of the <code class="highlighter-rouge">event</code> class</p>
+
+  <p>| Attribute          | Description                                                  |
+| —————— | ———————————————————— |
+| <code class="highlighter-rouge">x</code>, <code class="highlighter-rouge">y</code>           | The current mouse position, in pixels.                       |
+| <code class="highlighter-rouge">x_root</code>, <code class="highlighter-rouge">y_root</code> | The current mouse position relative to the upper left corner of the screen, in pixels. |
+| <code class="highlighter-rouge">char</code>             | The character code (keyboard events only), as a string.      |
+| <code class="highlighter-rouge">width</code>, <code class="highlighter-rouge">height</code>  | The new size of the widget, in pixels (Configure events only). |
+| <code class="highlighter-rouge">type</code>             | The event type.                                              |</p>
+</div>
+
+<h2 id="more-tkinter">More tkInter</h2>
+<p>In this example, we will create a simple text editor application. This text editor will be able to open, edit, save and close files. We will also keep track of whether the text file has been edited without saving, and prompt the user to save before exiting.</p>
+
+<p>We will introduce a new widget, <code class="highlighter-rouge">Text</code>, to represent the text editing area. This widget has three methods which will be useful in this application: <code class="highlighter-rouge">text.get(1.0, tk.END)</code> will retrieve the text which has been entered into the widget, <code class="highlighter-rouge">text.delete(1.0, tk.END)</code> will remove all the text from the widget, and <code class="highlighter-rouge">text.insert(tk.END, string)</code> will insert a <em><code class="highlighter-rouge">string</code></em> of text into the widget. There are many other types of widgets not described here, to represent other GUI elements, such as lists of elements, scroll bars, check boxes, and radio buttons. Each has its own set of methods which are useful in manipulating the information that type of widget stores.</p>
+
+<p>To open and save files, we will use the tkInter <code class="highlighter-rouge">filedialog</code> module. This module is imported using the other type of <code class="highlighter-rouge">import</code> that is performed as follows: <code class="highlighter-rouge">from module import submodule_or_class</code> This comes with two methods, <code class="highlighter-rouge">askopenfilename</code> for choosing a file to open, and <code class="highlighter-rouge">asksaveasfilename</code> for choosing a file to save to. These functions will open a dialog box prompting the user to choose a file, and then return the file name. The appearance of the dialog boxes is determined by the operating system (that is, it is a <strong>native</strong> dialog box), so the user will already be familiar with using the dialog without requiring effort from the programmer.</p>
+
+<p>We will also need to display short dialog message boxes. When the user tries to abandon a file without saving changes, we will prompt them to save. We will add this functionality to an “Exit” menu item, as well as when the user closes the window using the “X” button on the top of the window. We will also create a simple “About” dialog box, giving information about the text editor when the user asks for it. These dialog boxes will be <strong>modal</strong>; this means that the user will not be able to continue using the application until they respond to the dialog. We will use tkInter’s <code class="highlighter-rouge">messagebox</code> module. This comes with several functions for showing different types of dialog such as errors, warnings, “Yes/No” or “Retry/Cancel” questions. They can be customised to show different titles, messages, icons and buttons, and will return a value based on the user’s button choice.</p>
+
+<p>We will also introduce the <code class="highlighter-rouge">Menu</code> widget, for adding the native menus on the top of the window. To make a set of menus, we create a <code class="highlighter-rouge">Menu</code> object to represent the menu bar. We then add more <code class="highlighter-rouge">Menu</code> objects to represent each of the drop-down menus. To add individual menu items, we give them a label and assign a callback <code class="highlighter-rouge">command</code>, just as we create callbacks for buttons.</p>
+
+<p>We will now write the text editor application. As well as constructing the GUI, we will need to store the filename of the document being edited. We will also store a boolean flag indicating whether or not the file has been edited without saving. When we attempt to close the file or open a new one, we will check to see if the user wishes to save their work.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="n">tk</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">filedialog</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">messagebox</span>
+
+
+<span class="k">class</span> <span class="nc">TextEditor</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Simple text editing application."""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">master</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">""" Create the screen for the text editor
+
+        Parameters:
+            master (Tk): Window in which this application is to be displayed.        
+        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_master</span> <span class="o">=</span> <span class="n">master</span>
+        <span class="n">master</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Text Editor"</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="s">''</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_edited</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="n">master</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s">"&lt;Key&gt;"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_edited</span><span class="p">)</span>
+
+        <span class="c1"># Create the menu.
+</span>        <span class="n">menubar</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Menu</span><span class="p">(</span><span class="n">master</span><span class="p">)</span>
+        <span class="n">master</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">menu</span><span class="o">=</span><span class="n">menubar</span><span class="p">)</span>
+
+        <span class="n">filemenu</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Menu</span><span class="p">(</span><span class="n">menubar</span><span class="p">)</span>
+        <span class="n">menubar</span><span class="o">.</span><span class="n">add_cascade</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">"File"</span><span class="p">,</span> <span class="n">menu</span><span class="o">=</span><span class="n">filemenu</span><span class="p">)</span>
+        <span class="n">filemenu</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">"New"</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">new</span><span class="p">)</span>
+        <span class="n">filemenu</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">"Open"</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_file</span><span class="p">)</span>
+        <span class="n">filemenu</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">"Save"</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">)</span>
+        <span class="n">filemenu</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">"Save As..."</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">save_as</span><span class="p">)</span>
+        <span class="n">filemenu</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">"Exit"</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
+
+        <span class="n">helpmenu</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Menu</span><span class="p">(</span><span class="n">menubar</span><span class="p">)</span>
+        <span class="n">menubar</span><span class="o">.</span><span class="n">add_cascade</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">"Help"</span><span class="p">,</span> <span class="n">menu</span><span class="o">=</span><span class="n">helpmenu</span><span class="p">)</span>
+        <span class="n">helpmenu</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">"About"</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">about</span><span class="p">)</span>
+
+        <span class="n">master</span><span class="o">.</span><span class="n">protocol</span><span class="p">(</span><span class="s">"WM_DELETE_WINDOW"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Create a new text file."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_close</span><span class="p">()</span> <span class="p">:</span>
+            <span class="c1"># Forget about the currently open file.
+</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="s">''</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_master</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Text Editor"</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_edited</span> <span class="o">=</span> <span class="bp">False</span>
+
+
+    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Open a text file."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_close</span><span class="p">()</span> <span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">askopenfilename</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_master</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Text Editor: {0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_edited</span> <span class="o">=</span> <span class="bp">False</span>
+
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">""" Save the contents of the text in memory to the file."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">asksaveasfilename</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perform_save</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">save_as</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">""" Allow saving the contents of the text in memory to a new file."""</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">asksaveasfilename</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perform_save</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Exit the text editor application."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_close</span><span class="p">()</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_master</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">about</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Generate an 'About' dialog."""</span>
+        <span class="n">messagebox</span><span class="o">.</span><span class="n">showinfo</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">"Text Editor"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s">"A simple text editor"</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_set_edited</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Record that the text file has been edited.
+        
+        Parameters:
+            event (Tk.Event): Record that text has been edited if any event
+                              occurs in the text.
+        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_edited</span> <span class="o">=</span> <span class="bp">True</span>
+
+
+    <span class="k">def</span> <span class="nf">_perform_save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="p">:</span>
+        <span class="s">"""Store the contents in memory into a file."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_master</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Text Editor: {0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">))</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">,</span> <span class="s">"w"</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_edited</span> <span class="o">=</span> <span class="bp">False</span>
+
+
+    <span class="k">def</span> <span class="nf">_can_close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">""" Ask the user if they want to save the changed text to a file. 	
+        Returns:
+            (bool) True if it is safe to close the file;
+                   False if the user wants to continue editing.
+        """</span>
+        <span class="n">can_close</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_edited</span> <span class="p">:</span>
+            <span class="n">reply</span> <span class="o">=</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">askquestion</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">messagebox</span><span class="o">.</span><span class="n">YESNOCANCEL</span><span class="p">,</span>
+                        <span class="n">title</span><span class="o">=</span><span class="s">"File not saved!"</span><span class="p">,</span>
+                        <span class="n">message</span><span class="o">=</span><span class="s">"Would you like to save this file?"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">reply</span> <span class="o">==</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">YES</span> <span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>   <span class="c1"># can_close is already True.
+</span>            <span class="c1"># elif reply == messagebox.NO :
+</span>                <span class="c1"># can_close is already True.
+</span>            <span class="k">elif</span> <span class="n">reply</span> <span class="o">==</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">CANCEL</span> <span class="p">:</span>
+                <span class="n">can_close</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="c1"># else file is not edited, so can close.
+</span>        <span class="k">return</span> <span class="n">can_close</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span> <span class="p">:</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+    <span class="n">TextEditor</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>First, we will look at the <code class="highlighter-rouge">__init__</code> method. We create and pack a <code class="highlighter-rouge">Text</code>, and bind the <code class="highlighter-rouge">"&lt;Key&gt;"</code> event to a method which will set the <code class="highlighter-rouge">_is_edited</code> flag to True whenever a key is pressed. The statement <code class="highlighter-rouge">menubar = tk.Menu(master)</code> will create a menu bar for the <code class="highlighter-rouge">master</code> window, and in the line below, we configure the <code class="highlighter-rouge">master</code> to display this menu bar. To create menus, <code class="highlighter-rouge">tk.Menu(menubar)</code> will create an empty menu list, and <code class="highlighter-rouge">menubar.add_cascade</code> will insert it onto the menu bar with the given text label. To add a menu item, we use the method <code class="highlighter-rouge">add_command</code>, and pass in a text label to display, and a callback function, just as with <code class="highlighter-rouge">Button</code> objects. If, for example, we wanted to create a sub-menu to the “File” menu, we would create <code class="highlighter-rouge">tk.Menu(filemenu)</code> and call <code class="highlighter-rouge">filemenu.add_cascade</code>; menu items and further sub-menus can then be added into this menu. The statement <code class="highlighter-rouge">master.protocol("WM_DELETE_WINDOW", self.close)</code> is similar to a binding; it allows us to set an action to perform when a particular event occurs. In this case, <code class="highlighter-rouge">"WM_DELETE_WINDOW"</code> is the event represented by closing the window (using the “X” icon), and we set the <code class="highlighter-rouge">self.close</code> method as a callback. Note that the same callback is also assigned to the “File -&gt; Exit” menu item, so either of these actions will do the same thing.</p>
+
+<p>In the <code class="highlighter-rouge">new</code>, <code class="highlighter-rouge">open</code> and <code class="highlighter-rouge">close</code> methods, we need to check if the user has edited the file and wishes to save. To do this, we use the <code class="highlighter-rouge">_can_close</code> helper method to ask this question, save if necessary, and return <code class="highlighter-rouge">False</code> if the user wishes to continue editing the file. Since the <code class="highlighter-rouge">save</code> and <code class="highlighter-rouge">save_as</code> functionality is similar (they both save the text to a file), we abstract this to the <code class="highlighter-rouge">_perform_save</code> method.</p>
+
+<p>This program is available to download as <code class="highlighter-rouge">text_editor.py</code>. When we run the application, we now see this:</p>
+
+<p><img src="images/9B0_GUI_05.png" alt="" /></p>
+
+    </div>
+</body>
+
+</html>

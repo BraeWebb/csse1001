@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Arithmetic, Basic Types and Variables</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/arithmetic-types-variables.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p>Our galaxy itself contains a hundred million stars;</p>
+  <p>It’s a hundred thousand light-years side to side;</p>
+  <p>It bulges in the middle sixteen thousand light-years thick,</p>
+  <p>But out by us it’s just three thousand light-years wide.</p>
+</blockquote>
+
+<h2 id="arithmetic-basic-types-and-variables">Arithmetic, Basic Types and Variables</h2>
+
+<h3 id="python-arithmetic-and-integers">Python Arithmetic and Integers</h3>
+
+<p>Python understands arithmetical expressions and so the interpreter can be used as a calculator. For example:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">4</span>
+<span class="mi">14</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
+<span class="mi">20</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">10</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">-</span> <span class="mi">3</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">10</span> <span class="o">-</span> <span class="p">(</span><span class="mi">4</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span>
+<span class="mi">9</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">-</span><span class="mi">3</span> <span class="o">*</span> <span class="mi">4</span>
+<span class="o">-</span><span class="mi">12</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">3</span>
+<span class="mi">8</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="mi">18</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="mi">36</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">7</span> <span class="o">//</span> <span class="mi">3</span>
+<span class="mi">2</span>
+</code></pre></div>  </div>
+</div>
+
+<p>(Notice how ** is the Python operator for exponentiation.)</p>
+
+<p>There are a few things worth pointing out about these examples.
+Firstly, the Python interpreter reads user input as strings – i.e. sequences of characters. So for example, the first user input is read in as the string “2 + 3 * 4”. This is treated by the interpreter as a piece of syntax – in this case valid syntax that represents an arithmetic expression. The interpreter then uses the semantics to convert from a string representing an arithmetic expression into the actual expression. So the substring “2” is converted to its semantics (meaning) – i.e. the number 2. The substring “+” is converted to its meaning – i.e. the addition operator. Once the interpreter converts from the syntax to the semantics, the interpreter then evaluates the expression, displaying the result.</p>
+
+<p>This process of converting from syntax to semantics is called <strong>parsing</strong>.</p>
+
+<p>Secondly, the relationship between the arithmetical operators is what humans normally expect – for example, multiplication takes precedence over addition. When looking at expressions involving operators, we need to consider both <strong>precedence</strong> and <strong>associativity</strong>.</p>
+
+<p>Precedence of operators describes how tightly the operators bind to the arguments. For example, exponentiation binds more tightly than multiplication or division, which in turn bind more tightly than addition or subtraction. Precedence dictates the order of operator application (i.e. exponentiation is done first, etc.)</p>
+
+<p>Associativity describes the order of application when the same operator appears in a sequence – for example <code class="highlighter-rouge">10 - 4 - 3</code>. All the arithmetical operators are left-associative – i.e. the evaluation is from left to right. Just like in mathematics, we can use brackets when the desired expression requires the operators to be evaluated in a different order.</p>
+
+<p>Finally, dividing one integer by another, using the // divide operator (known as the div operator), produces an integer – the fractional part of the answer is discarded.</p>
+
+<p>These examples are about integer arithmetic – integers form a built-in type in Python.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">int</span><span class="s">'&gt;</span><span class="err">
+</span></code></pre></div>  </div>
+</div>
+
+<p>Note how the abbreviation for integers in Python is int. Also, note that type is a built-in Python function that takes an object (in this case the number 3) and returns the type of the object. We will see plenty of examples of Python functions in following sections.</p>
+
+<h3 id="floats">Floats</h3>
+
+<p>There is another number type that most programming languages support – <strong>floats</strong>. Unlike integers, which can only store whole numbers, floats can store fractional parts as well. Below are some examples involving floats in Python.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="mi">7</span><span class="o">/</span><span class="mi">4</span>
+<span class="mf">1.75</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">7</span><span class="o">//</span><span class="mi">4</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">-</span><span class="mi">7</span><span class="o">//</span><span class="mi">4</span>
+<span class="o">-</span><span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">7.9</span><span class="o">//</span><span class="mi">3</span>
+<span class="mf">2.0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">2.0</span><span class="o">**</span><span class="mi">60</span>
+<span class="mf">1.152921504606847e+18</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">0.5</span><span class="o">**</span><span class="mi">60</span>
+<span class="mf">8.6736173798840355e-19</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">2e3</span>
+<span class="mf">2000.0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="mf">2e3</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">float</span><span class="s">'&gt;</span><span class="err">
+</span><span class="s">&gt;&gt;&gt; int(2.3)</span><span class="err">
+</span><span class="s">2</span><span class="err">
+</span><span class="s">&gt;&gt;&gt; float(3)</span><span class="err">
+</span><span class="s">3.0</span><span class="err">
+</span><span class="s">&gt;&gt;&gt; 5/6</span><span class="err">
+</span><span class="s">0.8333333333333334</span><span class="err">
+</span><span class="s">&gt;&gt;&gt; -5/6</span><span class="err">
+</span><span class="s">-0.8333333333333334</span><span class="err">
+</span></code></pre></div>  </div>
+</div>
+<p>The syntax for floats is a sequence of characters representing digits, optionally containing the decimal point character and also optionally a trailing ‘e’ and another sequence of digit characters. The character sequence after the ‘e’ represents the power of 10 by which to multiply the first part of the number. This is called <strong>scientific notation</strong>.</p>
+
+<p>The first example shows that dividing two integers with the / operator gives a float result of the division. The single / division is known as <strong>float division</strong> and will always result in a float. If an integer result is desired, the // operator must be used. This is the integer division operator and will divide the two numbers as if they are integers (performs the mathematical operation <strong>div</strong>). <strong>Note</strong> that this will always round down towards negative infinity, as shown in the third example. If one of the numbers is a float, it turns both numbers into their integer form and then performs the integer division but returns a float answer still, as seen in the third example.</p>
+
+<p>The last two examples highlights one very important aspect of floats – <strong>they are approximations to numbers</strong>. Not all decimal numbers can be accurately represented by the computer in its internal representation. This is because floats occupy a fixed chunk of memory. The amount of memory used to store a float constrains the precision of the numbers that it can represent.</p>
+
+<h3 id="variables-and-assignments">Variables and Assignments</h3>
+<p>Most calculators allow results to be stored away in memory and later retrieved in order to carry out complex calculations. This can be done in Python by using <strong>variables</strong>. As we will soon see, variables are not just for numerical calculations but can be used to store any information for later use.</p>
+
+<p>The valid syntax for variables is any string starting with an alphabetic or underscore character (‘a’-‘z’ or ‘A’- ‘Z’ or ‘<em>’) followed by a sequence of alphanumeric characters (alphabetic + ‘0’-‘9’) and ‘</em>’. Python uses special <strong>keywords</strong> itself and these cannot be used for any other purpose (for example, as variable names). The Python keywords are listed in the table below. A way of knowing that a word is a keyword is that it will appear in a different colour in IDLE.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="bp">False</span>      <span class="k">class</span>      <span class="nc">finally</span>    <span class="ow">is</span>         <span class="k">return</span>
+    <span class="bp">None</span>       <span class="k">continue</span>   <span class="k">for</span>        <span class="k">lambda</span>     <span class="k">try</span>
+    <span class="bp">True</span>       <span class="k">def</span>        <span class="nf">from</span>       <span class="k">nonlocal</span>   <span class="k">while</span>
+    <span class="ow">and</span>        <span class="k">del</span>        <span class="k">global</span>     <span class="ow">not</span>        <span class="k">with</span>
+    <span class="k">as</span>         <span class="k">elif</span>       <span class="k">if</span>         <span class="ow">or</span>         <span class="k">yield</span>
+    <span class="k">assert</span>     <span class="k">else</span>       <span class="kn">import</span>     <span class="nn">pass</span>
+    <span class="k">break</span>      <span class="k">except</span>     <span class="ow">in</span>         <span class="k">raise</span>
+</code></pre></div>  </div>
+</div>
+<p>In later sections, we will see that it is important to choose a good name for variables that accurately shows what the value is meant to represent. There is a convention as well in Python of using lowercase letters in variable names and underscores to separate words, which is adhered to in these notes. There is not anything stopping us ignoring the points in this paragraph, but it becomes an unnecessary annoyance for other people reading our code.
+Below are some examples of the use of variables.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">num1</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num1</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">12</span><span class="o">**</span><span class="n">num1</span>
+<span class="mi">144</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num2</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="nb">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s">'num2'</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num3</span> <span class="o">=</span> <span class="n">num1</span><span class="o">**</span><span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num3</span>
+<span class="mi">4</span>
+</code></pre></div>  </div>
+</div>
+<p>The first example above shows an <strong>assignment</strong> – the variable <code class="highlighter-rouge">num1</code> is assigned the value <code class="highlighter-rouge">2</code>. The semantics of the <strong>assignment statement</strong> is: evaluate (i.e. work out the value of) the right hand expression and associate the variable on the left hand side of the statement with that value. The left hand side of an assignment statement must be a variable (at least for now – later we will see other possibilities). If the variable already has a value, that value is overwritten by the value on the right hand side of the statement. Note that the assignment statement (when evaluated) has no value – the interpreter does not display a value. Assignments are used for their <strong>side-effect</strong> – the association of a variable with a value.</p>
+
+<p>The second example shows what happens when we ask the interpreter to evaluate <code class="highlighter-rouge">num1</code>. The result is the value associated with the variable. The third example extends this by putting <code class="highlighter-rouge">num1</code> inside an arithmetical expression. The fourth example shows what happens when we try to get the value of the variable <code class="highlighter-rouge">num2</code>, to which we have not yet given a value. This is known as an exception and will appear whenever something is typed that Python cannot understand or evaluate. The final example shows how variables can appear on both sides of an assignment (in this case, a variable called <code class="highlighter-rouge">num3</code> is assigned the value worked out by evaluating <code class="highlighter-rouge">num1**2</code>; the value of <code class="highlighter-rouge">num1</code> is 2, so <code class="highlighter-rouge">num1**2</code> is 4 and this is the value given to <code class="highlighter-rouge">num3</code>.</p>
+
+<h3 id="strings">Strings</h3>
+
+<p>To finish this section we introduce the <strong>string</strong> type, which is used to represent text, and we give some examples of type conversion and printing.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"Spam "</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">s</span>
+<span class="s">'Spam Spam Spam '</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">s</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> 
+<span class="nb">TypeError</span><span class="p">:</span> <span class="n">unsupported</span> <span class="n">operand</span> <span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="o">+</span><span class="p">:</span> <span class="s">'int'</span> <span class="ow">and</span> <span class="s">'str'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="s">''</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">str</span><span class="s">'&gt;</span><span class="err">
+</span><span class="s">&gt;&gt;&gt; int("42")</span><span class="err">
+</span><span class="s">42</span><span class="err">
+</span><span class="s">&gt;&gt;&gt; str(42)</span><span class="err">
+</span><span class="s">'</span><span class="mi">42</span><span class="s">'</span><span class="err">
+</span><span class="s">&gt;&gt;&gt; print(s + 42)</span><span class="err">
+</span><span class="s">Traceback (most recent call last):</span><span class="err">
+</span><span class="s">  File "&lt;stdin&gt;", line 1, in </span><span class="err">
+</span><span class="s">TypeError: cannot concatenate '</span><span class="nb">str</span><span class="s">' and '</span><span class="nb">int</span><span class="s">' objects</span><span class="err">
+</span><span class="s">&gt;&gt;&gt; print(s + str(42))</span><span class="err">
+</span><span class="s">Spam 42</span><span class="err">
+</span></code></pre></div>  </div>
+</div>
+
+<p>The syntax for strings is a double or single quote, followed by a sequence of characters, followed by a matching double or single quote. Notice how the space character is part of the string assigned in the variable <code class="highlighter-rouge">s</code>, as it is contained within the double quotes. The string <code class="highlighter-rouge">s</code>, therefore, is five characters in length. Notice carefully how this affects the statements executed after it.</p>
+
+<p>As the second example shows, the multiplication operator is overloaded and generates a string that is the number copies of the original string.</p>
+
+<p>Type conversion is used to change between a string representing a number and the number itself.</p>
+
+<p>The built-in <code class="highlighter-rouge">print</code> function takes a string argument and displays the result to the user. Note, that in this example, <code class="highlighter-rouge">str</code> converts <code class="highlighter-rouge">42</code> into a string and then the addition operator concatenates (i.e. joins) the two strings together and the result is displayed to the user – another example of overloading.</p>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Class Design</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/7A0_class_design.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p> The architects themselves came in to explain the advantages of both designs. </p>
+</blockquote>
+
+<h1 id="class-design">Class Design</h1>
+<p>In the previous sections, we have used existing classes (e.g. str and list) that enable us to be able to write functions and programs that do what we wish. In this section, we will begin to design our own classes. Being able to write our own classes is a useful tool as not everything is in a format that we like or will find easy to use for a particular program that we may wish to write. We will start with the design of a simple ADT for a 2D point (an x and y coordinate).</p>
+
+<h2 id="2d-point-class">2D Point Class</h2>
+<p>For our first example will we write the class definition for a 2D point. This class will require a <em>constructor</em> (to be able to create instances of the class), a couple of accessors that get the x, y coordinate of the point and a mutator to move the point by a certain distance. The class definition is as follows. Below, we will discuss this definition in detail.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""A 2D point ADT using Cartesian coordinates."""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Construct a point object based on (x, y) coordinates.
+        
+        Parameters:
+            x (float): x coordinate in a 2D cartesian grid.
+            y (float): y coordinate in a 2D cartesian grid.
+        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">y</span>
+
+    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""(float) Return the x coordinate of the point."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+
+    <span class="k">def</span> <span class="nf">y</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""(float) Return the y coordinate of the point."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+
+    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Move the point by (dx, dy).
+
+        Parameters:
+            dx (float): Amount to move in the x direction.
+            dy (float): Amount to move in the y direction.
+        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">+=</span> <span class="n">dx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+=</span> <span class="n">dy</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Class definitions start with the keyword <code class="highlighter-rouge">class</code>, followed by the class name, and <code class="highlighter-rouge">(object):</code>. Following this, and indented, is what looks like function definitions. These are the <strong>method definitions</strong> for the class. Notice the first argument of each method is <code class="highlighter-rouge">self: self</code> is a reference to the object itself. This argument is needed so that the method can access and modify components of the object. Class names, like function names, follow a naming convention. This convention is that the first letter of each word in the class name is a capital letter. Methods follow the same naming convention as functions.</p>
+
+<div class="important">
+
+  <h5 id="class-definition-syntax">Class Definition Syntax</h5>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ClassName</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Comment"""</span>
+
+    <span class="k">def</span> <span class="nf">method_1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">args</span><span class="p">])</span> <span class="p">:</span>
+        <span class="n">method_1_body</span>
+
+    <span class="k">def</span> <span class="nf">method_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">args</span><span class="p">])</span> <span class="p">:</span>
+        <span class="n">method_2_body</span>
+
+    <span class="o">...</span>
+</code></pre></div>    </div>
+  </div>
+
+  <h4 id="semantics">Semantics</h4>
+  <p>Creates a class called <code class="highlighter-rouge">ClassName</code> to represent the ADT specified. The methods of the class are <code class="highlighter-rouge">method_1</code>, <code class="highlighter-rouge">method_2</code>, and so on. Each method must have a parameter <code class="highlighter-rouge">self</code> to represent the instance that is performing the method, optionally followed by any other arguments the method requires.
+Method calls of the form <code class="highlighter-rouge">instance.method(arg1, arg2, ...)</code> will execute the body of the definition of <code class="highlighter-rouge">method</code> with the arguments <code class="highlighter-rouge">instance, arg1, arg2, ....</code> Note that the value of the <code class="highlighter-rouge">self</code> parameter is <code class="highlighter-rouge">instance</code>.</p>
+</div>
+
+<h3 id="setting-up-a-point">Setting up a Point</h3>
+<p>Earlier in the course, we have used the <code class="highlighter-rouge">dir</code> function to list the methods of an object, and saw that many of the methods had double underscores at the start and end of their names. These methods each have a special meaning in Python, which allow the object to work with existing Python syntax, such as arithmetic, slicing, and built-in functions.</p>
+
+<p>The first method that the Point class has is the <code class="highlighter-rouge">__init__</code> method. This is the <strong>constructor</strong> method of the class, which is executed when the object is created. <code class="highlighter-rouge">__init__</code> takes as arguments any data that is to be required to make the instance of the class and creates the <strong>instance variables</strong> and any data structures required for the instance to function. In this case <code class="highlighter-rouge">__init__</code> takes in the x, y coordinate of the point and creates two instance variables, <code class="highlighter-rouge">self._x</code> and <code class="highlighter-rouge">self._y</code>. Note the <code class="highlighter-rouge">self.</code> at the start of the variable names. <code class="highlighter-rouge">self</code> is required to access any variables and methods of the instance, as it is the reference to the object instance. <code class="highlighter-rouge">self._x</code> and <code class="highlighter-rouge">self._y</code> are given the values of <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> respectively from the inputs into the constructor (<code class="highlighter-rouge">__init__</code> method) of the Point class.</p>
+
+<p>The underscores on the instance variables also have an informal meaning. In object-oriented programming it is often useful to have <strong>private</strong> variables and methods. This is data and methods that are not meant to be accessed from outside the class except perhaps via a non-private method. Python does not have a way of setting variables and methods private. Python instead uses underscores to ‘hide’ variables and methods. <strong><em>Note</em></strong>: This is simply a naming convention used by programmers to signify to readers of the code that this variable or method is meant to be private. It is possible to access these variables and methods directly if the number of underscores is know, though it is not recommended in case the class definition changes.</p>
+
+<p>The next two methods (the <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> methods) are our <strong>accessors</strong> — they provide us with an interface to access the class instance variables from outside the class definition. These methods simply return the corresponding coordinate (either x or y). The method <code class="highlighter-rouge">move</code> is a <strong>mutator</strong> — it modifies the data stored in the object. Other than <code class="highlighter-rouge">self</code>, <code class="highlighter-rouge">move</code> also has the arguments <code class="highlighter-rouge">dx</code> and <code class="highlighter-rouge">dy</code>. These are added to the current <code class="highlighter-rouge">self._x</code> and <code class="highlighter-rouge">self._y</code>, respectively, to ‘move’ our point along a certain vector to a new location.</p>
+
+<p>Now we can save our code as <code class="highlighter-rouge">point1.py</code> and run a few tests to see it in action.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; p = Point(2, -5)
+&gt;&gt;&gt; p
+&lt;__main__.Point object at 0x011D4710&gt;
+&gt;&gt;&gt; str(p)
+'&lt;__main__.Point object at 0x011D4710&gt;'
+&gt;&gt;&gt; type(p)
+&lt;class '__main__.Point'&gt;
+&gt;&gt;&gt; p.x()
+2
+&gt;&gt;&gt; p.y()
+-5
+&gt;&gt;&gt; p.move(-3, 9)
+&gt;&gt;&gt; p.x()
+-1
+&gt;&gt;&gt; p.y()
+4
+</code></pre></div>  </div>
+</div>
+
+<p>The first line creates an instance, <code class="highlighter-rouge">p</code>, of our new <code class="highlighter-rouge">Point</code> class. When we create a Point instance, we are <strong>instantiating</strong> the class. The example shows a print out of how Python represents our Point class, while the one after it shows Pythons string version of our Point class. The following example shows the <code class="highlighter-rouge">type</code> of our Point class. We then go and call the <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> methods to view the current state of the class instance. We then move our Point, <code class="highlighter-rouge">p</code>, and then have a look at the new state of the class instance.</p>
+
+<h3 id="string-representations">String Representations</h3>
+<p>The second and third examples above showed how Python represents our Point class. The Python interpreter is using the default methods for <code class="highlighter-rouge">str</code> and <code class="highlighter-rouge">repr</code> for the string representations of our class. These are not particularly nice or useful representations of this class as it does not tell us much about the instance state. We can make our class have a better representation by writing our own <code class="highlighter-rouge">__str__</code> and <code class="highlighter-rouge">__repr__</code> methods into our class definition. These two method names are used to define the behaviour of the built-in <code class="highlighter-rouge">str</code> and <code class="highlighter-rouge">repr</code> functions respectively. The following method definitions will provide good <code class="highlighter-rouge">__str__</code> and <code class="highlighter-rouge">__repr__</code> representations of our Point.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""The 'informal' string representation of the point."""</span>
+        <span class="k">return</span> <span class="s">'({0}, {1})'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""The 'official' string representation of the point."""</span>
+        <span class="k">return</span> <span class="s">'Point({0}, {1})'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The <code class="highlighter-rouge">__str__</code> and <code class="highlighter-rouge">__repr__</code> methods both use a similar formatted string to produce a string that is a nice representation of our Point class. These methods are used when the functions <code class="highlighter-rouge">str</code> and <code class="highlighter-rouge">repr</code>, respectively, are used on our Point class. <code class="highlighter-rouge">__repr__</code>, ideally, should represent all the data important to the object’s state and to be able to recreate the object with that same state. If possible we should also make it so that if the interpreter read the <code class="highlighter-rouge">repr</code> string back in and evaluated it, it would construct a copy of the object.</p>
+
+<p>After adding the above code to the class definition our class we can now save our <code class="highlighter-rouge">point2.py</code> code and test our two new methods.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span>
+<span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="s">'(-1, 4)'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">repr</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="s">'Point(-1, 4)'</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The first example shows what Python now returns if we simply ask for <code class="highlighter-rouge">p</code>. When something is evaluated the interpreter uses the <code class="highlighter-rouge">__repr__</code> method of the class as is shown in the third example. The second example shows the string representation of our Point class. Notice that the repr string looks just like the line created to make the Point instance originally.</p>
+
+<h3 id="arithmetic-on-points">Arithmetic on Points</h3>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">p1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span> <span class="o">==</span> <span class="n">p2</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span> <span class="o">==</span> <span class="n">p3</span>
+<span class="bp">False</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The above examples show that if we create Points with the same parameters they are not equal, even though the share the same state. This is clearly shown in the first and last example. These examples return <code class="highlighter-rouge">False</code> as, even though both objects have the same state, they are different instances of the class. The second example returns <code class="highlighter-rouge">True</code> as there are two variables with the same instance of Point as their value. The reason the interpreter behaves this way is because the interpreter is using the default test for equality, that objects are equal if they are the same instance.</p>
+
+<p>We would like to define how equality should work on points. The method <code class="highlighter-rouge">__eq__</code> is used to define the behaviour of the <code class="highlighter-rouge">==</code> test. It would also be useful if we were able to add two Points together. The <code class="highlighter-rouge">__add__</code> method is used to define addition of objects using the <code class="highlighter-rouge">+</code> operator. The following code contains the two method definitions for <code class="highlighter-rouge">__add__</code> and <code class="highlighter-rouge">__eq__</code> which will give us the functionality we want when the <code class="highlighter-rouge">+</code> or <code class="highlighter-rouge">==</code> operators are used.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Return a new Point after adding this point to 'other'.
+
+        Perform vector addition of the points considered as vectors.
+        point1 + point2 -&gt; Point
+
+        Parameters:
+            other (Point): Other point to be added to this point.
+
+        Return:
+            Point: New point object at position of 'self' + 'other'.
+        """</span>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Return True iff 'self' and 'other' have the same x and y coords.
+
+        point1 == point2 -&gt; bool
+        
+        Parameters:
+            other (Point): Other point to be compared to this point.
+
+        Return:
+            bool: True if 'self' and 'other' have the same x and y coords.
+                  False otherwise.
+        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">x</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The <code class="highlighter-rouge">__add__</code> method adds the two Points together using vector addition. Then creates a new Point and returns it. The <code class="highlighter-rouge">__eq__</code> method returns <code class="highlighter-rouge">True</code> if the points have the same x, y coordinates, and <code class="highlighter-rouge">False</code> otherwise.</p>
+
+<p>Here are some examples of these last two methods after adding them to the class definition and saving the <code class="highlighter-rouge">point3.py</code> file.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">+</span> <span class="n">p2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p3</span>
+<span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p4</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p3</span> <span class="o">==</span> <span class="n">p4</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span> <span class="o">==</span> <span class="n">p2</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span> <span class="o">+=</span> <span class="n">p2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p1</span> <span class="o">==</span> <span class="n">p4</span>
+<span class="bp">True</span>
+</code></pre></div>  </div>
+</div>
+
+<p>First we create 2 instances of the Point class. Then we create a third by adding the first 2 together. After creating a fourth instance of our Point class we do a couple of tests for equality. In the last two examples we perform a <code class="highlighter-rouge">+=</code> and then another test to demonstrate that <code class="highlighter-rouge">p1</code> now equals <code class="highlighter-rouge">p4</code>.</p>
+
+<div class="important">
+
+  <h4 id="special-methods">Special Methods</h4>
+  <p>The Python interpreter recognises many special method names to allow classes to use built-in Python syntax. Each of these names begins and ends with two underscores. The names Python recognises include:
+<code class="highlighter-rouge">__init__(self, [arg1, arg2, ...])</code>
+	Constructor, executed when an instance of the class is created.
+<code class="highlighter-rouge">__str__(self)</code>
+	Must return a string giving an “informal” description of the object. Executed when <code class="highlighter-rouge">str(x)</code> or <code class="highlighter-rouge">print(x)</code> are called.
+<code class="highlighter-rouge">__repr__(self)</code>
+	Must return a string giving a “formal”, unambiguous description of the object. Executed when <code class="highlighter-rouge">repr(x)</code> is called, or when <code class="highlighter-rouge">&gt;&gt;&gt; x</code> is executed at the prompt. This string representation is often useful in debugging.
+<code class="highlighter-rouge">__add__(self, other)</code>
+<code class="highlighter-rouge">__sub__(self, other)</code>
+<code class="highlighter-rouge">__mul__(self, other)</code>
+<code class="highlighter-rouge">__div__(self, other)</code>
+	Definition of addition, subtraction, multiplication and division. Equivalent to <code class="highlighter-rouge">self + other</code>, <code class="highlighter-rouge">self - other</code>, <code class="highlighter-rouge">self * other</code>, and <code class="highlighter-rouge">self / other</code> respectively.
+<code class="highlighter-rouge">__lt__(self, other)</code>
+<code class="highlighter-rouge">__le__(self, other)</code>
+<code class="highlighter-rouge">__eq__(self, other)</code>
+<code class="highlighter-rouge">__ne__(self, other)</code>
+<code class="highlighter-rouge">__gt__(self, other)</code>
+<code class="highlighter-rouge">__ge__(self, other)</code>
+	Definitions of comparison operators <code class="highlighter-rouge">&lt;</code>, <code class="highlighter-rouge">&lt;=</code>, <code class="highlighter-rouge">==</code>, <code class="highlighter-rouge">!=</code>, <code class="highlighter-rouge">&gt;</code>, <code class="highlighter-rouge">&gt;= </code>respectively. For example, <code class="highlighter-rouge">x &lt;= y</code> executes the method call <code class="highlighter-rouge">__le__(x, y)</code>.</p>
+</div>
+<p>We now consider extending this ADT by providing accessor methods for getting the polar coordinates of the point. The polar coordinates specify a point by angle and distance rather than x and y coordinates. The new methods are given below.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""(float) Return the distance of the point from the centre of the
+        coordinate system (0, 0).
+        """</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">theta</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""(float) Return the angle, in radians, from the x-axis of the point."""</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The <code class="highlighter-rouge">r</code> method uses mathematics we know to calculate the radial position of the Point from the centre of our coordinates. The <code class="highlighter-rouge">theta</code> method uses the math libraries <code class="highlighter-rouge">atan2</code> method to find the angle from the x-axis. <code class="highlighter-rouge">atan2</code> is more accurate than <code class="highlighter-rouge">atan</code> as <code class="highlighter-rouge">atan2</code> returns a correct angle no matter what quadrant the point is in, whereas <code class="highlighter-rouge">atan</code> returns between pi/2 and -pi/2 radians.</p>
+
+<p>After adding these methods into the class definition and saving, the file should now look like <code class="highlighter-rouge">point.py</code>. We can now look at a few examples of our last couple of methods.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">r</span><span class="p">()</span>
+<span class="mf">5.0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">theta</span><span class="p">()</span>
+<span class="mf">0.9272952180016122</span>
+</code></pre></div>  </div>
+</div>
+
+<h3 id="the-abstraction-barrier">The Abstraction Barrier</h3>
+<p>Imagine we now write some graphics program that uses this ADT. Later we come back and reconsider the implementation of the ADT and decide to use polar coordinates rather than x, y coordinates for the internal representation of the data, like the <code class="highlighter-rouge">point_rt.py</code> file here. We make sure that the constructor and the method interfaces behave in the same way as before (have the same semantics). Now we go back to our graphics program we wrote. <strong>Do we need to change anything? No!</strong> Because we did not change the interface, we do not need to change anything in our graphics program. This is the key point about ADTs — we have completely separated the implementation from the use of the ADT via a well-defined interface. <strong>We respect the abstraction barrier!</strong></p>
+
+<p><strong><em>Note</em></strong>: if our graphics program directly accessed the x and y coordinates instead of using the interface then we would be in trouble if we changed over to polar coordinates — we would have to rethink all our uses of Point objects! This is why we use the “private variable” naming convention to signal that the <code class="highlighter-rouge">_x</code> and <code class="highlighter-rouge">_y</code> values should not be accessed.</p>
+
+<h2 id="a-ball-class">A Ball Class</h2>
+<p>We now design another class that is similar to the one above in some ways, but we would probably not think of it as an ADT because it has more ‘behaviour’. What we want to do here is to model a ball and its motion on something like a billiard table without pockets.</p>
+
+<p>To begin with, we look at what assumptions we will make. Firstly, to simplify the physics, we assume no friction and no loss of energy when the ball bounces off the table edge. Secondly, we assume a given radius of the ball and table dimensions. Lastly, we assume a given positive time step and that the time step is small enough to reasonably approximate the ball movement. For a first pass at this problem, we will also use the following <strong>global constants</strong>: <code class="highlighter-rouge">TOP</code>, <code class="highlighter-rouge">LEFT</code>, <code class="highlighter-rouge">BOTTOM</code>, <code class="highlighter-rouge">RIGHT</code> and <code class="highlighter-rouge">TIMESTEP</code> to describe the edges of the table and the time step. These, to Python, are variables but as we are not changing them in our code, they are called constants. It is naming convention to use all uppercase to indicate constants. We also assume all the balls have the same radius.</p>
+
+<p>Next, we need to determine what is necessary to describe the <strong>state</strong> of the ball. We need to know its position, speed and direction. Finally, we need to know what methods we will need — in other words, what the ball interface will look like. We will need accessors to get the position, speed and direction and a mutator that modifies the balls state based on the given time step. We also add a test to determine if this ball is touching another ball. To do this we require some simple trigonometry and physics and so we will import the math module.</p>
+
+<p>We will start with the class constructor and accessors and repr along with some of the base code as follows.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="n">TOP</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">LEFT</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">BOTTOM</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">RIGHT</span> <span class="o">=</span> <span class="mf">4.0</span>
+<span class="n">TIMESTEP</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="k">class</span> <span class="nc">Ball</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""A class for simulating the movement of a ball on a billiard table.
+
+    Class Invariant:
+        0 &lt;= _direction &lt;= 2*pi
+        and
+        LEFT + radius &lt;= _x &lt;= RIGHT - radius
+        and
+        TOP + radius &lt;= _y &lt;= BOTTOM - radius
+        and
+        0 &lt;= _speed
+    """</span>
+
+    <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Initialise a ball object with position, speed and direction.
+
+        Parameters:
+            x (float): x coordinate starting position of Ball.
+            y (float): y coordinate starting position of Ball.
+            speed (float): Speed at which Ball is moving.
+            direction (float): Direction in which Ball is moving.
+
+        Preconditions:
+            The supplied values satisfy the class invariant.
+        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_speed</span> <span class="o">=</span> <span class="n">speed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span> <span class="o">=</span> <span class="n">direction</span>
+
+    <span class="k">def</span> <span class="nf">get_centre_x</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""(float) Return the x coordinate of the Ball's centre."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+
+    <span class="k">def</span> <span class="nf">get_centre_y</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""(float) Return the y coordinate of the Ball's centre."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+
+    <span class="k">def</span> <span class="nf">get_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""(float) Return the speed of the Ball."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_speed</span>
+
+    <span class="k">def</span> <span class="nf">get_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""(float) Return the direction in which the ball is travelling."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Ball's string representation."""</span>
+        <span class="k">return</span> <span class="s">'Ball({0:.2f}, {1:.2f}, {2:.2f}, {3:.2f})'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_speed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Firstly, in the comments for the class itself we have included a <strong>class invariant</strong>. This is similar to the <code class="highlighter-rouge">loop invariant</code> we briefly discussed in week 5. The idea is that the class invariant is a property that should be true over the lifetime of each object of the class. In other words, it should be true when the object is first created and after each method is called. This is typically a formula that interrelates the instance variables. (To shorten the formula we have omitted the <code class="highlighter-rouge">self.</code> from the instance variables.) Even in a simple class like this, the class invariant can be a big help when it comes to writing methods. In particular, for the step method we can assume the class invariant is true when the method is called, and given that, we need to guarantee the class invariant is true at the end of the method.</p>
+
+<p>The next part of the class is the assignment to the <code class="highlighter-rouge">radius</code>. This is a <strong>class variable</strong>. Class variables are variables that are common to all instances of the class — all instances of the class share this variable and if any instance changes this variable all instances ‘will see the change’. As an example if we execute <code class="highlighter-rouge">self.radius = 0.2</code> than all ball instances will now have that radius. Since all the balls have the same radius, we make it a class variable.</p>
+
+<p>The constructor (the <code class="highlighter-rouge">__init__</code> method) initialises the instance variables. There are then the four accessor methods which return the values of the instance variables. This is followed by the <code class="highlighter-rouge">__rer__</code> method so that we can print our Ball instances out nicely.</p>
+
+<p>After we save the code in <code class="highlighter-rouge">ball1.py</code> we can test with a few examples.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">Ball</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">,</span> <span class="mf">3.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">get_centre_x</span><span class="p">()</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">get_centre_y</span><span class="p">()</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">get_dir</span><span class="p">()</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">get_speed</span><span class="p">()</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">radius</span>
+<span class="mf">0.1</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This is not particularly useful so let’s look at writing the step method that calculates position of the ball in the next <code class="highlighter-rouge">TIMESTEP</code> and moves the ball to that location. This method is going to require two other methods to enable the ball to bounce off the walls if it reaches one. The following is the code of the methods.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">_reflect_vertically</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Change the direction as the ball bounces off a vertical edge."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+
+    <span class="k">def</span> <span class="nf">_reflect_horizontally</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Change the direction as the ball bounces off a horizontal edge."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span>
+
+
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Advance time by TIMESTEP - moving the ball."""</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">+=</span> <span class="n">TIMESTEP</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_speed</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_direction</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+=</span> <span class="n">TIMESTEP</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_speed</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_direction</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">&lt;</span> <span class="n">LEFT</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">LEFT</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reflectVertically</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">&gt;</span> <span class="n">RIGHT</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">RIGHT</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reflectVertically</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>  <span class="o">&lt;</span> <span class="n">TOP</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">TOP</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reflectHorizontally</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">&gt;</span> <span class="n">BOTTOM</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">BOTTOM</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reflectHorizontally</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Notice the methods <code class="highlighter-rouge">_reflect_vertically</code> and <code class="highlighter-rouge">_reflect_horizontally</code> begin with underscores. As we do not want these two functions to be accessed outside the class, we flag them as private.</p>
+
+<p>These two methods do exactly what they are named. <code class="highlighter-rouge">_reflect_horizontally</code> reflects the ball off any horizontal edge. This method simply takes the direction of the ball away from 2 pi, perfectly bouncing the ball off the wall at the same angle it hit the wall. <code class="highlighter-rouge">_reflect_vertically</code> is a little trickier as we need to make sure our class invariant is not false. To bounce off a vertical wall we simply take our direction away from pi. This is mathematically correct but it could make our class invariant false. For example, if the ball is travelling at pi + 0.1 radians and we do this bounce then our direction is now -0.1 radians. As this is a negative number we add 2 pi to it so that we get the positive angle (2 pi - 0.1 radians). This is the same angle as -0.1 radians and makes our class invariant true again.</p>
+
+<p>The <code class="highlighter-rouge">step</code> method starts off updating the x, y coordinates of the ball by increasing the relevant coordinate by the <code class="highlighter-rouge">TIMESTEP</code> times the speed times the relevant component of the direction. Next, it needs to check if the ball has met a boundary of the table so that the ball does not break the class invariant by leaving the table. This is done, first by checking if it has left a vertical edge by seeing if the ball’s x position is within radius distance of a vertical wall. If it is then the x position is shifted so that it is outside a radius distance of the wall and reflected using the <code class="highlighter-rouge">_reflect_vertically</code> method. A similar method is used for if the ball is on a horizontal edge.</p>
+
+<div class="aside">
+
+  <h4 id="aside-proving-the-class-invariant">Aside: Proving the Class Invariant</h4>
+  <p><strong>Warning: This is not an easy proof!</strong>
+We need to show that each method preserves the class invariant. The following is a proof of each method and how they preserve the class invariant.
+We start with the easier one — <code class="highlighter-rouge">_reflect_horizontally</code>. Let <code class="highlighter-rouge">d0</code> and <code class="highlighter-rouge">d1</code> be the initial and final values of <code class="highlighter-rouge">self._direction</code>.</p>
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>We want to show that if
+0 &lt;= d0 &lt;= 2*pi
+then
+0 &lt;= d1 &lt;= 2*pi
+where
+d1 == 2*pi - d0
+(We use ==&gt; for 'implies' below)
+
+0 &lt;= d0 &lt;= 2*pi
+==&gt;
+0 &gt;= -d0 &gt;= -2*pi           (multiplying by -1)
+==&gt;
+2*pi &gt;= 2*pi - d0 &gt;= 0      (adding 2*pi)
+
+QED
+</code></pre></div>  </div>
+  <p>We now prove the property is true for <code class="highlighter-rouge">_reflect_vertically</code>. Here we let <code class="highlighter-rouge">d0</code> be the initial value of <code class="highlighter-rouge">self._direction</code>, <code class="highlighter-rouge">d1</code> be the value after the first assignment and <code class="highlighter-rouge">d2</code> be the final value. In this case there is an if statement involved and so we have to consider two cases: <code class="highlighter-rouge">d1 &gt;= 0</code> and <code class="highlighter-rouge">d1 &lt; 0</code>.
+The first case.</p>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>We want to show that if
+0 &lt;= d0 &lt;= 2*pi and d1 &gt;= 0
+then
+0 &lt;= d2 &lt;= 2*pi
+In this case the body of the if statement is not executed and so
+d2 == d1 == pi - d0
+
+0 &lt;= d0 &lt;= 2*pi
+==&gt;
+0 &gt;= -d0 &gt;= -2*pi         (multiplying by -1)
+==&gt;
+pi &gt;= pi - d0 &gt;= -pi      (adding pi)
+==&gt;
+pi &gt;= pi - d0 &gt;= 0        (d1 &gt;= 0 i.e. pi - d0 &gt;= 0)
+
+QED
+
+
+The second case.
+
+We want to show that if
+0 &lt;= d0 &lt;= 2*pi and d1 &lt; 0
+then
+0 &lt;= d2 &lt;= 2*pi
+In this case the body of the if statement is executed and so
+d2 == 2*pi + d1  and d1 == pi - d0 and so d2 == 3*pi - d0
+
+d1 &lt; 0
+==&gt;
+pi - d0 &lt; 0
+==&gt;
+3*pi -d0 &lt; 2*pi            (adding 2*pi)
+and
+d0 &lt;= 2*pi
+==&gt;
+-d0 &gt;= -2*pi               (multiplying by -1)
+==&gt;
+3*pi - d0 &gt;= pi            (adding 3*pi)
+and so
+pi &lt;= 3*pi - d0 &lt;= 2*pi
+
+QED
+</code></pre></div>  </div>
+  <p>Now we look at the hardest part of the proof — that the ball stays on the table. The method has four if statements and below we will only consider the case when the first test is satisfied — the other cases follow in a similar manner. We let <code class="highlighter-rouge">x0</code> be the initial value of <code class="highlighter-rouge">self._x</code>, <code class="highlighter-rouge">x1 be the value</code> after the first assignment and <code class="highlighter-rouge">x2</code> be the final value. We also let <code class="highlighter-rouge">s</code> be <code class="highlighter-rouge">self._speed</code>, <code class="highlighter-rouge">d</code> be <code class="highlighter-rouge">self._direction</code> and <code class="highlighter-rouge">r</code> be <code class="highlighter-rouge">Ball.r</code>.</p>
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>So we can assume
+left+r &lt;= x0 &lt;= right-r
+and
+0 &lt;= s*timestep &lt; r
+and
+x1 &lt; left + r    (the test in the first if statement is true)
+and we want to show
+left+r &lt;= x2 &lt;= right-r
+
+We have
+x1 == x0 + s*timestep*cos(d) and x2 == 2*(left+r) - x1
+
+Now
+x1 &lt; left + r
+==&gt;
+-x1 &gt;= -left - r                     (multiplying by -1)
+==&gt;
+2*(left+r) - x1 &gt;= left+r            (adding 2*(left+r))
+==&gt;
+x2 &gt;= left+r
+(one half of the required inequality)
+
+We now need to show
+2*(left+r) - x0 - s*timestep*cos(d) &lt;= right-r
+
+left+r &lt;= x0
+==&gt;
+left+r - x0 &lt;= 0
+==&gt;
+2*(left+r) - x0 + r &lt;= left + 2*r                     (adding left + 2*r)
+==&gt;
+2*(left+r) - x0 + s*timestamp &lt;= left + 2*r           (r &gt;= s*timestamp)
+==&gt;
+2*(left+r) - x0 - s*timestamp*cos(d) &lt;= left + 2*r    (1 &gt;= -cos(d) and s*timestamp &gt;= 0)
+==&gt;
+x2 &lt;= left + 2*r
+
+So provided left+2*r &lt;= right - r  (i.e. right - left &gt;= 3*r)
+then the required property is true.
+</code></pre></div>  </div>
+  <p>This means that, if we insist that the table is at least one and a half balls long and wide then the step method will maintain the class invariant.</p>
+
+  <p>The point of this exercise is to show that it is possible to prove useful properties about the class and therefore of any object of the class. Here we showed that, provided the global variables satisfy some reasonable constraints, any ball from the Ball class (that initially satisfies the class invariant) will stay on the table.</p>
+</div>
+
+<p>After adding the methods and saving the code <code class="highlighter-rouge">ball2.py</code> we can run a simple test.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">Ball</span><span class="p">(</span><span class="mf">0.51</span><span class="p">,</span> <span class="mf">0.51</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="n">Ball</span><span class="p">(</span><span class="mf">0.58</span><span class="p">,</span> <span class="mf">0.58</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">0.65</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">0.72</span><span class="p">,</span> <span class="mf">0.72</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">0.79</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">0.86</span><span class="p">,</span> <span class="mf">0.86</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">0.93</span><span class="p">,</span> <span class="mf">0.93</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.08</span><span class="p">,</span> <span class="mf">1.08</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.15</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.22</span><span class="p">,</span> <span class="mf">1.22</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.29</span><span class="p">,</span> <span class="mf">1.29</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.36</span><span class="p">,</span> <span class="mf">1.36</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.43</span><span class="p">,</span> <span class="mf">1.43</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.50</span><span class="p">,</span> <span class="mf">1.50</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.57</span><span class="p">,</span> <span class="mf">1.57</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.64</span><span class="p">,</span> <span class="mf">1.64</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.71</span><span class="p">,</span> <span class="mf">1.71</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.78</span><span class="p">,</span> <span class="mf">1.78</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.85</span><span class="p">,</span> <span class="mf">1.85</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.92</span><span class="p">,</span> <span class="mf">1.88</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">5.50</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">1.99</span><span class="p">,</span> <span class="mf">1.81</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">5.50</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">2.07</span><span class="p">,</span> <span class="mf">1.73</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">5.50</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">2.14</span><span class="p">,</span> <span class="mf">1.66</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">5.50</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">2.21</span><span class="p">,</span> <span class="mf">1.59</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">5.50</span><span class="p">)</span>
+<span class="n">Ball</span><span class="p">(</span><span class="mf">2.28</span><span class="p">,</span> <span class="mf">1.52</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">5.50</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The last method we will define is a method to see if 2 balls are touching. This method will be useful when we have multiple Balls. Here is the method definition.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">touching</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""(bool) Return True iff this Ball is touching other."""</span>
+        <span class="k">return</span> <span class="p">(((</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">get_centre_</span><span class="p">())</span> <span class="o">**</span> <span class="mi">2</span>
+                 <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">get_centre_y</span><span class="p">())</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+               <span class="o">&lt;=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This method gets the straight-line distance between the two balls and returns true if and only if (iff) the distance is less than or equal to the distance of two ball radii.</p>
+
+<p>After adding this method to our class we can save our <code class="highlighter-rouge">ball.py</code> code.</p>
+
+<h3 id="using-the-ball-class">Using the Ball Class</h3>
+<p>Where things get really interesting is when we create several instances of the class. Below is an example to show the power of object-oriented programming — once we have defined the class we can create as many instances as we want!</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">balls</span> <span class="o">=</span> <span class="p">[</span><span class="n">Ball</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+             <span class="n">Ball</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+             <span class="n">Ball</span><span class="p">(</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">balls</span>
+<span class="p">[</span><span class="n">Ball</span><span class="p">(</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span> <span class="n">Ball</span><span class="p">(</span><span class="mf">1.20</span><span class="p">,</span> <span class="mf">1.20</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">),</span> <span class="n">Ball</span><span class="p">(</span><span class="mf">1.40</span><span class="p">,</span> <span class="mf">1.40</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">balls</span> <span class="p">:</span> 
+        <span class="n">b</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">balls</span>
+<span class="p">[</span><span class="n">Ball</span><span class="p">(</span><span class="mf">1.10</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">),</span> <span class="n">Ball</span><span class="p">(</span><span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.28</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">),</span> <span class="n">Ball</span><span class="p">(</span><span class="mf">1.36</span><span class="p">,</span> <span class="mf">1.49</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">)]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">some_touch</span><span class="p">(</span><span class="n">balls</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">for</span> <span class="n">b1</span> <span class="ow">in</span> <span class="n">balls</span> <span class="p">:</span>
+                <span class="k">for</span> <span class="n">b2</span> <span class="ow">in</span> <span class="n">balls</span> <span class="p">:</span>
+                        <span class="k">if</span> <span class="n">b1</span> <span class="o">!=</span> <span class="n">b2</span> <span class="ow">and</span> <span class="n">b1</span><span class="o">.</span><span class="n">touching</span><span class="p">(</span><span class="n">b2</span><span class="p">)</span> <span class="p">:</span>
+                                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">while</span> <span class="ow">not</span> <span class="n">some_touch</span><span class="p">(</span><span class="n">balls</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">balls</span> <span class="p">:</span> 
+                <span class="n">b</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">balls</span>
+<span class="p">[</span><span class="n">Ball</span><span class="p">(</span><span class="mf">1.20</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">),</span> <span class="n">Ball</span><span class="p">(</span><span class="mf">3.57</span><span class="p">,</span> <span class="mf">1.49</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">4.14</span><span class="p">),</span> <span class="n">Ball</span><span class="p">(</span><span class="mf">1.13</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">,</span> <span class="mf">5.14</span><span class="p">)]</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The next step would, of course, be to program the interaction between the balls. We could do this either by writing a collection of functions to manage the interaction of the balls and the motion or we could define a Table class (for example) which would contain a collection of balls and a step method for the table which would involve stepping each ball and defining how the balls bounce off each other.</p>
+
+<p>Is defining a Table class worthwhile? It could be argued either way. If there was only ever going to be one table then it could be argued that creating a class would be overkill. On the other hand, collecting all the information and behaviour of the table into one place (a class) could be a good idea.</p>
+
+<h2 id="summary">Summary</h2>
+<p>In this section we have introduced the idea of class design. Once we have defined a class we can take any number of instances of the class. This is a simple, but powerful form of <strong>reuse</strong>. 
+Things to consider when designing classes:</p>
+<ul>
+  <li>What assumptions am I making?</li>
+  <li>What data do I need to store?
+    <ul>
+      <li>Create instance variables to capture properties associated with individual objects.</li>
+      <li>Create class variables to capture shared properties</li>
+    </ul>
+  </li>
+  <li>Are the values of variables interrelated or constrained? — Add a class invariant to the class comments.</li>
+  <li>What should the interface look like? — What are the ‘public’ methods?</li>
+  <li>Name the class after the type of objects it produces.</li>
+  <li>Name variables after their roles and make instance variables private.</li>
+  <li>What information does the constructor need to create an object? Add parameters to the <code class="highlighter-rouge">__init__</code> method and give them meaningful names.</li>
+  <li>Name each method to suggest its role.</li>
+  <li>Comment each method before writing any code!</li>
+  <li>Don’t ‘over complicate’ methods — methods should, where possible, perform just <strong>one</strong> task.</li>
+  <li>What helper methods do I need? — make them private.</li>
+  <li>For testing purposes write the <code class="highlighter-rouge">__repr__</code> method.</li>
+</ul>
+
+
+    </div>
+</body>
+
+</html>

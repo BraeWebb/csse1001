@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Class Design</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/tutorials/class-design.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <h1 id="class-design">Class Design</h1>
+<h2 id="student-modelling">Student Modelling</h2>
+<p>In this tutorial, we will write a simple program which keeps track of university students and the courses they take. The code below provides a starting point.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Student</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Simple representation of a university student."""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Create a student with a name.
+
+        Parameters:
+            name (str): The student's name.
+        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""(str) Returns the name of the student."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Modify this class so that it also stores the student number, and degree program (as a string). Add methods <code class="highlighter-rouge">get_student_num</code> and <code class="highlighter-rouge">get_degree</code> which retrieve this information, and a method <code class="highlighter-rouge">set_degree</code> which changes the student’s degree. For example, the resulting class might behave like this:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Student</span><span class="p">(</span><span class="s">'Michael Palin'</span><span class="p">,</span> <span class="mi">43215678</span><span class="p">,</span> <span class="s">'BInfTech'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+<span class="s">'Michael Palin'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">get_student_num</span><span class="p">()</span>
+<span class="mi">43215678</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">get_degree</span><span class="p">()</span>
+<span class="s">'BInfTech'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">set_degree</span><span class="p">(</span><span class="s">'BE'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">get_degree</span><span class="p">()</span>
+<span class="s">'BE'</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Why might it be inappropriate to add a <code class="highlighter-rouge">set_student_num</code> method which modifies the student number; similar to <code class="highlighter-rouge">set_degree</code>?</p>
+
+<p>Next, add the following methods. For our purposes, we will assume that the student’s name is composed of two names (first name and last name) separated by a space.</p>
+<ul>
+  <li><code class="highlighter-rouge">get_first_name</code>, which returns the student’s first name (e.g. <code class="highlighter-rouge">'Michael'</code>)</li>
+  <li><code class="highlighter-rouge">get_last_name</code>, which returns the student’s surname (e.g. <code class="highlighter-rouge">'Palin'</code>)</li>
+  <li><code class="highlighter-rouge">get_email</code>, which returns the student’s email address derived from their name (e.g. <code class="highlighter-rouge">'michael.palin@uq.net.au'</code>). For this exercise, it is safe to assume the student’s email is always in the format <code class="highlighter-rouge">firstname.lastname@uq.net.au</code>.</li>
+  <li><code class="highlighter-rouge">__str__</code>, which returns a string with the student’s name, email, student number, and degree, in a format such as ‘<code class="highlighter-rouge">Michael Palin (michael.palin@uq.net.au, 43215678, BE)</code>’</li>
+  <li><code class="highlighter-rouge">__repr__</code>, which returns a string which looks like the Python code to create the object; for example, <code class="highlighter-rouge">"Student('Michael Palin', 43215678, 'BE')"</code></li>
+</ul>
+
+<h2 id="validity-checking">Validity Checking</h2>
+<p>It is important that each student in the University has a different student number. To ensure this, we can take a list of <code class="highlighter-rouge">Student</code> objects, and check that no two students have the same student number.</p>
+
+<p>Write a function <code class="highlighter-rouge">check_students</code> which takes a list of <code class="highlighter-rouge">Student</code> objects, and returns <code class="highlighter-rouge">True</code> if they all have different student numbers, and <code class="highlighter-rouge">False</code> if there are student numbers that have been repeated.</p>
+
+<p>Make sure you write <code class="highlighter-rouge">check_students</code> as a function, not a method of the <code class="highlighter-rouge">Student</code> class! For example:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">students1</span> <span class="o">=</span> <span class="p">[</span><span class="n">Student</span><span class="p">(</span><span class="s">'Alice A'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'BE'</span><span class="p">),</span>
+                 <span class="n">Student</span><span class="p">(</span><span class="s">'Bob B'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'BA'</span><span class="p">),</span>
+                 <span class="n">Student</span><span class="p">(</span><span class="s">'Carol C'</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'BA'</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">check_students</span><span class="p">(</span><span class="n">students1</span><span class="p">)</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">students2</span> <span class="o">=</span> <span class="p">[</span><span class="n">Student</span><span class="p">(</span><span class="s">'Alice A'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'BE'</span><span class="p">),</span>
+                 <span class="n">Student</span><span class="p">(</span><span class="s">'Bob B'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'BA'</span><span class="p">),</span>
+                 <span class="n">Student</span><span class="p">(</span><span class="s">'Carol C'</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'BA'</span><span class="p">),</span>
+                 <span class="n">Student</span><span class="p">(</span><span class="s">'Dan D'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'BInfTech'</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">check_students</span><span class="p">(</span><span class="n">students2</span><span class="p">)</span>
+<span class="bp">False</span>
+</code></pre></div>  </div>
+</div>
+<p>In the first example, all students have different student numbers (1, 2, 4). In the second example, Bob and Dan have the same student number (2).</p>
+
+<h2 id="adding-courses">Adding Courses</h2>
+<p>Write a class which represents a university course. The class should have getter methods for the course code (e.g. <code class="highlighter-rouge">'CSSE1001'</code>) and the course name (e.g. <code class="highlighter-rouge">'Introduction to Software Engineering'</code>).</p>
+
+<p>Add functionality to the <code class="highlighter-rouge">Student</code> class so that each instance is capable of recording the courses for which a student has obtained a grade. You should write the following methods in the <code class="highlighter-rouge">Student</code> class:</p>
+<ul>
+  <li><code class="highlighter-rouge">add_grade(course, grade)</code>, which sets the student’s grade for a given course. If the student already has a grade for that course, then replace the old grade with the new one.</li>
+  <li><code class="highlighter-rouge">gpa()</code>, which returns the student’s GPA (the average of all their grades). (You may assume that each course carries the same weight.)
+For example:</li>
+</ul>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Student</span><span class="p">(</span><span class="s">'Michael Palin'</span><span class="p">,</span> <span class="mi">43215678</span><span class="p">,</span> <span class="s">'BE'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">csse1001</span> <span class="o">=</span> <span class="n">Course</span><span class="p">(</span><span class="s">'CSSE1001'</span><span class="p">,</span> <span class="s">'Intro to Software Engineering'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">deco1800</span> <span class="o">=</span> <span class="n">Course</span><span class="p">(</span><span class="s">'DECO1800'</span><span class="p">,</span> <span class="s">'Design Computing Studio I'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">add_grade</span><span class="p">(</span><span class="n">csse1001</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">gpa</span><span class="p">()</span>
+<span class="mf">4.0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">add_grade</span><span class="p">(</span><span class="n">deco1800</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">gpa</span><span class="p">()</span>
+<span class="mf">4.5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">add_grade</span><span class="p">(</span><span class="n">csse1001</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="c1"># Overwrite the old grade
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">gpa</span><span class="p">()</span>
+<span class="mf">5.5</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="extra">
+
+  <h4 id="challenge-extending-further">Challenge: Extending Further</h4>
+  <p>It is clear that our model of students and courses is still incomplete. Consider further extensions that can be made, and implement them. Possible improvements include:</p>
+  <ul>
+    <li>storing courses a student is currently taking within the 1 class,</li>
+    <li>accessing a list of students enrolled in a course,</li>
+    <li>storing the semester in which students took a course, or</li>
+    <li>allowing for courses with different unit weightings in GPA calculation.
+As part of this process, you will need to consider which classes to alter, and which methods to add.</li>
+  </ul>
+</div>
+
+    </div>
+</body>
+
+</html>

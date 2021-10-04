@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Lambdas & List Comprehension</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/tutorials/functional.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <h1 id="lambdas--list-comprehension">Lambdas &amp; List Comprehension</h1>
+<h2 id="map-filter-and-reduce">Map, Filter and Reduce</h2>
+
+<p>There are a few functions in Python that allow you create and alter lists, in useful ways, without having to use large, cumbersome for loops. These functions are <code class="highlighter-rouge">map</code>, <code class="highlighter-rouge">filter</code> and <code class="highlighter-rouge">reduce</code>, and they each make use of lambda functions to perform their associated task. For the most part, these functions are somewhat inferior to using the list comprehension syntax in Python but they do have their niche purposes. In this tutorial we will make use of both constructs to get a feel for both list comprehensions and using lambda functions</p>
+<ol>
+  <li>Given a list of Fahrenheit temperatures, produce a list of converted Celsius temperatures, rounded to 1 decimal point:
+    <ol>
+      <li>Using a singular list comprehension</li>
+      <li>Using the built-in <code class="highlighter-rouge">map</code> function and lambda functions</li>
+    </ol>
+
+    <div class="important">
+      <h4>Map</h4>
+
+      <p>The map built-in function takes two arguments:</p>
+      <ol>
+        <li>A function which takes one element and returns the new transformed element.</li>
+        <li>An iterable (list, string, tuple etc.) which then has the function applied to each element.
+ It then returns a map object, which can be converted to a list using <code class="highlighter-rouge">list()</code>.</li>
+      </ol>
+    </div>
+  </li>
+  <li>Given a list of integers, produce a list that only contains the numbers from the previous list that are both even and greater than 15:
+    <ol>
+      <li>Using a singular list comprehension</li>
+      <li>Using the built-in <code class="highlighter-rouge">filter</code> function and lambda functions</li>
+    </ol>
+
+    <div class="important">
+      <h4>Filter</h4>
+
+      <p>The <code class="highlighter-rouge">filter</code> built-in function takes two arguments:</p>
+      <ol>
+        <li>A function which takes one element and returns <code class="highlighter-rouge">True</code> if the element should be in the filtered set, or <code class="highlighter-rouge">False</code> if it should not</li>
+        <li>An iterable (list, string, tuple etc.) which then has the function applied to each element
+ It then returns a filter object, which can be converted to a list using <code class="highlighter-rouge">list()</code></li>
+      </ol>
+    </div>
+  </li>
+  <li>Produce a list of the squares of every odd number up to 30:
+    <ol>
+      <li>Using list comprehension</li>
+      <li>Using <code class="highlighter-rouge">map</code>, <code class="highlighter-rouge">filter</code> and lambda functions</li>
+    </ol>
+  </li>
+  <li>
+    <p>Using the <code class="highlighter-rouge">reduce</code> function from the <code class="highlighter-rouge">functools</code> module and an appropriate lambda function, calculate the maximum number in a list.</p>
+
+    <div class="important">
+      <h4>Reduce</h4>
+
+      <p>The reduce function is a bit more complex. It takes two arguments:</p>
+      <ol>
+        <li>A function which takes two arguments and returns a single result</li>
+        <li>An iterable (list, string, tuple etc.) which has the function applied to its elements
+ The function is applied cumulatively to the elements in the list from left to right. To clarify, the function is applied to the first two elements of the list. The function is then applied again using the result of the first function call as argument one and the third element of the list as argument two. This process repeats until the list is exhausted.</li>
+      </ol>
+
+      <div class="aside">
+        <p><strong>Note</strong>: Remember to import reduce from the functools module!</p>
+      </div>
+    </div>
+  </li>
+</ol>
+
+<h2 id="caesar-cipher">Caesar Cipher</h2>
+<p>A Caesar Cipher (also known as a shift cipher) is a very simple type of cipher in which each letter in the alphabet is shifted along a set number of characters to produce the encrypted message. For example, with a ‘shift’ of 3, A becomes D, B becomes E, C becomes F etc.</p>
+
+<p><img src="images/_11/11_01.png" alt="" /></p>
+
+<p>Using list comprehensions or lambda functions, implement a Caesar Cipher with shift 3. You may assume the message string consists of entirely uppercase characters. Your implementation should take a string message and return a newly encrypted string.</p>
+
+<div class="important">
+
+  <h4 id="hints">Hints:</h4>
+  <p>You can get a string of all uppercase characters by importing ascii_uppercase from the string module:
+	<code class="highlighter-rouge">from string import ascii_uppercase</code>
+You may find the built-in functions ord and chr useful, in conjunction with an ASCII table</p>
+</div>
+
+<div class="extra">
+
+  <h4 id="challenge-advanced-cipher">Challenge: Advanced Cipher</h4>
+  <p>Modify your Caesar Cipher so that it can now handle spaces in the original message. The encrypted messages should have spaces where the original had them.</p>
+</div>
+
+    </div>
+</body>
+
+</html>

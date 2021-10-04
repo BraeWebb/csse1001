@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Recursion</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/11A0_recursion.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p>I warn this programme that any recurrence of this sloppy long-haired civilian plagiarism</p>
+  <p>will be dealt with most severely</p>
+</blockquote>
+
+<h1 id="recursion">Recursion</h1>
+
+<p>Here is a famous example of visual recursion often called the Droste effect. Droste is a Dutch chocolate maker. Notice that the box has a picture of the box on it, which itself has a picture of the box on it. If the picture were detailed enough, this would continue endlessly.</p>
+
+<p><img src="images/11A0_recursion_01.png" alt="" /></p>
+
+<h2 id="another-problem-solving-strategy">Another Problem Solving Strategy</h2>
+<p>In this section, we will look into another way of solving problems. To do this, we will start with a very simple example.</p>
+
+<p>Suppose we have the problem of summing a list of numbers (without using the existing sum function). This is an easy task, but we’ll take a different approach to solving it than we’ve seen before. To be explicit, we need to write the body for this function definition:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Add up a list of numbers.
+    
+    Parameters:
+        numbers (list): List of numbers to be summed.
+
+    Return:
+        float: Sum of all the values in 'numbers'.
+    """</span>
+    <span class="k">pass</span> <span class="c1"># Something else goes here.
+</span></code></pre></div>  </div>
+</div>
+
+<p>The <code class="highlighter-rouge">pass</code> keyword is a statement that does nothing when it is executed; it is known as a “no operation” statement, usually abbreviated to NOP or NOOP (pronounced “no-op”). It is useful as a placeholder when a block of code is needed but has not been written yet. When we write the function body, we will remove the <code class="highlighter-rouge">pass</code> statement.</p>
+
+<p>Here is the plan: To add up a list of numbers, we will take the first number, and add on the sum of the remaining (all but the first) numbers. Check that this process will give the correct sum. Here is an expression which should get the first number of a list and add together the remaining numbers:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">numbers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">add</span><span class="p">(</span><span class="n">numbers</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Notice what is happening here: that we are solving the problem of adding up a list of numbers by adding up a smaller list of numbers. To add up this smaller list of numbers, we can apply this process again, and add up an even smaller list of numbers, and so on. A function that computes a result by calling the same function is called a <strong>recursive</strong> function. <strong>Recursion</strong> is the method of problem solving by using recursive functions.</p>
+
+<p>But there is a slight problem here: we are not really ever adding up the numbers, we are just constantly changing the problem to a smaller list of numbers. We need to decide on a point where it is more sensible to just return a result instead of trying to go further. That point comes when we have reached the smallest list possible, which is the empty list. If the list is empty, then the result of the sum should be 0 (when there are no numbers to add up, the total is zero).</p>
+
+<p>Summarising, our strategy is now in two separate cases: if the list is empty, then the result is 0. Otherwise, the result is <code class="highlighter-rouge">numbers[0] + add(numbers[1:])</code>. This makes it very easy to write the function:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Add up a list of numbers.
+    
+    Parameters:
+        numbers (list): List of numbers to be summed.
+
+    Return:
+        float: Sum of all the values in 'numbers'.
+    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">numbers</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="n">numbers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">add</span><span class="p">(</span><span class="n">numbers</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</code></pre></div>  </div>
+</div>
+
+<p>We have seen plenty of examples of functions or methods whose definitions contain occurrences of other functions or methods. The above example shows that there is nothing to stop us defining a function that contains an occurrence of itself. Does this <code class="highlighter-rouge">add</code> function work? Download <code class="highlighter-rouge">add.py</code> to test it.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="mi">16</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="aside">
+
+  <h4 id="aside-be-efficient">Aside: Be Efficient</h4>
+  <p>Notice that each recursive step of our <code class="highlighter-rouge">add</code> function performs a list slice <code class="highlighter-rouge">numbers[1:]</code>, which essentially makes a copy of the whole list. Doing this at every step makes the recursive function inefficient. In the <code class="highlighter-rouge">next section</code>, we will return to the question of efficiency. A more efficient way to add a list of numbers would be to use a loop, or the built-in <code class="highlighter-rouge">sum</code> function.</p>
+</div>
+
+<h2 id="using-recursion">Using Recursion</h2>
+<p>What is involved in designing a recursive function? One is the <strong>recursive step</strong> case, which typically involves solving the problem by calling the same function with a slightly smaller input. Examples of “smaller input” are a list or string with the first element removed, or a number minus one. The other is the <strong>base case</strong> or termination case, which is typically on the smallest possible input, where solving the problem is typically a trivial task. For example, the input for a base case might be an empty list or string, or the number 0 (or another small number).</p>
+
+<p>In the case of the <code class="highlighter-rouge">add</code> example, the recursive step is to say that the sum of the list <code class="highlighter-rouge">numbers</code> is given by <code class="highlighter-rouge">numbers[0] + add(numbers[1:])</code>, where <code class="highlighter-rouge">numbers[1:]</code> is our slightly smaller sub-problem. The base case is found when the list is empty, in this case the result is 0. It is useful to ensure that the base case deals with any situation that does not apply to the recursive step. In the <code class="highlighter-rouge">add</code> function, the expression <code class="highlighter-rouge">numbers[0] + add(numbers[1:])</code> doesn’t work when the list is empty (since “<code class="highlighter-rouge">numbers[0]</code>” will raise an <code class="highlighter-rouge">IndexError</code>), so this must be handled by the base case.</p>
+
+<p>It may be useful to explicitly study how the recursive <code class="highlighter-rouge">add</code> function computes a result. See the visualisation of the <code class="highlighter-rouge">add</code> function on BlackBoard.</p>
+
+<p>When writing a recursive function, it is often helpful to apply wishful thinking. In this process, we assume that we can solve the problem with smaller inputs and think about how that could be used. That is, if we knew the solution to a smaller problem, how could we find the solution to our problem? Once that is answered, how does that recursive step eventually reach a “simplest case,” and how do we handle that case?</p>
+
+<h2 id="recursive-definitions">Recursive Definitions</h2>
+
+<p>In computer science and mathematics, <strong>recursive definitions</strong> are definitions that refer to themselves. For example, one definition of the factorial function <code class="highlighter-rouge">n!</code> is:</p>
+
+<p><img src="images/11A0_recursion_02.png" alt="" /></p>
+
+<p>A recursive definition is very easy to translate directly into Python code. The above definition of the factorial function can be represented in Python as:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Calculate the factorial of the given number 'n'.
+     
+    Parameters:
+        n (int): Number for which the factorial is to be calculated.
+
+    Return:
+        int: Factorial of 'n'.
+    """</span>
+     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">n</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Do we really need recursion? Can’t we just write a while loop to do the work? How about the following definition?</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">factorial2</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Calculate the factorial of the given number 'n'.
+     
+    Parameters:
+        n (int): Number for which the factorial is to be calculated.
+
+    Return:
+        int: Factorial of 'n'.
+    """</span>
+    <span class="n">factorial</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">:</span>
+        <span class="n">factorial</span> <span class="o">*=</span> <span class="n">n</span>
+        <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">factorial</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This certainly works — not exactly. Both versions have a problem if we supply them with a negative integer or a float. They will both go into ‘infinite loops’ as subtracting 1 will never reach the terminating condition <code class="highlighter-rouge">n == 0</code>. We really need to constrain <code class="highlighter-rouge">n</code> to be a non-negative integer.</p>
+
+<p>It is clear that the recursive Python definition is an obviously correct implementation of the mathematical definition but it is not so clear that the non-recursive definition is a correct implementation. This is to be expected though — a recursive mathematical definition should have a more direct translation into a recursive program than a non-recursive one.</p>
+
+<p>Still, recursion is not really needed here — we can work a bit harder and avoid recursion. Is this always the case? No — it turns out that there a certain kinds of problems that are just “inherently recursive”.</p>
+
+<h2 id="a-counting-problem">A Counting Problem</h2>
+
+<p>As an example, we will write a recursive function to solve the following counting problem.</p>
+
+<p>Consider the grid below, each corner is at integer coordinates. We start at the top-left, <code class="highlighter-rouge">(0,0)</code>, and we are allowed to move down and right along the lines in the grid to reach the coordinates <code class="highlighter-rouge">(x,y)</code>. The task to solve is, how many different paths can we take to reach the point <code class="highlighter-rouge">(x,y)</code>? For example, two possible paths from <code class="highlighter-rouge">(0,0)</code> to <code class="highlighter-rouge">(3,4)</code> are shown below.</p>
+
+<p><img src="images/11A0_recursion_03.png" alt="" /></p>
+
+<p>We will write a function <code class="highlighter-rouge">num_paths(x, y)</code> to solve this problem. To solve a problem like this it can help to start with a pen and paper and try a few examples to get a handle on the problem. We can try this and use wishful thinking: if we knew the number of paths to other points on the grid, could we easily find the number of paths to the one we’re interested in?</p>
+
+<p>We quickly notice that every path to <code class="highlighter-rouge">(x,y)</code> must finish by going through either of the points next to it: <code class="highlighter-rouge">(x-1,y)</code> or <code class="highlighter-rouge">(x,y-1)</code>. How does this help? We can see from this that the number of paths to <code class="highlighter-rouge">(x,y)</code> is the sum of the number of paths to each of these adjacent points: 
+<code class="highlighter-rouge">num_paths(x-1, y) + num_paths(x, y-1)</code>. <em>Here we have the recursive step</em>.</p>
+
+<p>In finding the base case, we need to consider, what case does every recursive step eventually lead to? In this problem, the recursive step moves backwards along the grid, both left and up. This will eventually reach either the left or top edge (that is, when <code class="highlighter-rouge">x == 0</code> or <code class="highlighter-rouge">y == 0</code>). So now we consider, how many paths are there to a point on the top or left edges?</p>
+
+<p>In fact, there is only one path, which goes either straight down or straight to the right. So, if <code class="highlighter-rouge">x == 0</code> or <code class="highlighter-rouge">y == 0</code>, the result is 1.</p>
+
+<p>These observations lead to the following definition.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">num_paths</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Calculate the number of paths to point (x,y)
+     
+    Parameters:
+        x (int): x coordinate of the point.
+        y (int): y coordinate of the point.
+
+    Return:
+        int: Number of paths from (0,0) to (x,y).
+    """</span>
+
+     <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="n">num_paths</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">num_paths</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This turns out to be a simple, elegant solution. We argue that, without knowing the mathematical function for the number of paths, it is extremely difficult to write a non-recursive program to solve the problem.</p>
+
+<h2 id="recursive-adts">Recursive ADTs</h2>
+<p>Now we will look at a slightly different topic. We will start with a new ADT, the <strong>binary search tree</strong> (actually, a simplified version of it). A binary search tree is a way of storing a collection of values in order, which is useful in many applications where lots of data needs to be efficiently stored and accessed. A binary search tree is made of multiple <strong>nodes</strong>, each node contains these things:</p>
+<ul>
+  <li>A value, which is the piece of information being stored. It can be any type of data that allows <code class="highlighter-rouge">==</code>, <code class="highlighter-rouge">&lt; </code>and <code class="highlighter-rouge">&gt; </code>comparisons.</li>
+  <li>An optional “left child”, which is another node. All the nodes to the left of this one (called the left subtree) must have values that are less than the value of this node.</li>
+  <li>An optional “right child”, which is another node. All the nodes to the right of this one (the right subtree) must have values that are greater than or equal to the value of this node.
+To visualise this definition, the diagram below shows a common way to represent a tree. Each node is a circle with the value inside. The top-most node (in this case, the one with value 5) is called the <strong>root</strong>, which can be used to access the entire tree. Nodes without any children (in this case, 2, 4, 6, and 8) are called <strong>leaves</strong>.</li>
+</ul>
+
+<p><img src="images/11A0_recursion_04.png" alt="" /></p>
+
+<p>Take a moment to understand how this diagram relates to the definition above. For example, 3 and 7 are the left and right children of 5. The nodes with 2, 3 and 4 make up the left subtree of 5. We should also check that each node satisfies the “less than” and “greater than” properties described. 5 is greater than 2,3,4 and less than 6,7,8. 3 is greater than 2 and less than 4. 7 is greater than 6 and less than 8.</p>
+
+<p>There is an important idea that has been introduced in this ADT: nodes store other nodes. This is an example of a <strong>recursive ADT</strong>, a data type which stores other instances of itself. These nodes can themselves store other nodes, and so on. They are analogous to a recursive step in a recursive function. Leaf nodes are analogous to a base case in a recursive function, because they are the simplest type of node, and also where the path of “travelling along” nodes stops. One other interesting property of the binary search tree is that each subtree is itself a tree: for example, the nodes 2, 3 and 4 form a tree by themselves.</p>
+
+<p>Nodes in a binary search tree can support the following operations:</p>
+<ul>
+  <li><code class="highlighter-rouge">Node.insert(value)</code> — insert a new value into one of the subtrees of this node, preserving the tree ordering property.</li>
+  <li><code class="highlighter-rouge">Node.to_list()</code> — return a sorted list of values of this node and its subtrees.</li>
+  <li><code class="highlighter-rouge">value in node</code> — a boolean test that checks if this value is stored in this node or its subtrees.</li>
+</ul>
+
+<p>All of these are easiest to implement recursively, which is helped by the recursive nature of the tree structure. Let’s start writing a <code class="highlighter-rouge">Node</code> class to represent nodes. When a node is created, it has no children yet, so we will use <code class="highlighter-rouge">None</code> to represent indicate that there are no left or right sub-trees.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""A node in a binary search tree."""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""A new Node in a Binary Search Tree
+     
+        Parameters:
+            value: Element to be stored in this Node. 
+                   Must be comparable by ==, &gt; and &lt;.
+        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_left</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_right</span> <span class="o">=</span> <span class="bp">None</span>
+</code></pre></div>  </div>
+</div>
+
+<p>For the <code class="highlighter-rouge">insert</code> method, the value should be added as a new node in either the left or right subtree, whichever is appropriate. Note that the method does this by making recursive calls to <code class="highlighter-rouge">insert</code> on other nodes. The “base case” is when the left or right child does not exist, so a new <code class="highlighter-rouge">Node</code> is created. Note also that if the value being inserted is equal to the value, it will go in the right subtree, but there is no reason it cannot go in the left subtree instead.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Add 'value' into this Node in the search tree.
+     
+        Parameters:
+            value: Element to be stored in this Node. 
+                   Must be comparable by ==, &gt; and &lt;.
+        """</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_left</span> <span class="ow">is</span> <span class="bp">None</span> <span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_left</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_left</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_right</span> <span class="ow">is</span> <span class="bp">None</span> <span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_right</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_right</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>To write the <code class="highlighter-rouge">to_list</code> method, we can use this rationale: all the nodes in the left subtree will be less than the current node, so recursively calling <code class="highlighter-rouge">self._left.to_list()</code> will give us the first portion of the list in sorted order. We can then append the current value. Similarly, a call to <code class="highlighter-rouge">self._right.to_list()</code> will give us the last portion of the list in sorted order, which can be extended onto the end. Notice that the base case is not explicitly written, but it is still there: if both of the children are <code class="highlighter-rouge">None</code>, then no recursive calls will be made.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Return a sorted list of the values of this Node's children."""</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_left</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_left</span><span class="o">.</span><span class="n">to_list</span><span class="p">())</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_right</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_right</span><span class="o">.</span><span class="n">to_list</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>  </div>
+</div>
+
+<p>To use the <code class="highlighter-rouge">value in node</code> syntax, a class must implement the <code class="highlighter-rouge">__contains__</code> method and return <code class="highlighter-rouge">True</code> or <code class="highlighter-rouge">False</code>. We will determine if the value we are searching for is greater or less than the current node’s value, then we will search for the value in either the right or left subtree. Notice below that <code class="highlighter-rouge">value in self._left</code> and <code class="highlighter-rouge">value in self._right</code> are actually recursive steps, because they both use the same <code class="highlighter-rouge">__contains__</code> method on a subtree. If the value is the one that we are searching for, we can return <code class="highlighter-rouge">True</code>, otherwise, there is no other way to find the value and we return <code class="highlighter-rouge">False</code>, these are both base cases.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">elif</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_left</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_left</span>
+        <span class="k">elif</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_right</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_right</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Lastly, we can implement a <code class="highlighter-rouge">__str__</code> method:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="s">"({0}, {1}, {2})"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_right</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>How does this work? When performing the <code class="highlighter-rouge">.format</code> on each child, if the child is <code class="highlighter-rouge">None</code>, then <code class="highlighter-rouge">"None"</code> will appear in the string result. If the child is a <code class="highlighter-rouge">Node</code>, then <code class="highlighter-rouge">.format</code> method will recursively call <code class="highlighter-rouge">str</code> on that node. This is an example of the potential for writing very elegant recursive functions.</p>
+
+<p>It is sometimes much easier to write a function recursively than iteratively, and being able to work with recursive methods is an important skill.</p>
+
+<p>For completeness, we will also give an implementation of a binary search tree class, which simply keeps track of the root node (if there is one — the tree might not have any nodes) and refers to the root node when its methods are called. The two classes can be downloaded: <code class="highlighter-rouge">search_tree.py</code></p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BinarySearchTree</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""A binary search tree."""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""A new empty binary search tree."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Add 'value' into the tree.
+        
+        Preconditions:
+            'value' is comparable by at least the ==, &gt; and &lt; operators.
+        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="ow">is</span> <span class="bp">None</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Return a sorted list of the values in this tree."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="ow">is</span> <span class="bp">None</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="ow">is</span> <span class="bp">None</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="s">"()"</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Here are some examples of using this tree. The interaction below creates a tree with the same structure as the diagram above, the second is a simple function that sorts a list of numbers that takes advantage of <code class="highlighter-rouge">to_list</code>. Study the output of <code class="highlighter-rouge">print(tree)</code> and relate it to both the diagram and the <code class="highlighter-rouge">Node.__str__</code> method above.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">tree</span> <span class="o">=</span> <span class="n">BinarySearchTree</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]:</span>
+        <span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="p">(((</span><span class="bp">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="bp">None</span><span class="p">)),</span> <span class="mi">5</span><span class="p">,</span> <span class="p">((</span><span class="bp">None</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span> <span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="bp">None</span><span class="p">)))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">tree</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">4</span> <span class="ow">in</span> <span class="n">tree</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">7.5</span> <span class="ow">in</span> <span class="n">tree</span>
+<span class="bp">False</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">tree_sort</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""A sort implementation using a tree.
+        
+        Parameters:
+            lst: List of elements to be sorted.
+
+        Return:
+            Sorted list of elements.
+
+        Preconditions:
+            All elements of 'lst' are comparable by 
+            at least the ==, &gt;, and &lt; operators.
+        """</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">BinarySearchTree</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">lst</span> <span class="p">:</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tree</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="aside">
+
+  <h4 id="aside-an-advanced-implementation">Aside: An advanced implementation</h4>
+  <p>Some students may wish to challenge themselves and experiment with another implementation of a binary search tree. <code class="highlighter-rouge">search_tree2.py</code> contains a more elegant implementation, as well as support for the len function and for-loops (using content from the optional material on functional programming.</p>
+</div>
+
+<div class="aside">
+
+  <h4 id="aside-is-recursion-necessary">Aside: Is recursion necessary?</h4>
+  <p>The problems we have looked at in this section were solved by writing recursive functions, but did we need to use recursion? When can a recursive function be written iteratively (using a loop) instead?</p>
+
+  <p>A function is <strong>tail recursive</strong> if the recursive call is the last thing that happens before the function returns. Tail recursive functions can be directly translated into an iterative function. In fact, some other programming languages will notice when tail recursion is used and optimise it so it behaves iteratively.</p>
+
+  <p>For example, the <code class="highlighter-rouge">Node.insert</code> method is tail recursive, because when the <code class="highlighter-rouge">insert</code> method is called recursively, that is the last step the function takes. The <code class="highlighter-rouge">insert</code> method can be defined iteratively as below.</p>
+
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Add a value into this node in the search tree."""</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="k">while</span> <span class="bp">True</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="n">node</span><span class="o">.</span><span class="n">_value</span> <span class="p">:</span>
+                <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">_left</span> <span class="ow">is</span> <span class="bp">None</span> <span class="p">:</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">_left</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="k">break</span>
+                <span class="k">else</span> <span class="p">:</span>
+                    <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">_left</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">_right</span> <span class="ow">is</span> <span class="bp">None</span> <span class="p">:</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">_right</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="k">break</span>
+                <span class="k">else</span> <span class="p">:</span>
+                    <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">_right</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>However, with a good understanding of recursion, many people would prefer the original recursive method.</p>
+
+  <p>The <code class="highlighter-rouge">__contains__</code> method is also tail recursive, and can similarly be defined using a while loop. However, <code class="highlighter-rouge">to_list</code> and <code class="highlighter-rouge">__str__</code> are not tail recursive, because after a recursive call is made, there is still more work to be done before returning the result. These two methods are very difficult to write without using recursion. The <code class="highlighter-rouge">num_paths</code> function above is also not tail recursive, and cannot easily be translated into an iterative function.</p>
+
+  <p>Note however that there are functions, such as <code class="highlighter-rouge">add</code> and <code class="highlighter-rouge">factorial</code> from earlier, which are not tail recursive but can be rewritten iteratively using a bit more thought.</p>
+</div>
+
+    </div>
+</body>
+
+</html>

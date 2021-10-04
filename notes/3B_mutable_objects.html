@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mutable Objects</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/3B_mutable_objects.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p> I’m afraid I’m not personally qualified to confuse cats, </p>
+  <p> but I can recommend an extremely good service.</p>
+</blockquote>
+
+<h1 id="mutable-and-immutable">Mutable and Immutable</h1>
+
+<p>As we are about to see <strong>lists</strong>, are our first example of a mutable sequence and object, now is a good time to discuss <strong>mutability</strong>. Mutability is the description of whether an object’s data can be modified.</p>
+
+<p>A <strong>mutable</strong> object is an object whose data is <strong>modifiable</strong>. The data can be modified either through the methods of the object or through direct access to the data itself. An <strong>immutable</strong> object is an object where the data <strong>cannot</strong> be modified in anyway. Strings are examples of immutable objects. It is not possible to modify the data of a string. We are about to meet our first mutable objects: <strong>lists</strong>.</p>
+
+<h3 id="lists">Lists</h3>
+
+<p>Lists are <strong>mutable</strong> sequences. We can access elements at a particular index as we did with strings and use slicing, but we can also modify a list by changing elements or by adding and removing elements.</p>
+
+<p>Here are some examples of lists in action:</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; a = [1,2,3,4]
+&gt;&gt;&gt; type(a)
+&lt;class 'list'&gt;
+&gt;&gt;&gt; a[0]
+1
+&gt;&gt;&gt; a[-1]
+4
+&gt;&gt;&gt; a[1:3]
+[2, 3]
+&gt;&gt;&gt; a[::2]
+[1, 3]
+&gt;&gt;&gt; a[0] = 5
+&gt;&gt;&gt; a
+[5, 2, 3, 4]
+&gt;&gt;&gt; a.append(7)
+&gt;&gt;&gt; a
+[5, 2, 3, 4, 7]
+&gt;&gt;&gt; a.pop(3)
+4
+&gt;&gt;&gt; a
+[5, 2, 3, 7]
+&gt;&gt;&gt; a.insert(1,9)
+&gt;&gt;&gt; a
+[5, 9, 2, 3, 7]
+&gt;&gt;&gt; a.sort()
+&gt;&gt;&gt; a
+[2, 3, 5, 7, 9]
+&gt;&gt;&gt;
+</code></pre></div>  </div>
+</div>
+
+<p>The first example shows the syntax for lists and the type, the next four examples look up information in the list using indexing and slicing. In the next example, we see indexing used on the left hand side of an assignment statement. The semantics is that the value stored at the supplied index is updated with the value on the right hand side of the assignment. The last four examples use methods of the list class to perform more operations on the list.</p>
+
+<p>The first of these is the <code class="highlighter-rouge">append</code> method. The append method adds the item that is the argument to the end of the list. This is followed by the <code class="highlighter-rouge">pop</code> method. Pop removes the item at the given index from the list and returns that item. Another way to add items to the list is the <code class="highlighter-rouge">insert</code> method. Insert takes an index and an item as arguments and inserts the item at the given index, pushing the other items down the list. The last example shows how we can <code class="highlighter-rouge">sort</code> the elements — arrange them in order.</p>
+
+<p>Notice how all the methods and operations performed on the list modify the list stored in the variable being used and most do not return anything. Compare this to strings, where all methods and operations return a new item and do not change the original string in the variable.</p>
+
+<p>Python also includes a function for converting any sequence into a list of the objects in that sequence.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="s">"spam"</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'s'</span><span class="p">,</span> <span class="s">'p'</span><span class="p">,</span> <span class="s">'a'</span><span class="p">,</span> <span class="s">'m'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">42</span><span class="p">))</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">42</span><span class="p">]</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Because lists are sequences we can iterate over a list using a <code class="highlighter-rouge">for</code> loop.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="mi">0</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">4</span>
+</code></pre></div>  </div>
+</div>
+
+<p>A for loop is not much good if we do not do anything with the items. Here is an example of taking a list of numbers and generating a new list with all the numbers from the original list squared.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span> <span class="p">:</span>
+	<span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">y</span>
+<span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">324</span><span class="p">]</span>
+</code></pre></div>  </div>
+</div>
+
+<h3 id="range">Range</h3>
+<p>Because iterating over sequences of numbers is very common, Python comes with a function for generating a sequence of numbers. This function is called <code class="highlighter-rouge">range</code>. <code class="highlighter-rouge">range</code> generates a special object that is iterable, meaning we can loop over the elements in the range using the <code class="highlighter-rouge">for</code> loop.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">" "</span><span class="p">)</span>
+
+<span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> 
+</code></pre></div>  </div>
+</div>
+
+<p>In short, <code class="highlighter-rouge">range</code> creates an object that can be looped through that contains a sequence of numbers from a start number up to but not including a given end number. The end number is required and is excluded from the sequence as usually we use range to generate indices. The default start number is zero; this is also for generating indices as indexing starts at zero. The step size can also be changed, enabling us to skip numbers instead of going one number at a time. This can be seen in the following examples. Note, to simplify these examples the <code class="highlighter-rouge">list</code> function has been used.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span> <span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+</code></pre></div>  </div>
+</div>
+
+<div class="important">
+
+  <h4 id="range-syntax"><code class="highlighter-rouge">range</code> Syntax</h4>
+  <p><code class="highlighter-rouge">range(start, end, step_size) </code></p>
+
+  <p>start is optional and defaults to 0, <em>step_size</em> is optional and defaults to 1</p>
+
+  <h4 id="semantics">Semantics</h4>
+  <p>Generates an iterable sequence of numbers. If only <code class="highlighter-rouge">end</code> is given, then the sequence will start at 0 go up to but not including <code class="highlighter-rouge">end</code>. If <code class="highlighter-rouge">start</code> and <code class="highlighter-rouge">end</code> are given, then the sequence will start at <code class="highlighter-rouge">start</code> and go up to but not including <code class="highlighter-rouge">end</code>. If all three options are given then the sequence will start at <code class="highlighter-rouge">start</code> and go up to but not including <code class="highlighter-rouge">end</code> with a given <code class="highlighter-rouge">step_size</code>.</p>
+</div>
+
+<h3 id="pass-by-reference">Pass by Reference</h3>
+<p>The following example is of a function that takes a list and a number and adds all numbers from 0 up to but not including that number to the list.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add_to</span><span class="p">(</span><span class="n">existing_list</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Adds numbers 0 to 'num' to the end of 'list'
+    Parameters:
+        existing_list (list): The list to which numbers will be added.
+        num (int): The number up to which will be added to 'existing_list'.
+    Examples:
+        &gt;&gt;&gt; a_list = []
+        &gt;&gt;&gt; add_to(a_list, 4)
+        &gt;&gt;&gt; a_list
+        [0, 1, 2, 3]
+    """</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">existing_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>After saving the file as add_to.py and running here is a test.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add_to</span><span class="p">(</span><span class="n">a_list</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a_list</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Notice how even though the function does not return anything the list is modified simply by passing it to the function. We say that objects in Python are <strong>passed by reference</strong>, which means that objects passed into functions are passed directly. Consequently, a mutable object, which is changed inside a function body, will still be changed after the function call. In contrast, some programming languages use a <strong>pass by value</strong> strategy, where a copy of the object is passed into functions, so any modifications will not affect the original object. 
+The <code class="highlighter-rouge">add_to</code> function is what is often called a <strong>procedure</strong>, rather than a function, because it does not return a value. In Python, functions or procedures always return a value, even if there is no <code class="highlighter-rouge">return</code> statement. Procedures, like this example, return <code class="highlighter-rouge">None</code> if there is no return line. <code class="highlighter-rouge">None</code> is an instance of a special type in Python called <code class="highlighter-rouge">NoneType</code> which has only one value, <code class="highlighter-rouge">None</code>.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; type(None)
+&lt;class 'NoneType'&gt;
+&gt;&gt;&gt; a = None
+&gt;&gt;&gt; a
+&gt;&gt;&gt; 
+&gt;&gt;&gt; help(None)
+Help on NoneType object:
+
+class NoneType(object)
+ |  Methods defined here:
+ |  
+ |  __bool__(self, /)
+ |      self != 0
+ |  
+ |  __new__(*args, **kwargs) from builtins.type
+ |      Create and return a new object.  See help(type) for accurate signature.
+ |  
+ |  __repr__(self, /)
+ |      Return repr(self).
+</code></pre></div>  </div>
+</div>
+
+<p><code class="highlighter-rouge">None</code> is treated specially by the interpreter. The second example shows that anything that evaluates to <code class="highlighter-rouge">None</code> is not printed to the interpreter.</p>
+
+<div class="important">
+
+  <h4 id="pass-by-reference">Pass by Reference</h4>
+  <p>If a list is passed into a function, <strong>any changes</strong> made to that list inside the function will affect the list <strong>outside</strong> of the function, because lists are mutable.</p>
+
+</div>
+
+    </div>
+</body>
+
+</html>

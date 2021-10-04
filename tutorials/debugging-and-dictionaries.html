@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Debugging and Dictionaries</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/tutorials/debugging-and-dictionaries.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <h1 id="debugging-and-dictionaries">Debugging and Dictionaries</h1>
+<h2 id="bug-swatting">Bug Swatting</h2>
+
+<p>Your tutors have tried to write a program that finds the first <code class="highlighter-rouge">n</code> prime numbers, for an integer <code class="highlighter-rouge">n</code>. Unfortunately, we’re all noobs. Our code has several bugs in it and we need some help. The code is shown below; your task is to find and fix the errors. This code can also be downloaded as <code class="highlighter-rouge">week05_primes.py</code>.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Returns True iff 'n' is prime.
+
+    Parameters:
+        n (int): Integer value to be tested to see if it is prime.
+
+    Return:
+        bool: True if 'n' is prime. False otherwise.
+
+    Preconditions:
+        n &gt; 1
+    """</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">:</span>
+        <span class="c1"># Check if i is a factor of n
+</span>        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+
+
+<span class="k">def</span> <span class="nf">get_primes</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Return a list of the first n primes.
+
+    Parameters:
+        n (int): Number of prime numbers to find.
+
+    Return:
+        list[int]: The first ‘n’ prime numbers.
+
+    Preconditions:
+        n &gt; 0
+    """</span>
+    <span class="n">primes</span> <span class="o">=</span> <span class="s">''</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">primes</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_prime</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">:</span>
+            <span class="n">primes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">"How many primes? "</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"The first"</span> <span class="o">+</span> <span class="n">n</span> <span class="o">+</span> <span class="s">"primes are:"</span><span class="p">,</span> <span class="n">primes</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The following example shows how the program should work:</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>How many primes? 7
+The first 7 primes are: [2, 3, 5, 7, 11, 13, 17]
+</code></pre></div>  </div>
+</div>
+
+<h2 id="scrabble-scoring">Scrabble Scoring</h2>
+<p>In the game <em>Scrabble</em>, points are scored by summing the value of the letters in a word. Different letters are assigned different values, based on how difficult it is to use the letter in a word. Below is a table that maps each letter to its corresponding value.
+<img src="images/_04/04_01.png" alt="" /></p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SCRABBLE_VALUES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s">'a'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'b'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'c'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'d'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'e'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">'f'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s">'g'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">'h'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s">'i'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'j'</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">'k'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s">'l'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'m'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'n'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'o'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">'p'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">'q'</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="s">'r'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'s'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'t'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">'u'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">'v'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s">'w'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s">'x'</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s">'y'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">'z'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<ol>
+  <li>
+    <p>Download the file <code class="highlighter-rouge">week05_scrabble.py</code>. This file contains a tuple of the letters in the alphabet with their corresponding scrabble value. Write a function <code class="highlighter-rouge">read_scores</code> which takes a tuple like this as an argument and creates a dictionary that maps letters to their scrabble score.</p>
+
+    <p>Why can’t we create a dictionary that does the reverse — that is, maps a scrabble score to the letter which gains that score?</p>
+  </li>
+  <li>
+    <p>Write a function <code class="highlighter-rouge">get_score(scores, word)</code>, that takes as input the scores dictionary and a string containing a word, and returns the word’s scrabble score. (You may assume that the input string only consists of lowercase letters.) For example:</p>
+
+    <div class="viz">
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">&gt;&gt;&gt;</span> <span class="n">scores</span> <span class="o">=</span> <span class="n">read_scores</span><span class="p">(</span><span class="s">'scrabble_scores.txt'</span><span class="p">)</span>
+ <span class="o">&gt;&gt;&gt;</span> <span class="n">get_score</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="s">'quack'</span><span class="p">)</span>
+ <span class="mi">20</span>
+</code></pre></div>      </div>
+    </div>
+  </li>
+  <li>
+    <p>Modify your <code class="highlighter-rouge">get_score</code> function so that it now ignores characters for which it does not have a corresponding score:</p>
+    <div class="viz">
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">&gt;&gt;&gt;</span> <span class="n">get_score</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="s">'</span><span class="si">%</span><span class="s">fishing_'</span><span class="p">)</span>
+ <span class="mi">14</span>
+</code></pre></div>      </div>
+    </div>
+  </li>
+</ol>
+
+<div class="extra">
+
+  <h4 id="challenge-make-it-a-class">Challenge: Make it a Class</h4>
+  <p>Create a <code class="highlighter-rouge">ScrabbleScore</code> class that has methods <code class="highlighter-rouge">read_scores</code> and <code class="highlighter-rouge">get_score</code>. These methods should have the same functionality as the two functions described above. Explain why it is more appropriate to implement this functionality as a class than as two separate functions.</p>
+</div>
+
+<h2 id="frequency-analysis">Frequency Analysis</h2>
+<p>In cryptography, one method that can be applied to cracking a secret message is <em>frequency analysis</em>. Frequency analysis involves determining how many times each letter occurs in a given message and then, based on what language you are using, guessing certain letters, (for instance, in English the most used character is ‘e’, so you might guess the most frequently occurring letter in a secret message is actually ‘e’).</p>
+
+<ol>
+  <li>
+    <p>Write a function <code class="highlighter-rouge">letter_frequency(message)</code>, which takes as input a string message and returns a dictionary mapping the characters used in the message to the number of times they occurred in the message. Upper-case and lower-case letters are considered the same and non-alphabetical characters should be ignored:</p>
+
+    <div class="viz">
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">&gt;&gt;&gt;</span> <span class="n">letter_frequency</span><span class="p">(</span><span class="s">'secrets'</span><span class="p">)</span>
+ <span class="p">{</span><span class="s">'S'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'E'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'C'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'R'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'T'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+</code></pre></div>      </div>
+    </div>
+  </li>
+  <li>
+    <p>Write a function <code class="highlighter-rouge">max_letter(freqs)</code>, which takes as input a dictionary mapping letters to occurrences, like you would get from part 1. It should return the letter with the highest frequency, or in the case of a tie, any 1 of the most common letters:</p>
+  </li>
+</ol>
+
+<div class="extra">
+
+  <h4 id="challenge-multiple-max-frequencies">Challenge: Multiple Max Frequencies</h4>
+  <p>Modify the <code class="highlighter-rouge">max_letter</code> function to instead return a list of all the letters with the highest frequency. e.g. If there is a tie in the maximum frequency a list of multiple letters should be returned. If there is only one highest frequency, return a list with a single element in it.</p>
+</div>
+
+    </div>
+</body>
+
+</html>

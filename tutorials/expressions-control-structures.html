@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Expressions and Control Structures</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/tutorials/expressions-control-structures.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <h1 id="expressions-and-control-structures">Expressions and Control Structures</h1>
+
+<div class="important">
+
+  <h4 id="about-tutorials">About Tutorials</h4>
+
+  <p>The aim of the CSSE1001/CSSE7030 tutorial (T) sessions is to give additional practice at writing computer programs. The tasks are designed to be completed by a group of two or three students working together, so it is strongly recommended that you sit with other students, and use a lab machine instead of a laptop. Making use of the course notes and lecture material is also encouraged. If you are on a lab machine ensure that you open up the Python interpreter, <strong>IDLE</strong>, and not one of the other Python interpreters that may be installed on the system.</p>
+
+  <p>Tutors are present at the session to provide assistance and insight into the tasks, so ask them questions when you get stuck. Note that tutors will not provide assistance for the assignment tasks in the T sessions; for that, you should attend any of the timetabled P sessions.</p>
+
+  <p>Attendance at these sessions is not marked, however you will miss out on learning
+opportunities by not attending. Students often find that the learning experiences from the
+tutorials are directly helpful in completing the assignments and the final exam.</p>
+
+</div>
+
+<h4 id="hello-world">Hello, World!</h4>
+
+<p>The purpose of this task is to become familiar with writing, saving, and running programs from IDLE. Write a program which, when run, outputs the text <code class="highlighter-rouge">Hello, World!</code>, and save it as <code class="highlighter-rouge">hello.py</code>.</p>
+
+<p>Then, close IDLE, and navigate the file-system (in Windows Explorer or equivalent) to find the program you just wrote, open it in IDLE, and run it.</p>
+
+<p>Next, modify the program to first ask the user what their name is (using <code class="highlighter-rouge">input</code>), and then output a greeting using their name. For example (the blue text is output from the program, the black text is input from the user):</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt;
+RESTART: H:/CSSE1001/Python Code/Week2/hello.py
+What is your name? Sir Lancelot of Camelot
+Hello, Sir Lancelot of Camelot!
+&gt;&gt;&gt;
+</code></pre></div>  </div>
+
+</div>
+
+<div class="important">
+
+  <p><strong>Hint</strong>:</p>
+  <ul>
+    <li>Create a Python source code file by selecting “New” from the File menu in IDLE, or using the Ctrl-N shortcut.</li>
+    <li>Save the file in a location where you will be able to find it. On the lab machines, the <code class="highlighter-rouge">H:</code> drive is your personal network drive, which can be accessed from any EAIT machine (<code class="highlighter-rouge">U:</code> is the equivalent of the science <code class="highlighter-rouge">H:</code>). Files saved to the <code class="highlighter-rouge">C:</code> drive might not be accessible after logging off.</li>
+    <li>By default, IDLE will not add a file extension to your files. You must manually add <code class="highlighter-rouge">.py</code> to the end of the filename in order to keep the syntax highlighting.</li>
+  </ul>
+
+</div>
+
+<h4 id="guess-the-expression">Guess the Expression</h4>
+<p>For each of the below expressions, make a guess on what the result of the expression should be. Discuss your guesses with the other people at your table, or with a tutor, <strong>before</strong> running the code in IDLE. After running the code, if you didn’t guess correctly, discuss why it produced the result that it did, or experiment with some other examples yourself.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="mi">3</span><span class="o">--</span><span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">-</span><span class="mi">5</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">5</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">-</span><span class="mi">5</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">5.0</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">5.0</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">3.0</span> <span class="o">-</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">3.0</span> <span class="o">-</span> <span class="mi">5</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'3'</span> <span class="o">+</span> <span class="s">'12'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">3</span> <span class="o">+</span> <span class="s">'12'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="s">'12'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'ba'</span> <span class="o">+</span> <span class="s">'na'</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'hello'</span> <span class="o">-</span> <span class="s">'o'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'ababab'</span> <span class="o">/</span> <span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">9</span> <span class="o">**</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">11</span> <span class="o">%</span> <span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">-</span><span class="mi">11</span> <span class="o">%</span> <span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'Tim'</span> <span class="o">&gt;</span> <span class="s">'Tom'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'A'</span> <span class="o">&lt;</span> <span class="s">'a'</span>
+</code></pre></div>  </div>
+
+</div>
+
+<h4 id="leap-years">Leap Years</h4>
+
+<p>A leap year occurs when the year is a multiple of four, unless the year is a multiple of 100. However, if the year is a multiple of 400, then it is a leap year. For instance, 2016 and 2000 are leap years, but 1900 is not.</p>
+
+<p>Create a new Python source file, and write a program <code class="highlighter-rouge">leap_year.py</code> which asks the user to enter an integer (representing a year), and prints <code class="highlighter-rouge">True</code> if the year is a leap year, and <code class="highlighter-rouge">False</code> if not.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt;
+RESTART: H:/CSSE1001/Python Code/Week2/leap_year.py
+Please enter a year: 2018
+False
+&gt;&gt;&gt;
+RESTART: H:/CSSE1001/Python Code/Week2/leap_year.py
+Please enter a year: 2020
+True
+&gt;&gt;&gt;
+RESTART: H:/CSSE1001/Python Code/Week2/leap_year.py
+Please enter a year: 2100
+False
+&gt;&gt;&gt;
+RESTART: H:/CSSE1001/Python Code/Week2/leap_year.py
+Please enter a year: 2000
+True
+&gt;&gt;&gt;
+</code></pre></div>  </div>
+
+</div>
+
+<div class="extra">
+
+  <h4 id="challenge-1-days-of-the-week">Challenge 1: Days of the Week</h4>
+  <p>Research Zeller’s congruence, and write a program which takes as input, the day of the month,
+the month, and the year, and prints the day of the week corresponding to that date. Design a
+set of example cases to check you’ve implemented the logic correctly.</p>
+
+</div>
+
+<h4 id="powers-of-two">Powers of Two</h4>
+<p>Write a program that takes a positive integer as an input. Output a simple table that lists the powers of two up to the integer value passed to the program. The output should look as
+follows:</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt;
+RESTART: H:/CSSE1001/Python Code/Week2/powers_of_two.py
+Enter the power: 0
+0 1
+&gt;&gt;&gt;
+RESTART: H:/CSSE1001/Python Code/Week2/powers_of_two.py
+Enter the power: 1
+0 1
+1 2
+&gt;&gt;&gt;
+RESTART: H:/CSSE1001/Python Code/Week2/powers_of_two.py
+Enter the power: 3
+0 1
+1 2
+2 4
+3 8
+&gt;&gt;&gt;
+</code></pre></div>  </div>
+
+</div>
+
+<h4 id="guess-a-number">Guess a Number</h4>
+
+<p>Write a program that asks a user to guess a number between 1 and 100. The program should generate a random number and repeatedly ask the user to input a number until they guess the correct number. When they guess the correct number, the program should output <code class="highlighter-rouge">Congratulations!</code> and then terminate. The user may give up by entering -1 and the program will output the number the user was trying to guess and then terminate. The output of the program, if run in IDLE, should look like:</p>
+
+<div class="viz">
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt;
+RESTART: H:/CSSE1001/Python Code/Week2/guess_number.py
+Try to guess the number I am thinking of between 1 and 100.
+Please enter your guess: 23
+Sorry that is not correct.
+Please enter your guess: 42
+Congratulations! You have guessed correctly.
+&gt;&gt;&gt;
+RESTART: H:/CSSE1001/Python Code/Week2/guess_number.py
+Try to guess the number I am thinking of between 1 and 100.
+Please enter your guess: 42
+Sorry that is not correct.
+Please enter your guess: -1
+The number you were trying to guess was 2.
+&gt;&gt;&gt;
+</code></pre></div>  </div>
+
+</div>
+
+<div class="important">
+
+  <p><strong>Hint</strong>:
+To generate random integers, first put <code class="highlighter-rouge">import random</code> at the top of the file, then use the function call <code class="highlighter-rouge">random.randint(1, 100)</code> to generate a random integer between 1 an 100.</p>
+
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">random</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="mi">73</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">x</span>
+<span class="mi">22</span>
+</code></pre></div>    </div>
+
+  </div>
+
+  <p>You can also type <code class="highlighter-rouge">&gt;&gt;&gt; help(random.randint)</code> at the prompt to get more information. Type <code class="highlighter-rouge">help(random)</code> or <code class="highlighter-rouge">dir(random)</code> to find more functions in the random module, or look at the <a href="https://docs.python.org/3.9/library/random.html">online documentation</a>.</p>
+
+</div>
+
+<h4 id="alices-addition-academy">Alice’s Addition Academy</h4>
+
+<p>Your 5-year old cousin Alice is learning addition, and you have decided to write a program she can use to practice with. The program will generate two random 2-digit integers, and ask the user what the sum of the two integers is, and display whether or not the user is correct. If the user is incorrect, also display the correct answer.</p>
+
+<p>Some example interactions with the program are as follows:</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt;
+RESTART: H:/CSSE1001/Python Code/Week2/arithmetic_academy.py
+70 + 17 = 87
+Correct!
+&gt;&gt;&gt;
+RESTART: H:/CSSE1001/Python Code/Week2/arithmetic_academy.py
+99 + 56 = 156
+No, the correct answer is 155
+&gt;&gt;&gt;
+</code></pre></div>  </div>
+
+</div>
+
+<div class="extra">
+
+  <h4 id="challenge-2-advanced-academy">Challenge 2: Advanced Academy</h4>
+  <p>Modify the above program so that it asks a set of 10 questions, rather than just one question.</p>
+
+</div>
+<div class="extra">
+
+  <h4 id="challenge-3-advanced-academy-hard">Challenge 3: Advanced Academy (Hard!)</h4>
+  <p>Modify the above program so that it also randomly selects an operator from the six options <code class="highlighter-rouge">+ - * // ** %</code>, to test Alice’s abilities with all of them. If the <code class="highlighter-rouge">**</code> operator is being used, the exponent should be randomly chosen between 0 and 3, instead of between 10 and 99.</p>
+
+</div>
+
+    </div>
+</body>
+
+</html>

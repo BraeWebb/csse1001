@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>File I/O and Processing</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/tutorials/file-processing.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <h1 id="file-io-and-processing">File I/O and Processing</h1>
+<h2 id="function-finder">Function Finder</h2>
+<p>In this task, we will write a function that reads and analyses Python source code files. The function we write will find all function definitions within the file.</p>
+
+<ol>
+  <li>
+    <p>Write a function <code class="highlighter-rouge">find_functions(filename)</code> that takes the name of a file containing Python code, and finds the name of each function defined in the file. The output should be written to a file called <code class="highlighter-rouge">functions.txt</code>, with one function name per line. You may like to use the sample file <code class="highlighter-rouge">week06_functions.py</code> to test your code. For this file, the output file <code class="highlighter-rouge">functions.txt</code> should contain:</p>
+
+    <div class="viz">
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+ <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+ <span class="k">def</span> <span class="nf">get_0</span><span class="p">():</span>
+</code></pre></div>      </div>
+    </div>
+  </li>
+  <li>
+    <p>Modify this function to instead return a list of tuples of the form <code class="highlighter-rouge">(linenum, name, args)</code>, where <code class="highlighter-rouge">name</code> is the name of a function, <code class="highlighter-rouge">args</code> is a tuple of parameter names to the function, and <code class="highlighter-rouge">linenum</code> is the line number containing the function definition. For example:</p>
+
+    <div class="viz">
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">&gt;&gt;&gt;</span> <span class="n">find_functions</span><span class="p">(</span><span class="s">'week06_functions.py'</span><span class="p">)</span>
+ <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'square'</span><span class="p">,</span> <span class="p">(</span><span class="s">'x'</span><span class="p">,)),</span>
+ <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s">'add'</span><span class="p">,</span> <span class="p">(</span><span class="s">'x'</span><span class="p">,</span> <span class="s">'y'</span><span class="p">)),</span>
+ <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="s">'get_0'</span><span class="p">,</span> <span class="p">())]</span>
+</code></pre></div>      </div>
+    </div>
+  </li>
+</ol>
+
+<div class="extra">
+
+  <h4 id="challenge-extract-and-parse-function-comment">Challenge: Extract and Parse Function Comment</h4>
+  <p>Modify this function to parse the function’s comment and include it in the tuple that represents a function. Make use of the Python convention for function comments. Tackle this problem in four stages.</p>
+
+  <ol>
+    <li>Extract only the first line of text after the opening <code class="highlighter-rouge">"""</code> as the summary comment. Include this as a string in the tuple representing a function, <code class="highlighter-rouge">(linenum, name, args, summary_comment)</code>.</li>
+    <li>If the closing <code class="highlighter-rouge">"""</code> for the comment is not on the same line as the opening <code class="highlighter-rouge">"""</code>, assume that there is a blank line and then read the following lines until the closing <code class="highlighter-rouge">"""</code>. This makes up the details of the comment. Create a tuple that includes the summary and the details as two strings, <code class="highlighter-rouge">(summary, details)</code>; and include this in the tuple representing a function, <code class="highlighter-rouge">(linenum, name, args, comment)</code>.</li>
+    <li>Now, for a further challenge, based on the Google Python commenting style, as demonstrated in lectures; extract the description of the parameters, return value and preconditions from the function comment. Put these as separate entries in the tuple that represents the comment, <code class="highlighter-rouge">(summary, [parameter_descriptions], return, preconditions)</code>. (Each parameter description is on a separate line, so may be a list of strings.) Include this comment tuple in the tuple representing a function, <code class="highlighter-rouge">(linenum, name, args, comment)</code>.</li>
+    <li>Now create a tuple that is the parameter name and the comment describing the parameter, <code class="highlighter-rouge">(parameter_name, comment)</code>. In the tuple that represents a function, replace the tuple of parameter names with a list of tuples that has the parameter name and descriptive comment, <code class="highlighter-rouge">(linenum, name, [args], comment)</code>. The rest of the function comment can still be included in the comment tuple as: <code class="highlighter-rouge">(summary, return, preconditions)</code>.</li>
+  </ol>
+
+  <p>Test your code using some of the code you have written and the lecture examples.</p>
+
+  <div class="viz">
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; find_functions('week04b-grade_book.py')
+[(156, 'calculate_percentage', [('results', 'results (list): Results for all assessment items.')], ('Calculate the percentage achieved based on these results.', 'float: Percentage based on assessment item results &amp; their weights.')), 
+ (173, 'process_results', [('results', 'results (list): List of each student's results in each course.')], ('Calculate grades for students based on their results in courses.', 'list: List of final grades of each student in each course:')), 
+ (197, 'get_exam_cap', [('course_code', 'course_code (str): Course code used to look up exam cap.')], ('Find the exam cap for this course.', 'The caps required to achieve each grade level in this')), 
+ (215, 'get_grade_cutoffs', [('course_code', 'course_code (str): Course code used to look up grade cut offs.')], ('Find the grade cut offs for this course.', 'list: The cut offs for each grade level in this course (7 ... 2).')), 
+ (232, 'final_grade', [('final_mark', 'final_mark (float): Final mark achieved in a course.'), ('exam_result', 'exam_result (int): Mark achieved in the final exam for the course.'), ('grade_cutoffs', 'grade_cutoffs (list): Final mark required for each grade level.'), ('exam_cap', 'exam_cap (list): Minimum mark required in the exam to achieve')], ('Calculate a student's final grade for a course.', 'int: Grade level achieved in this course (7 ... 1).')), 
+ (282, 'output_grades', [('grades', )], ('Simple formatted output of final results for all students.', )), 
+ (289, 'demo', [], ('Demonstration of functionality.', ))] 
+</code></pre></div>    </div>
+  </div>
+  <p>Note that in the output above, space has been inserted between each of the tuples representing a function. This has been done to make the output more readable. The output from executing the function in Python would not have these spaces.</p>
+</div>
+
+<h2 id="reading-configuration-files">Reading Configuration Files</h2>
+<p>When an application has to store information about how it’s configured (for example, a user’s preferences), it can do it by writing the information to a file, which can later be retrieved. When reading the configuration file, the application must translate the file into a suitable format, such as a dictionary.</p>
+
+<p>Download the file <code class="highlighter-rouge">week06_config.txt</code>, which contains the following:</p>
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[user]
+name=Eric Idle
+email=e.idle@pythons.com
+mobile=0412345678
+[notifications]
+email=yes
+sms=no
+</code></pre></div>  </div>
+</div>
+<p>In this format, each piece of data has a name (e.g. <code class="highlighter-rouge">email</code>) and a value (e.g. <code class="highlighter-rouge">e.idle@pythons.com</code>). The names/values are grouped under a heading (such as <code class="highlighter-rouge">user</code> or <code class="highlighter-rouge">notifications</code>). Each line in the file contains either a heading (surrounded by <code class="highlighter-rouge">[]</code> brackets), or a name/value pair (separated by an <code class="highlighter-rouge">=</code>). 
+Write a function <code class="highlighter-rouge">read_config</code> which takes a configuration file such as this, and returns a dictionary representation of the data, as in this example:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">read_config</span><span class="p">(</span><span class="s">'config.txt'</span><span class="p">)</span>
+<span class="p">{</span><span class="s">'user'</span><span class="p">:</span> <span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'Eric Idle'</span><span class="p">,</span>
+          <span class="s">'email'</span><span class="p">:</span> <span class="s">'e.idle@pythons.com'</span><span class="p">,</span>
+          <span class="s">'mobile'</span><span class="p">:</span> <span class="s">'0412345678'</span><span class="p">},</span>
+ <span class="s">'notifications'</span><span class="p">:</span> <span class="p">{</span><span class="s">'email'</span><span class="p">:</span> <span class="s">'yes'</span><span class="p">,</span> <span class="s">'sms'</span><span class="p">:</span> <span class="s">'no'</span><span class="p">}}</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Also write a function <code class="highlighter-rouge">get_value</code> which takes the above dictionary, and the dot-separated name of a setting (e.g. ‘user.mobile’), and returns the appropriate value (‘0412345678’ in this case). It is safe to assume the inputs are valid.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">config</span> <span class="o">=</span> <span class="n">read_config</span><span class="p">(</span><span class="s">'config.txt'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">get_value</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">'user.mobile'</span><span class="p">)</span>
+<span class="s">'0412345678'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">get_value</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">'notifications.email'</span><span class="p">)</span>
+<span class="s">'yes'</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Modify your <code class="highlighter-rouge">read_config</code> function so that it raises a <code class="highlighter-rouge">ValueError</code> if the file is invalid; that is, if the file contains a line which does not look like <code class="highlighter-rouge">[...]</code> or <code class="highlighter-rouge">...=...</code>, or if the file contains any name/value pairs before the first heading. You may wish to test your code on the following files: <code class="highlighter-rouge">week06_bad_config1.txt</code> and <code class="highlighter-rouge">week06_bad_config2.txt</code>.</p>
+
+<p>Throughout this exercise, it is safe to assume that the headings/names/values in the file do not contain the characters <code class="highlighter-rouge">[ ] =</code>, and that the headings/names do not contain ‘<code class="highlighter-rouge">.</code>’</p>
+
+<div class="extra">
+
+  <h4 id="challenge-create-a-class">Challenge: Create a Class</h4>
+  <p>Create a <code class="highlighter-rouge">UserData</code> class that has the methods <code class="highlighter-rouge">read_config</code> and <code class="highlighter-rouge">get_value</code>. These methods should have the same functionality as the two functions described above. Explain why it is more appropriate to implement this functionality as a class than as two separate functions.</p>
+</div>
+
+    </div>
+</body>
+
+</html>

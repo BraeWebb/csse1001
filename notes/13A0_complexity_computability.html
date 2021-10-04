@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Complexity and Computability</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/13A0_complexity_computability.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p>Our two weapons are fear and surprise…and ruthless efficiency</p>
+</blockquote>
+
+<h1 id="complexity-and-computability">Complexity and Computability</h1>
+<h2 id="efficiency">Efficiency</h2>
+<p>It is not enough to write a program that works correctly, the program must also be efficient. What makes a program efficient? There are two types of efficiency that we consider in software development: time (how fast the program runs) and space (how much of the computer’s memory is being used).</p>
+
+<p>Writing fast software is important because users will be less satisfied if a program is slow. Writing software that uses minimal space is important because computers have limited resources. In this section, we will discuss time efficiency, but similar techniques can be applied to work out space efficiency.</p>
+
+<p>How different can two programs be in time efficiency? Let’s look at an example involving the Fibonacci sequence, which is a sequence of numbers defined as:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fib</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">fib</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This recursive definition can be directly translated into a recursive function in Python as follows.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">fibonacci1</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fibonacci1</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci1</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span> <span class="k">print</span><span class="p">(</span><span class="n">fibonacci1</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">" "</span><span class="p">)</span>
+
+<span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">5</span> <span class="mi">8</span> <span class="mi">13</span> <span class="mi">21</span> <span class="mi">34</span> 
+</code></pre></div>  </div>
+</div>
+
+<p>It turns out that this direct translation does not produce a very efficient algorithm because we end up recomputing Fibonacci numbers over and over again. We can do much better by keeping track of the previous two Fibonacci numbers and that leads to the solution below.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">fibonacci2</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">fib1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">fib2</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">:</span>
+        <span class="c1"># loop invariant: a is the i'th fib and b is the (i+1)'th fib
+</span>        <span class="n">fib1</span><span class="p">,</span> <span class="n">fib2</span> <span class="o">=</span> <span class="n">fib2</span><span class="p">,</span> <span class="n">fib1</span><span class="o">+</span><span class="n">fib2</span>
+    <span class="k">return</span> <span class="n">fib1</span>
+</code></pre></div>  </div>
+</div>
+
+<p>These functions are in <code class="highlighter-rouge">fib.py</code>. We have also included functions to determine the runtime of the two Fibonacci functions using the time module. Let’s run them to see the results:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">time_fib1</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">fibonacci1</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="n">took</span> <span class="mf">309.849</span> <span class="n">ms</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">time_fib1</span><span class="p">(</span><span class="mi">31</span><span class="p">)</span>
+<span class="n">fibonacci1</span><span class="p">(</span><span class="mi">31</span><span class="p">)</span> <span class="n">took</span> <span class="mf">455.199</span> <span class="n">ms</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">time_fib1</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<span class="n">fibonacci1</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="n">took</span> <span class="mf">763.001</span> <span class="n">ms</span>
+</code></pre></div>  </div>
+</div>
+
+<p>We would like to analyse these results, and estimate the running time of <code class="highlighter-rouge">fibionacci1(n)</code> for large values of <code class="highlighter-rouge">n</code>. How does the running time change when we increase <code class="highlighter-rouge">n</code> by 1?</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="mf">455.199</span><span class="o">/</span><span class="mf">309.849</span>
+<span class="mf">1.469099</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">763.001</span><span class="o">/</span><span class="mf">455.199</span>
+<span class="mf">1.676192</span>
+</code></pre></div>  </div>
+</div>
+
+<p>It turns out that if we compute <code class="highlighter-rouge">fibionacci1(n+1)</code>, the time taken is about 1.6 times the time it takes to compute <code class="highlighter-rouge">fibionacci1(n)</code>. From this, we can determine that the time to compute <code class="highlighter-rouge">fibionacci1(n+10)</code> is a little over 100 times the time to compute <code class="highlighter-rouge">fibionacci1(n)</code>.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="mf">1.6</span><span class="o">**</span><span class="mi">10</span>
+<span class="mf">109.95116277760006</span>
+</code></pre></div>  </div>
+</div>
+
+<p>How long will it take to compute <code class="highlighter-rouge">fibionacci1(40)</code>? We estimate that it would take <code class="highlighter-rouge">1.6**10 * 309.849 ms</code>, which is about 34 seconds. Extrapolating further, we find that <code class="highlighter-rouge">fibionacci1(50)</code> would take just over one hour, and <code class="highlighter-rouge">fibionacci1(100)</code> would take over 1,900,000 years! On the other hand we get the following for the second algorithm.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">time_fib2</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">fibonacci2</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="n">took</span> <span class="mf">0.000</span> <span class="n">ms</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">time_fib2</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">fibonacci2</span><span class="p">(</span><span class="mi">30000</span><span class="p">)</span> <span class="n">took</span> <span class="mf">31.215</span> <span class="n">ms</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">time_fib2</span><span class="p">(</span><span class="mi">30000</span><span class="p">)</span>
+<span class="n">fibonacci2</span><span class="p">(</span><span class="mi">300000</span><span class="p">)</span> <span class="n">took</span> <span class="mf">709.301</span> <span class="n">ms</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Note that the dramatic difference is not because one is recursive and one is not — if we rewrote the second algorithm as a recursive function, it would still be very efficient.</p>
+
+<p>Note also that the exact running times will be different when it is run on different processors, in different programming languages, etc. However, the resulting analysis will still be the same, that as <code class="highlighter-rouge">n</code> increases, the running time increases by a factor of about 1.6.</p>
+
+<h2 id="measuring-efficiency">Measuring Efficiency</h2>
+<p>In the above analysis, we have seen how to estimate the running time of the <code class="highlighter-rouge">fibionacci1</code> function for certain values of <code class="highlighter-rouge">n</code>. We would like to make this more general and describe the efficiency, called the <strong>complexity</strong>, of <code class="highlighter-rouge">fibionacci1</code> so that it can be compared to other functions. Since the exact running time can differ, we will instead describe how the running time grows with larger inputs, without having to worry about exact details.</p>
+
+<p>From the analysis above, we see that the running time of <code class="highlighter-rouge">fibionacci1(n)</code> is related to 1.6<sup>n</sup>. In fact, the only important information is that the running time is exponential in <code class="highlighter-rouge">n</code>. The 1.6 is not important, and the complexity could equally be described as 2<sup>n</sup> or e<sup>n</sup> (it is common to use either of these to describe exponential functions).</p>
+
+<p>Before continuing, we need a notation that we can use to mean that we do not care about the exact details.</p>
+
+<h2 id="big-o-notation">Big O Notation</h2>
+<p>The <strong>big O notation</strong> is used to provide an upper bound on a mathematical function. Formally, we say that “f(n) is of order g(n)”, and write “f(n) is O(g(n))”, if there are constants a and k such that f(n)≤a×g(n) for all n &gt;k. Informally, f(n) is of order g(n) if some multiple of g(n) is an upper bound of f(n).</p>
+
+<p>It is common to use only the most significant term when describing the order of a function, and to ignore any coefficients. For example, 3n^2+4n-2 is O(n^2), 2n^2+8n is also O(n^2), and 3^n+n^2 is O(2^n).</p>
+
+<p>Big O notation is used to describe the complexity of a program, where n represents the size of the input. For example, the running time of <code class="highlighter-rouge">fibionacci1</code> is O(2^n).</p>
+
+<p>A <strong>complexity class</strong> is a collection of functions with the same complexity (when expressed in the big O notation). Some of the common complexity classes are:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Complexity</strong></th>
+      <th><strong>Common Name</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>O(1)</td>
+      <td>Constant</td>
+    </tr>
+    <tr>
+      <td>O(log n)</td>
+      <td>Logarithmic</td>
+    </tr>
+    <tr>
+      <td>O(n)</td>
+      <td>Linear</td>
+    </tr>
+    <tr>
+      <td>O(n^2)</td>
+      <td>Quadratic</td>
+    </tr>
+    <tr>
+      <td>O(2^n)</td>
+      <td>Exponential</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Once the complexity of a function is known, we can compare it to the complexity of other functions. In the table above, we have listed the classes from the most efficient (constant) to the least efficient (exponential). When designing algorithms we strive for the most efficient algorithm.</p>
+
+<h2 id="calculating-rate-of-growth">Calculating Rate of Growth</h2>
+<p>How can we determine the complexity of a function? Instead of performing an experimental analysis, we can directly analyse the source code. In practice this can be quite difficult, so we will consider several examples. In our analysis, we will think about how many steps the function takes to complete if it were executed. Looking at how many times a loop body is executed, or how many recursive calls are needed to reach the base case, will give a good indication of the complexity.</p>
+
+<h3 id="constant-time">Constant Time</h3>
+<p>A function that runs in constant time — O(1) — cannot have any loops or recursive steps which depend on the size of the input. The defining characteristic of constant time functions is that changing the size of the input has no effect on the running time. For example, these functions run in constant time:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">n</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">abs</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">n</span>
+</code></pre></div>  </div>
+</div>
+
+<h3 id="linear-time">Linear Time</h3>
+<p>A function runs in linear time — O(n) — if the number of iterations of loops in the function is proportional to the size of the input (and the body of the loops run in constant time). A characteristic to observe in linear-time functions is that doubling the size of the input makes the function twice as slow. Below are examples of functions that run in linear time.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="n">char</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="n">char</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">sumto</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">i</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">total</span>
+</code></pre></div>  </div>
+</div>
+
+<p>It is important to specify what inputs determine the complexity of the function. The <code class="highlighter-rouge">find</code> function above is linear in terms of the length of the string, and the <code class="highlighter-rouge">sumto</code> function is linear in terms of the input <code class="highlighter-rouge">n</code>.</p>
+
+<p>A recursive function runs in linear time if the number of recursive steps to the base case is proportional to the size of the input. The <code class="highlighter-rouge">factorial</code> function below must make a total of <code class="highlighter-rouge">n</code> recursive steps, so its running time is O(n).</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">n</span>
+</code></pre></div>  </div>
+</div>
+
+<h3 id="quadratic-time">Quadratic Time</h3>
+<p>A characteristic of quadratic time — O(n^2) — functions is that doubling the size of the input makes the running time four times as large. Many functions that run in quadratic time have two nested loops, where the number of iterations in each loop is proportional to the size of the input. The following functions run in quadratic time.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">pairs</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">element1</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">element2</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">element1</span><span class="p">,</span> <span class="n">element2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+<span class="k">def</span> <span class="nf">primes_to</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="s">"""Return a list of primes &lt;= n."""</span>
+    <span class="n">primes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">is_prime</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">is_prime</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">is_prime</span><span class="p">:</span>
+            <span class="n">primes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">primes</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The <code class="highlighter-rouge">pairs</code> function runs in O(n^2) time where n is the length of the list. This is because the inner loop takes n steps to run, which is then repeated n times by the outer loop.</p>
+
+<p>The <code class="highlighter-rouge">primes_to</code> function is slightly different. The outer loop runs <code class="highlighter-rouge">n-1</code> times, which is O(n). The inner loop runs <code class="highlighter-rouge">i-2</code> times, but <code class="highlighter-rouge">i</code> takes a different value on each iteration, so how do we represent the running time in terms of <code class="highlighter-rouge">n</code>?</p>
+
+<p>If we sum up the number of iterations of the inner loop, we get 0+1+2+3+⋯+(n-3)=(n-3)(n-2)⁄2, which is quadratic. A less formal reasoning would be that <code class="highlighter-rouge">i</code> averages to about n⁄2 over all iterations of the outer loop, so the total running time is about n^2⁄2, which is quadratic.</p>
+
+<h3 id="logarithmic-time">Logarithmic Time</h3>
+<p>The defining characteristic of logarithmic — O(log⁡(n)) — functions is that doubling the input size will only increase the running time by a fixed amount. A way of recognising a logarithmic function is that at each step through the function, the “remaining problem” will be reduced by a significant factor. For example, consider the following function, which computes the binary digits of a number, starting with the least significant.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">binary</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">number</span> <span class="o">/=</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Notice that each step through the loop halves the <code class="highlighter-rouge">number</code>, which halves the size of the remaining problem. Because of this, the <code class="highlighter-rouge">binary</code> function runs in O(log⁡(n)) time.</p>
+
+<p>Two of the methods in the <code class="highlighter-rouge">Node</code> class from the module about recursion are also logarithmic: the <code class="highlighter-rouge">insert</code> and <code class="highlighter-rouge">__contains__</code> methods both make a recursive call into one of the two children of the node. In effect, this (roughly) halves the size of the “remaining problem”, which is the number of nodes that still need to be considered. Because binary search trees have very efficient <code class="highlighter-rouge">insert</code> and <code class="highlighter-rouge">__contains__</code> methods, they can be very useful ways of storing data.</p>
+
+<p>This only holds true if the tree is balanced, that is, if each node in the tree has a roughly equal distribution of nodes in the left and right subtrees. The other possible extreme is that each node in the tree has only one child, then the tree behaves more like a consecutive list of values, and <code class="highlighter-rouge">insert</code> and <code class="highlighter-rouge">__contains__</code> will run in linear time, and the tree will no longer be a useful way of storing data. For this reason, many forms of self-balancing binary search trees have been developed, which ensure they remain balanced when data is inserted or removed.</p>
+
+<h3 id="exponential-time">Exponential Time</h3>
+<p>An example of a function which runs in exponential time — O(2^n) — is the <code class="highlighter-rouge">fibionacci1</code> function from above (which is available in <code class="highlighter-rouge">fib.py</code>). This function is exponential because there are two recursive calls made in the recursive step. The effect of this is that when the input n increases by 1, our function needs to do nearly twice as many steps (more accurately, 1.6 times as many steps) to compute a result.</p>
+
+<p>The important characteristic of exponential time functions is that increasing the input size by 1 will multiply the running time by a factor.</p>
+
+<div class="aside">
+
+  <h4 id="aside-things-arent-as-they-seem">Aside: Things aren’t as they seem…</h4>
+  <p>Though it may seem obvious that a function appears to have a certain time complexity, other factors can come into the running time as well. If we analyse the efficient Fibonacci algorithm it appears to be linear. However, if we do the timing experiment we see that it is not linear. It turns out that Fibonacci numbers get very big very quickly and so the time taken to add two adjacent Fibonacci numbers becomes significant — and has to be factored into the calculations. It appears from timing experiments that, for very large <code class="highlighter-rouge">n</code>, doubling <code class="highlighter-rouge">n</code> will make the time go up by about a factor of 3 — so the complexity is worse than linear but better than quadratic.</p>
+</div>
+
+<h2 id="functions-within-functions">Functions within Functions</h2>
+<p>How is the complexity of a function affected when it calls other functions? If a function calls another function, the complexity of that other function will have an impact on the complexity of the first function. As an example, consider these two functions:</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">n</span>
+
+<span class="k">def</span> <span class="nf">sum_factorial</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="s">""" Return 1! + 2! + ... + n! - i.e. the sum of the factorials up to n."""</span>
+    <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">m</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="nb">sum</span> <span class="o">+=</span> <span class="n">factorial</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="nb">sum</span>
+</code></pre></div>  </div>
+</div>
+
+<p>We already know that the <code class="highlighter-rouge">factorial</code> function runs in O(n) time, but what about the <code class="highlighter-rouge">sum_factorial</code> function? In the loop, <code class="highlighter-rouge">m</code> starts at <code class="highlighter-rouge">1</code> and increments until it gets to <code class="highlighter-rouge">n</code>. However, this does <strong><em>not</em></strong> make it a linear algorithm because the body of the loop contains a call that is linear in <code class="highlighter-rouge">m</code>. So the time taken is proportional to 1+2+3+⋯+n=(n×(n+1))⁄2 — making the function quadratic.</p>
+
+<p>What about when we are using other functions that we did not write? Without knowing the complexity of other functions, we cannot determine the running time of our own programs. If the source code is available, we could analyse it as above. The author of the other code may have included information about the time and space complexities in the documentation. This would be very helpful, especially if we do not have access to the source code. Alternatively, we could carry out timing experiments, as we did with <code class="highlighter-rouge">fibionacci1</code>, to deduce the complexity.</p>
+
+<p>The complexity of standard Python functions and operations also needs to be considered. What is the complexity of the built-in functions and methods, such as <code class="highlighter-rouge">sum</code>, <code class="highlighter-rouge">min</code>, or <code class="highlighter-rouge">list.append</code>? What about list addition? Or string addition?</p>
+
+<p>The code in <code class="highlighter-rouge">list_time.py</code> will experimentally determine the running time of many list operations. Below are some results (each command was repeated 1000 times, the results were averaged, and are measured in microseconds).</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xs.append(0):
+  list of length 10000: 0.8640663673243391 us
+  list of length 20000: 0.9903276535270789 us
+  list of length 40000: 1.578083090180371 us
+xs[0]:
+  list of length 10000: 0.3674386415868369 us
+  list of length 20000: 0.6851047181877234 us
+  list of length 40000: 0.684738743433666 us
+xs[-1]:
+  list of length 10000: 0.3872012777055289 us
+  list of length 20000: 0.7191403692736742 us
+  list of length 40000: 0.8018506610625309 us
+xs[0:100]:
+  list of length 10000: 1.2208917414007203 us
+  list of length 20000: 1.7446015980686624 us
+  list of length 40000: 1.8748886064123838 us
+xs[0:10000]:
+  list of length 10000: 53.55271811269802 us
+  list of length 20000: 57.665908245043696 us
+  list of length 40000: 62.512145786778106 us
+xs[1:-1]:
+  list of length 10000: 54.147427069450416 us
+  list of length 20000: 112.26568009637639 us
+  list of length 40000: 230.8202701698896 us
+xs.insert(0, 0):
+  list of length 10000: 8.216132971785584 us
+  list of length 20000: 15.295182418274322 us
+  list of length 40000: 29.147692401203074 us
+xs.pop(0):
+  list of length 10000: 6.027604010938603 us
+  list of length 20000: 12.176711636406878 us
+  list of length 40000: 22.701779259406862 us
+xs.pop(-1):
+  list of length 10000: 0.806608332709402 us
+  list of length 20000: 1.1729490500478335 us
+  list of length 40000: 1.3764310069532826 us
+xs + xs:
+  list of length 10000: 112.45232721501708 us
+  list of length 20000: 232.56779956593476 us
+  list of length 40000: 470.1520149288214 us
+</code></pre></div>  </div>
+</div>
+
+<p>It can be seen that <code class="highlighter-rouge">append</code> and list indexing both run in constant time (allowing for slight variations in the running times). A list slice runs in time proportional to the length of the slice. This means that if a slice is taken from the start to the end of the list, it will take linear time in terms of the length of the list. Inserting to the front of a list runs in linear time, as does list addition. The <code class="highlighter-rouge">pop</code> method is somewhat more interesting: it runs in linear time if the first element is removed, and constant time if the last element is removed.</p>
+
+<p>Note that one consequence of this is that inserting and removing from a list is best done from the end of the list, using <code class="highlighter-rouge">append</code> and <code class="highlighter-rouge">pop(-1)</code>, because these are both constant, whereas the same operations on the start of the list are slower. Being able to take advantage of properties like this one is an important skill in software engineering.</p>
+
+<div class="aside">
+
+  <h4 id="aside-guess-the-implementation">Aside: Guess the implementation</h4>
+  <p>Sometimes it can be insightful to “guess” what the implementation of a function would look like to get a better understanding of why the time complexity is what it is, and whether or not it can be improved. For example, it’s not difficult to determine that the <code class="highlighter-rouge">sum</code> function must visit every element of the list to calculate the total, so <code class="highlighter-rouge">sum</code> must be linear, it can’t be logarithmic or constant.</p>
+
+  <p>From the experiment above on lists, we can guess that slicing and addition work by copying all of the required elements into a new list, which is why they are linear. If inserting and removing from the start of a list runs in linear time, we might guess that the underlying implementation needs to do some extra work on the rest of the list. It may be interesting to research two different implementations of lists: “arrays” and “linked lists”.</p>
+</div>
+
+<h2 id="computability-the-halting-problem">Computability: The Halting Problem</h2>
+<p>In the remainder of this section we will look at a new topic, <strong>computability theory</strong>, which studies functions and algorithms from a mathematical perspective. One question in this field is deciding whether or not a given function will finish executing or loop forever. In this section, we will only consider functions that take a single string argument. For example, consider this function:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="n">fact</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">fact</span> <span class="o">*=</span> <span class="n">n</span>
+        <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">fact</span>
+
+</code></pre></div>  </div>
+</div>
+<p>Calling this function with a positive integer, such as <code class="highlighter-rouge">factorial('3')</code>, will finish executing. However, <code class="highlighter-rouge">factorial('-2')</code> will never finish executing, as the loop will never stop. Note that we are considering if the function will ever finish, even if it takes a long time. For example, <code class="highlighter-rouge">factorial('1000000000000')</code> will take a very long time, but it will still be able to finish.</p>
+
+<p>We now pose the problem: Write a program which takes the source code of a function (as a string) and an input, and determines whether or not the function will stop executing. This problem is known as the <strong>halting problem</strong>. This would not be an easy task, because it would have to handle every possible function we could write.</p>
+
+<p>In fact, Alan Turing proved in 1936 that writing such a program is impossible. This is an alarming result, as it was one of the first problems where it could be proved that a solution could not be found. Here we will give a <strong>proof by contradiction</strong>, where we assume that we can solve the halting problem, and then prove that assumption leads to a contradiction.</p>
+
+<p>Assume that we have a function <code class="highlighter-rouge">halt</code>, which takes the source code of a function (as a string), and an <code class="highlighter-rouge">input</code>, and returns <code class="highlighter-rouge">True</code> if the function will finish when given that input. The function definition would look like this:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">halt</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+    <span class="s">"""Determine if the given function 'code' will finish executing.
+
+    Parameters:
+        code (str): Source code for the function to be analysed.
+        input: The input to be passed to the function 'code'.
+
+    Return (bool):
+        True if the function stops when given the input.
+        False if the function continues forever when given the input.
+    """</span>
+    <span class="c1"># Solution goes here...
+</span>    <span class="c1"># ...
+</span></code></pre></div>  </div>
+</div>
+
+<p>For example, <code class="highlighter-rouge">halt(factorial_code, '3')</code> is <code class="highlighter-rouge">True</code> and <code class="highlighter-rouge">halt(factorial_code, '-2')</code> is <code class="highlighter-rouge">False</code>, where <code class="highlighter-rouge">factorial_code</code> is the function definition above. Notice that, in a proof by contradiction, it is enough to assume that a working function is available to us, we do not actually need to write it. Now, consider this function, which takes a string <code class="highlighter-rouge">x</code>:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">halt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Keep going..."</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Stop!"</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Now we ask, if <code class="highlighter-rouge">g_code</code> is the source code of the function above, what does <code class="highlighter-rouge">g(g_code)</code> do?</p>
+<ul>
+  <li>If <code class="highlighter-rouge">halt(g_code, g_code)</code> is <code class="highlighter-rouge">True</code>, then <code class="highlighter-rouge">g(g_code)</code> runs forever, meaning that <code class="highlighter-rouge">halt(g_code, g_code)</code> gave an incorrect result.</li>
+  <li>If <code class="highlighter-rouge">halt(g_code, g_code)</code> is <code class="highlighter-rouge">False</code>, then <code class="highlighter-rouge">g(g_code)</code> stops, meaning that <code class="highlighter-rouge">halt(g_code, g_code)</code> gave an incorrect result.</li>
+</ul>
+
+<p>This means that our initial assumption that a working <code class="highlighter-rouge">halt</code> function exists leads to a contradiction. Therefore, it is impossible to write a function that will solve the halting problem.</p>
+
+    </div>
+</body>
+
+</html>

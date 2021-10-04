@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Variable Scope</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/6A0_variable_scope.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p> Listen. Strange women lying in ponds distributing swords is no basis for a system of government. </p>
+  <p> Supreme executive power derives from a mandate from the masses, </p>
+  <p> not from some farcical aquatic ceremony. </p>
+</blockquote>
+
+<h1 id="variable-scope">Variable Scope</h1>
+<p>Now that we have written some programs we should describe how Python keeps track of all the variables in our programs — what values they have, and which variable are being talked about at a specific point in our programs. This is an issue in every programming language and is typically managed by using <strong>environments</strong> (a data structure) to maintain information about the variables and values that can be accessed in a particular part of a program (<strong>program scope</strong>) such as a function body. The <strong>scope of a variable</strong> describes where in a program a particular variable can be used.</p>
+
+<p>Python uses dictionaries for its environments — each dictionary maintains the mapping from variable names to values. Python uses the term <strong>namespace</strong> to refer to these dictionaries. There is one <strong>global namespace</strong> that keeps information about everything at the ‘global’ level. When each function is called a new <strong>local namespace</strong> is constructed to keep track of variables inside the function. Python comes with two functions that extract the global and (current) local namespaces: <code class="highlighter-rouge">globals()</code> and <code class="highlighter-rouge">locals()</code>. Below is some code and some results of running the code that gives an insight into how Python keeps track of variables.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; a = 10
+&gt;&gt;&gt; b = 11
+&gt;&gt;&gt; def foo(b) :
+    print('Global namespace = ', globals())
+    print('Local namespace = ', locals())
+    return a + b
+
+&gt;&gt;&gt; foo(3)
+Global namespace =  {'__loader__': &lt;class '_frozen_importlib.BuiltinImporter'&gt;, 'foo': &lt;function foo at 0x7f2cb35f58c8&gt;, '__builtins__': &lt;module 'builtins' (built-in)&gt;, 
+'__spec__': None, '__package__': None, '__doc__': None,
+'__name__': '__main__', 'b': 11, 'a': 10}
+Local namespace =  {'b': 3}
+13
+&gt;&gt;&gt; 
+</code></pre></div>  </div>
+</div>
+
+<p>We can see that variables <code class="highlighter-rouge">a</code> and <code class="highlighter-rouge">b</code> are defined in the global namespace and <code class="highlighter-rouge">b</code> is also defined in the local namespace of <code class="highlighter-rouge">foo</code>. So, why is the value of <code class="highlighter-rouge">foo(3)</code> equal to 13? Python first looks in the local namespace to see if a given variable is defined there. If so, it uses the corresponding value. If not it looks in the global namespace for a value. If the variable is not in the global namespace we get a familiar error message. In the case above, <code class="highlighter-rouge">b</code> is defined in the local namespace and its value (3) is used. The variable <code class="highlighter-rouge">a</code> is not defined in the local namespace so Python looks in the global namespace, getting the value 10.</p>
+
+<p>Compare the above example with the following.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">3</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;pyshell#58&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="n">foo</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s">"&lt;pyshell#57&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="n">foo</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">3</span>
+<span class="nb">UnboundLocalError</span><span class="p">:</span> <span class="n">local</span> <span class="n">variable</span> <span class="s">'a'</span> <span class="n">referenced</span> <span class="n">before</span> <span class="n">assignment</span>
+<span class="o">&gt;&gt;&gt;</span> 
+</code></pre></div>  </div>
+</div>
+
+<p>In this case we are trying to modify a global variable (i.e. one not in the local scope). Python sees this assignment as follows — on the left hand side is <code class="highlighter-rouge">a</code> and so Python treats this as a local variable. On the right hand side is an occurrence of <code class="highlighter-rouge">a</code>, but it has not been given a value in the local scope and so our favorite error is produced.</p>
+
+<p>It is possible to modify global variables as the following example shows.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">a</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">3</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="mi">16</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="mi">19</span>
+<span class="o">&gt;&gt;&gt;</span> 
+</code></pre></div>  </div>
+</div>
+
+<div class="important">
+
+  <h4 id="global-and-why-not"><code class="highlighter-rouge">global</code> and why not</h4>
+  <p>The <code class="highlighter-rouge">global</code> declaration tells Python to treat <code class="highlighter-rouge">a</code> as a global variable. This is a <strong>very dangerous</strong> thing to do and should be avoided where possible. Using global variables makes it difficult to understand the logic of programs — in the previous example, we call <code class="highlighter-rouge">foo</code> twice with the same argument but get different results.</p>
+</div>
+
+    </div>
+</body>
+
+</html>

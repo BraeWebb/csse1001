@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Exception Handling</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/5A0_Exception_Handling.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p> My hovercraft is full of eels</p>
+</blockquote>
+
+<h1 id="error-handling">Error Handling</h1>
+
+<p>We have seen many errors that the interpreter has produced when we have done something wrong. In this case, we say that the interpreter has raised an error. A typical example is when we wish to use user input. We cannot guarantee that the user will input values correctly. If we are not careful, user input might cause an error. When this happens, we want to be able to catch the error (Exception) and deal with it ourselves (users do not like to see red).</p>
+
+<p>To be able to do this we surround the code that is likely to raise an error in a <code class="highlighter-rouge">try</code>, <code class="highlighter-rouge">except</code> statement. The following gives a couple of examples of <strong>error handling</strong> on the <code class="highlighter-rouge">int</code> function that attempts to convert user input into an integer. To do this we shall write a small function definition as follows.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">int_exception</span><span class="p">()</span> <span class="p">:</span>
+    <span class="s">"""Asks for user input and attempts to convert it into an integer.
+
+    Returns:
+        int: Integer value entered by user;
+             or -1 if they did not enter an integer.
+    """</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Enter a number: "</span><span class="p">)</span>
+    <span class="k">try</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"{0} is not a number"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This function simply asks the user for a number. It then attempts to convert the input into an int and return it. See how the <code class="highlighter-rouge">return int(num)</code> is inside a <code class="highlighter-rouge">try</code> statement and followed by an <code class="highlighter-rouge">except Exception</code> statement. This is how the exception is caught. If the block of code between the try and except lines raises an exception then the rest of the block is not executed and the code after the except line is executed instead. In this case, we print a short message and return -1. 
+Saving the file as <code class="highlighter-rouge">int_exception.py</code> we can perform a couple of test as below.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; int('10')
+10
+&gt;&gt;&gt; int_exception()
+Enter a number: 10
+10
+&gt;&gt;&gt; int('ten')
+
+Traceback (most recent call last):
+  File "&lt;pyshell#4&gt;", line 1, in &lt;module&gt;
+    int('ten')
+ValueError: invalid literal for int() with base 10: 'ten'
+&gt;&gt;&gt; int_exception()
+Enter a number: ten
+'ten is not a number'
+-1
+</code></pre></div>  </div>
+</div>
+
+<p>The first example simply shows that the string <code class="highlighter-rouge">'10'</code> can be turned into an integer. The next example shows our function and we give 10 as user input and see that it returns 10. The next example shows then the string <code class="highlighter-rouge">'ten'</code> raises an error as it cannot be converted into a string. We then run our function again and see that we do not get the error but instead get the message <code class="highlighter-rouge">'ten is not a number'</code> and -1 is returned.
+Note how we used <code class="highlighter-rouge">except Exception</code>, this catches <strong><em>any</em></strong> error that happens. It is OK to do this in this case as there are not many other ways this code can raise an error. It is <strong>not always good practice to do this</strong>, especially in complex code. Sometimes we end up catching errors raised by mistakes in our code, not the user input. It would therefore, be better to state the exception we want to catch rather than the “catch all” <code class="highlighter-rouge">Exception</code>.</p>
+
+<div class="important">
+
+  <h4 id="exception-handling-syntax">Exception Handling Syntax</h4>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span> <span class="p">:</span>
+    <span class="n">body1</span>
+<span class="k">except</span> <span class="n">ExceptionName</span> <span class="p">:</span>
+    <span class="n">body2</span>
+</code></pre></div>    </div>
+  </div>
+
+  <h4 id="semantics">Semantics</h4>
+  <p>Exception handling starts with a <code class="highlighter-rouge">try</code> statement followed by a colon. Then on a new line, and indented, is <code class="highlighter-rouge">body1</code>, this is the body of code that is to be tested for exceptions. This is followed, on a new, de-dented line, by an <code class="highlighter-rouge">except</code> statement followed by the <code class="highlighter-rouge">ExceptionName</code> that is to be caught, which is followed by a colon. On a new line, and indented, is <code class="highlighter-rouge">body2</code>, this is the body of code to be run when the exception is caught. If all errors are to be caught then the <code class="highlighter-rouge">ExceptionName</code> to use is <code class="highlighter-rouge">Exception</code>.</p>
+</div>
+
+<h3 id="using-the-exception">Using the Exception</h3>
+<p>It is possible to store the exception caught so that information is able to be extracted for use. This is done using <code class="highlighter-rouge">as</code>. To demonstrate this we are going to modify our code from above to look like the function definition below.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">int_exception</span><span class="p">(</span><span class="n">in_num</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Asks user for a number and divides 'in_num' by the input.
+
+    Parameters:
+        in_num (int): Number to be divided by user input.
+
+    Returns:
+        float: 'in_num' divided by the number entered by the user;
+               or -1 if input is not an integer or if input is 0.
+    """</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Enter a number: "</span><span class="p">)</span>
+    <span class="k">try</span> <span class="p">:</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">in_num</span> <span class="o">/</span> <span class="n">num</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span> <span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Error: {0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The function now takes a number argument. It still asks the user for a number. The number from the argument is then divided by the number given by the user and returned. If an error is raised then it is caught and assigned to <code class="highlighter-rouge">e</code>. An error message is then returned including the string representation of the error.
+Saving the file as <code class="highlighter-rouge">int_exception2.py</code> we can perform a couple of test as below.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; int_exception(15)
+Enter a number: 10
+1.5
+&gt;&gt;&gt; int_exception(15)
+Enter a number: ten
+Error: Invalid literal for int() with base 10: 'ten'
+-1
+&gt;&gt;&gt; int_exception(15)
+Enter a number: 0
+Error: division by zero
+-1
+</code></pre></div>  </div>
+</div>
+
+<p>The first example works as expected, the function returns <code class="highlighter-rouge">1.5</code>. The next two examples show the function outputting an error message; the first being <code class="highlighter-rouge">'Error: could not convert string to float: ten'</code> from a <code class="highlighter-rouge">ValueError</code>, which is from attempting to float a non numerical string from the input and the other is <code class="highlighter-rouge">'Error: float division by zero'</code> from a <code class="highlighter-rouge">ZeroDivisionError</code>, which happens if 0 is input (we can not divide by zero).</p>
+
+<div class="important">
+
+  <h4 id="exception-handling-syntax-1">Exception Handling Syntax</h4>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span> <span class="p">:</span>
+    <span class="n">body1</span>
+<span class="k">except</span> <span class="n">ExceptionName</span> <span class="k">as</span> <span class="n">var</span> <span class="p">:</span>
+    <span class="n">body2</span>
+</code></pre></div>    </div>
+  </div>
+
+  <h4 id="semantics-1">Semantics</h4>
+  <p>This works the same as using just try and except. The difference is that the exception, <code class="highlighter-rouge">ExceptionName</code>, is assigned to the variable <code class="highlighter-rouge">var</code>.</p>
+</div>
+
+<h3 id="catching-different-exceptions">Catching Different Exceptions</h3>
+<p>We have seen that it is possible to catch every error raised and that we can get information about the error. So how do we catch a specific error that we know is possible from incorrect input? It is possible to specify what errors we want to catch and deal with. This way we only catch the errors that are caused by incorrect input, rather than everything and miss the errors raised by any incorrect code.</p>
+
+<p>To demonstrate this let’s look at the function definition below:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_numbers</span><span class="p">(</span><span class="n">dividend</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Asks the user repeatedly for numbers and calculates 'dividend' 
+    divided by each number.
+
+    Results of division are stored in a list.
+    The list is returned if nothing is entered.
+
+    Parameters:
+        dividend (int): Number to be divided by the numbers entered by user.
+
+    Return:
+        list&lt;float&gt;: List of dividend divided by each input number.
+    """</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="bp">True</span> <span class="p">:</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Enter Number: "</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">num</span> <span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">try</span> <span class="p">:</span>
+            <span class="n">num</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dividend</span> <span class="o">/</span> <span class="n">num</span><span class="p">)</span>
+        <span class="k">except</span> <span class="nb">ValueError</span> <span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"That is not a number"</span><span class="p">)</span>
+        <span class="k">except</span> <span class="nb">ZeroDivisionError</span> <span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Can't divide by zero"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This function takes a number as an argument. It then repeatedly asks for user input with <code class="highlighter-rouge">input</code>. If there is nothing typed then the while loop breaks. If something is typed then it attempts to convert the input to a <code class="highlighter-rouge">float</code> and then attempts to divide the argument number by the input number, appending it to the list. It checks for two different errors, <code class="highlighter-rouge">ValueError</code> and <code class="highlighter-rouge">ZeroDivisionError</code> In both cases a simple message is printed to tell the user that they have given wrong input.</p>
+
+<p>After saving the file as <code class="highlighter-rouge">get_numbers.py</code> we can run a few tests.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; get_numbers(10)
+Enter Number: 2
+Enter Number: a
+That is not a number
+Enter Number: 4
+Enter Number: 0
+Can't divide by zero
+Enter Number: 3.5
+Enter Number: 
+[5.0, 2.5, 2.857142857142857]
+</code></pre></div>  </div>
+</div>
+
+<p>It can be seen in this example that if non numerical inputs are given then we get <code class="highlighter-rouge">That is not a number</code>. If 0 is input then the message is <code class="highlighter-rouge">Can’t divide by zero</code>. Any numerical based inputs in this test work.</p>
+
+<div class="important">
+
+  <h4 id="exception-handling-syntax-2">Exception Handling Syntax</h4>
+
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span> <span class="p">:</span>
+    <span class="n">body1</span>
+<span class="k">except</span> <span class="n">ExceptionName1</span> <span class="p">:</span>
+    <span class="n">body2</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="k">except</span> <span class="n">ExceptionNameN</span> <span class="p">:</span>
+    <span class="n">bodyn</span>
+</code></pre></div>    </div>
+  </div>
+
+  <h4 id="semantics-2">Semantics</h4>
+  <p>This starts the same as exception handling only there are repeated except statements for every error that is to be caught.</p>
+
+  <p>Multiple <code class="highlighter-rouge">except</code> statements can have a combination of assigning the exception to a variable or not.</p>
+</div>
+
+<h3 id="dealing-with-unknown-exceptions">Dealing with Unknown Exceptions</h3>
+<p>Sometimes we need to be prepared for any exception that may happen. We have seen a way of dealing with this in the first couple of exception handling examples with <code class="highlighter-rouge">except Exception</code>. However, sometimes there are errors that we wish to deal with specially and just have a single case for any other exception that may occur. We can modify the function definition above to be able to demonstrate this.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_numbers</span><span class="p">(</span><span class="n">dividend</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">""</span><span class="n">Asks</span> <span class="n">the</span> <span class="n">user</span> <span class="n">repeatedly</span> <span class="k">for</span> <span class="n">numbers</span> <span class="ow">and</span> <span class="n">calculates</span> <span class="s">'dividend'</span> 
+    <span class="n">divided</span> <span class="n">by</span> <span class="n">each</span> <span class="n">number</span><span class="o">.</span>
+
+    <span class="n">Results</span> <span class="n">of</span> <span class="n">division</span> <span class="n">are</span> <span class="n">stored</span> <span class="ow">in</span> <span class="n">a</span> <span class="nb">list</span><span class="o">.</span>
+    <span class="n">The</span> <span class="nb">list</span> <span class="ow">is</span> <span class="n">returned</span> <span class="k">if</span> <span class="n">nothing</span> <span class="ow">is</span> <span class="n">entered</span><span class="o">.</span>
+
+    <span class="n">Parameters</span><span class="p">:</span>
+        <span class="n">dividend</span> <span class="p">(</span><span class="nb">int</span><span class="p">):</span> <span class="n">Number</span> <span class="n">to</span> <span class="n">be</span> <span class="n">divided</span> <span class="n">by</span> <span class="n">the</span> <span class="n">numbers</span> <span class="n">entered</span> <span class="n">by</span> <span class="n">user</span><span class="o">.</span>
+
+    <span class="n">Return</span><span class="p">:</span>
+        <span class="nb">list</span><span class="o">&lt;</span><span class="nb">float</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">List</span> <span class="n">of</span> <span class="n">dividend</span> <span class="n">divided</span> <span class="n">by</span> <span class="n">each</span> <span class="nb">input</span> <span class="n">number</span><span class="o">.</span>
+    <span class="s">"""
+    results = []
+    while True :
+        num = input("Enter Number: ")
+        if not num :
+            break
+        try :
+            num = float(num)
+            results.append(dividend / num)
+        except ValueError :
+            print("That is not a number")
+        except ZeroDivisionError :
+            print("Can't divide by zero")
+        except Exception as e :
+            print("Unknown Error {0}".format(str(e)))
+            return []
+    return results
+</span></code></pre></div>  </div>
+</div>
+
+<p>This function definition is the same except that we have added an extra except statement. This except statement is another <code class="highlighter-rouge">except Exception</code> like we have seen before. The way this function now works is, if a <code class="highlighter-rouge">ValueError</code> or <code class="highlighter-rouge">ZeroDivisionError</code> error occurs then it will behave the same as the previous example. If any other exception occurs then the last except statement will catch it and print out an error message and return an empty list.</p>
+
+<p>Saving now as <code class="highlighter-rouge">get_numbers2.py</code> we can test the function.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; get_numbers(10)
+Enter Number: 2
+Enter Number: f
+That is not a number
+Enter Number: 0
+Can't divide by zero
+Enter Number: 
+[5.0]
+&gt;&gt;&gt; get_numbers("g")
+Enter Number: 2
+Unknown Error: unsupported operand type(s) for /: 'str' and 'float'
+[]
+</code></pre></div>  </div>
+</div>
+<p>The first few examples are as before. The last example is an example of the new functionality. The function itself was given a string argument when it was meant to be given numbers only. This created a different exception when we attempted to divide a string by a number. Therefore, our function prints an error message and returns an empty list.</p>
+
+<h2 id="raising-exceptions">Raising Exceptions</h2>
+<p>There are many situations where we might want an error to occur. If a function receives incorrect input, or some other invalid action occurs, it is better to let the function raise an exception, which forces another part of the code deal with the problem (by using <code class="highlighter-rouge">try-except</code> statements).
+As an example, we will revisit the <a href="reading/2B0_functional_decomposition">prime numbers</a> example from earlier. To test if a number is prime, we wrote this function:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Returns True iff 'num' is prime.
+
+    Parameters:
+        num (int): Integer value to be tested to see if it is prime.
+
+    Return:
+        bool: True if 'num' is prime. False otherwise.
+
+    Preconditions:
+        num &gt; 1
+    """</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="bp">True</span>
+</code></pre></div>  </div>
+</div>
+
+<p>We discussed that the precondition <code class="highlighter-rouge">n &gt; 1</code> means that inputs which don’t fit this criteria could have unknown consequences. This function would return <code class="highlighter-rouge">True</code> if the input was invalid, and it would be the user’s responsibility to check that the input was valid. If the user doesn’t do this, there could be more disastrous consequences later in the program. We will modify the function to <strong>raise</strong> an error when the input is invalid; this will make sure any mistakes don’t quietly pass by.</p>
+
+<p>Different types of exception in Python serve different purposes. For example, we use <code class="highlighter-rouge">ValueError</code> to represent an inappropriate value (for example, if <code class="highlighter-rouge">n &lt;= 1</code>), and <code class="highlighter-rouge">TypeError</code> to represent an input of the wrong type (for example, a <code class="highlighter-rouge">float</code>).</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Returns True iff 'num' is prime.
+
+    Parameters:
+        num (int): Integer value to be tested to see if it is prime.
+
+    Return:
+        bool: True if 'num' is prime. False otherwise.
+
+    Preconditions:
+        num &gt; 1
+    """</span>
+    <span class="k">if</span> <span class="n">num</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"Input must be &gt; 1"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">num</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">TypeError</span><span class="p">(</span><span class="s">"Input must be an integer"</span><span class="p">)</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="bp">True</span>
+</code></pre></div>  </div>
+</div>
+
+<p>When we test the function on incorrect inputs, we see the function raises the appropriate errors:</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; is_prime(-2)
+Traceback (most recent call last):
+  File "&lt;pyshell#0&gt;", line 1, in &lt;module&gt;
+    is_prime(-2)
+  File "is_prime.py", line 9, in is_prime
+    raise ValueError("Input must be &gt; 1")
+ValueError: Input must be &gt; 1
+&gt;&gt;&gt; is_prime(3.14)
+Traceback (most recent call last):
+  File "&lt;pyshell#1&gt;", line 1, in &lt;module&gt;
+    is_prime(3.14)
+  File "is_prime.py", line 11, in is_prime
+    raise TypeError("Input must be an integer")
+TypeError: Input must be an integer
+</code></pre></div>  </div>
+</div>
+
+<div class="important">
+
+  <h4 id="raise-syntax"><code class="highlighter-rouge">raise</code> Syntax</h4>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">raise</span> <span class="n">ExceptionName</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </div>
+
+  <h4 id="semantics-3">Semantics</h4>
+  <p>The <code class="highlighter-rouge">raise</code> statement will cause an exception to be raised. If the <code class="highlighter-rouge">raise</code> statement is inside a <code class="highlighter-rouge">try</code> block, the interpreter will look for the appropriate <code class="highlighter-rouge">except</code> block to execute. Otherwise, the function will exit immediately, and the exception will <strong>propagate</strong>, exiting functions until it finds a <code class="highlighter-rouge">try-except</code> block. If there is no appropriate <code class="highlighter-rouge">try-except</code> block to handle the exception, the program will exit, and the Python interpreter will display an error message (<code class="highlighter-rouge">Traceback (most recent call last):...</code>)</p>
+
+  <p>The <code class="highlighter-rouge">ExceptionName</code> should be a type of exception which is appropriate to the situation. The <code class="highlighter-rouge">args</code> can be any number of arguments, but is often a message to describe what caused the exception.</p>
+
+  <p><code class="highlighter-rouge">raise</code> statements are useful in the body of an if statement which checks if a value is invalid.</p>
+</div>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Inheritance</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/7B0_inheritance.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p> The Greek shall inherit the Earth </p>
+</blockquote>
+
+<h1 id="inheritance">Inheritance</h1>
+<h2 id="introduction">Introduction</h2>
+<p>We are going to look at a class that represents a simple television. This class will have a channel and a power state. We will have methods to turn the TV on and off and change the channel up and down. The following is the class definition.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TV</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Representation of a simple television."""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_power</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">turn_on</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Turns the TV on."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_power</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">turn_off</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Turns the TV off."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_power</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">channel_up</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Changes the channel up by 1.
+           If the channel goes above 100 then loops back to 1.
+        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_power</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">channel_down</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Changes the channel down by 1.
+           If the channel goes below 1 then loops back to 100.
+        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_power</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="mi">100</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_power</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="s">"I'm a TV on channel {0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">)</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="s">"I'm a TV that is turned off"</span>
+
+</code></pre></div>  </div>
+</div>
+
+<p>Now if we save our file as <code class="highlighter-rouge">tv.py</code> we can have a look at the functionality of an object of this class.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; tv = TV()
+&gt;&gt;&gt; str(tv)
+"I'm a TV that is turned off"
+&gt;&gt;&gt; tv.turn_on()
+&gt;&gt;&gt; str(tv)
+"I'm a TV on channel 1"
+&gt;&gt;&gt; tv.channel_down()
+&gt;&gt;&gt; str(tv)
+"I'm a TV on channel 100"
+&gt;&gt;&gt; for i in range(20) :
+    tv.channel_up()
+
+
+&gt;&gt;&gt; str(tv)
+"I'm a TV on channel 20"
+</code></pre></div>  </div>
+</div>
+
+<p>It is clear that this TV does not have much functionality. As a TV it is also a little annoying to have to keep hitting the change channel to get to the channel of interest. What if we wanted another “Deluxe TV” class that could ‘jump’ straight to a channel? One way to do this is to copy and modify our code. A better way to do this is to write a class that includes the same functionality as our existing TV class but with a little extra. Object-oriented programming does this easily through the use of <strong>inheritance</strong>. Inheritance is the concept where one class, the <strong>subclass</strong>, ‘inherits’ properties and methods of another existing class, the <strong>superclass</strong>. This is another example of where we can reuse existing code without having to duplicate it.</p>
+
+<p>Let’s now write a new class that represents a simple Deluxe TV where it is possible to ‘jump’ to a selected channel. Here is the class definition.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DeluxeTV</span><span class="p">(</span><span class="n">TV</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Representation of a Deluxe TV where the channel can be set
+       without using up and down.
+    """</span>
+
+    <span class="k">def</span> <span class="nf">set_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Sets the TV channel to the indicated 'channel' if the TV is on.
+           If 'channel' is invalid an error message is output.
+        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_power</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">channel</span> <span class="o">&lt;</span> <span class="mi">100</span> <span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">channel</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"{0} is not a valid channel"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
+</code></pre></div>  </div>
+</div>
+
+<p>First notice in the line <code class="highlighter-rouge">class DeluxeTV(TV)</code> we have TV instead of <code class="highlighter-rouge">object</code> in the brackets. This says that <code class="highlighter-rouge">DeluxeTV</code> inherits from TV. In fact every other class that we have written so far has inherited from the <code class="highlighter-rouge">object</code> class. The <code class="highlighter-rouge">object</code> class is the type which all other classes should inherit from, either directly or indirectly (as in this case). The next thing to notice is that <code class="highlighter-rouge">DeluxeTV</code> does not have an <code class="highlighter-rouge">__init__</code> method. As we are not adding or changing any data structures of our TV class we do not need an <code class="highlighter-rouge">__init__</code> method as it uses the inherited method from TV. Our new class simply has the one method definition that allows us to set the channel.</p>
+
+<p>We can now add this class definition after our <code class="highlighter-rouge">TV</code> class definition and save a <code class="highlighter-rouge">deluxe_tv.py</code> file and have a look at the functionality of our new TV.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; tv = DeluxeTV()
+&gt;&gt;&gt; str(tv)
+"I'm a TV that is turned off"
+&gt;&gt;&gt; tv.turn_on()
+&gt;&gt;&gt; str(tv)
+"I'm a TV on channel 1"
+&gt;&gt;&gt; tv.channel_up()
+&gt;&gt;&gt; str(tv)
+"I'm a TV on channel 2"
+&gt;&gt;&gt; tv.set_channel(42)
+&gt;&gt;&gt; str(tv)
+"I'm a TV on channel 42"
+&gt;&gt;&gt; tv.set_channel(200)
+"200 is not a valid channel"
+&gt;&gt;&gt; str(tv)
+"I'm a TV on channel 42"
+</code></pre></div>  </div>
+</div>
+
+<p>The first few examples show that we have not changed the other functionality of the TV. This is because our <code class="highlighter-rouge">DeluxeTV</code> has all the methods of our <code class="highlighter-rouge">TV</code>. The last two examples shows our new functionality and that we can now ‘jump’ to any valid channel.</p>
+
+<h2 id="overriding-methods">Overriding Methods</h2>
+<p>Let’s continue with our TV classes and write a new, Super Deluxe TV that extends the functionality of a <code class="highlighter-rouge">DeluxeTV</code>, and can store favourite channels. We will also make the channel up and down methods move through the favourite channels only. In this case, not only will we need to add new methods to store and remove favourite channels, but we will need to make different <code class="highlighter-rouge">channel_up</code> and <code class="highlighter-rouge">channel_down</code> methods.</p>
+
+<p>We can do this by redefining <code class="highlighter-rouge">channel_up</code> and <code class="highlighter-rouge">channel_down</code>. Redefining an existing method of a superclass is known as <strong>overriding</strong> the method. This is useful as not all classes want to have the same functionality for each method of its superclass. When we call <code class="highlighter-rouge">tv.channel_up()</code> and <code class="highlighter-rouge">tv.channel_down()</code> on a <code class="highlighter-rouge">SuperDeluxeTV</code>, the new definitions will be executed, and the old definitions will be ignored.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">SuperDeluxeTV</span><span class="p">(</span><span class="n">DeluxeTV</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Representation of a Super Delux TV where channels can be saved
+       to favourites. Channel up and down goes through the favourites.
+    """</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_favourites</span> <span class="o">=</span> <span class="p">[]</span>          <span class="c1"># All favourite TV channels.
+</span>
+    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Stores the current channel as one of the favourites."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_favourites</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_power</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_favourites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_favourites</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Removes the current channel so that it is no longer a favourite."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_power</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_favourites</span> <span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_favourites</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">)</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"{0} is not in favourites"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">channel_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Moves to the next higher favourite channel.
+
+           It does not matter if the current channel is a favourite or not.
+           Channel will wrap around to 1 if it passes MAX_CHANNEL while 
+           searching for the next higher favourite channel.
+        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_power</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_favourites</span> <span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"No favourites stored"</span><span class="p">)</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="k">while</span> <span class="bp">True</span> <span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_favourites</span> <span class="p">:</span>
+                        <span class="k">break</span>
+
+    <span class="k">def</span> <span class="nf">channel_down</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Moves to the previous (lower) favourite channel.
+
+           It does not matter if the current channel is a favourite or not.
+           Channel will wrap around to MAX_CHANNEL if it passes 1 while 
+           searching for the previous favourite channel.
+        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_power</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_favourites</span> <span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"No favourites stored"</span><span class="p">)</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="k">while</span> <span class="bp">True</span> <span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">-=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="mi">100</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_favourites</span> <span class="p">:</span>
+                        <span class="k">break</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_power</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="s">"I'm a Super Deluxe TV on channel {0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">)</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="s">"I'm a Super Deluxe TV that is turned off"</span>
+</code></pre></div>  </div>
+</div>
+
+<p>In the class above, we also need to override the <code class="highlighter-rouge">__init__</code> method so that the favourites list will be created. However, unlike the <code class="highlighter-rouge">channel_up</code> and <code class="highlighter-rouge">channel_down</code> methods, we still want to keep the existing <code class="highlighter-rouge">__init__</code> functionality from the <code class="highlighter-rouge">DeluxeTV</code> and <code class="highlighter-rouge">TV</code> classes. To do this, we need to explicitly call the <code class="highlighter-rouge">__init__</code> method of the superclass <code class="highlighter-rouge">(DeluxeTV): super().__init__()</code>. The <code class="highlighter-rouge">super</code> function works out what superclass has the method attempting to be called and returns that class, allowing the method to operate on the superclass type. It is simply required from then to input the inputs required to create that subclass. Once that is done, we can add in the additional code to create the favourites list.</p>
+
+<p>We have also overridden the <code class="highlighter-rouge">__str__</code> method to give a slightly different text representation.</p>
+
+<p>After saving our code as <code class="highlighter-rouge">super_deluxe_tv.py</code> we can have a look at a few examples of our new class.</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; tv = SuperDeluxeTV()
+&gt;&gt;&gt; tv.turn_on()
+&gt;&gt;&gt; str(tv)
+"I'm a Super Deluxe TV on channel 1"
+&gt;&gt;&gt; tv.channel_up()
+No favourites stored
+&gt;&gt;&gt; tv.set_channel(42)
+&gt;&gt;&gt; str(tv)
+"I'm a Super Deluxe TV on channel 42"
+&gt;&gt;&gt; tv.store()
+&gt;&gt;&gt; tv.set_channel(87)
+&gt;&gt;&gt; tv.store()
+&gt;&gt;&gt; tv.channel_up()
+&gt;&gt;&gt; str(tv)
+"I'm a Super Deluxe TV on channel 42"
+&gt;&gt;&gt; tv.channel_up()
+&gt;&gt;&gt; str(tv)
+"I'm a Super Deluxe TV on channel 87"
+&gt;&gt;&gt; tv.set_channel(50)
+&gt;&gt;&gt; tv.channel_down()
+&gt;&gt;&gt; str(tv)
+"I'm a Super Deluxe TV on channel 42"
+</code></pre></div>  </div>
+</div>
+
+<p>In fact we have already been overriding methods in the classes that we have previously written. The <code class="highlighter-rouge">__init__</code>, <code class="highlighter-rouge">__str__</code>, <code class="highlighter-rouge">__eq__</code>, etc. methods that we have written all override the existing, corresponding, method in the <code class="highlighter-rouge">object</code> class.</p>
+
+<div class="important">
+
+  <h4 id="inheritance-syntax">Inheritance Syntax</h4>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Class</span><span class="p">(</span><span class="n">SuperClass</span><span class="p">)</span> <span class="p">:</span>
+    <span class="o">...</span>
+</code></pre></div>    </div>
+  </div>
+
+  <h4 id="semantics">Semantics</h4>
+  <p>A new class, <code class="highlighter-rouge">Class</code>, will be created, <strong>inheriting</strong> from <code class="highlighter-rouge">SuperClass</code>. Instances will be able to use all the methods and class variables defined in the superclass, as well as any methods defined in <code class="highlighter-rouge">Class</code>. Instances will also be able to access methods and class variables of the superclass of <code class="highlighter-rouge">SuperClass</code>, and so on through the superclasses (these are all <strong>indirect superclasses</strong> of <code class="highlighter-rouge">Class</code>, and <code class="highlighter-rouge">SuperClass</code> is a <strong>direct superclass</strong>). The collection of superclass-subclass relationships is known as the <strong>inheritance hierarchy</strong>.</p>
+
+  <p>If <code class="highlighter-rouge">Class</code> defines a method with the same name as one in a superclass (direct or indirect), then that method has been <strong>overridden</strong>. When the method <code class="highlighter-rouge">instance.method(arg1, ...)</code> is called, the method defined in <code class="highlighter-rouge">Class</code> is used. However, the overridden method can still be accessed directly by calling <code class="highlighter-rouge">super().method(arg1, ...) </code></p>
+</div>
+
+<h2 id="method-resolution-order">Method Resolution Order</h2>
+<p>When we override a method, we are creating a new method with the same name. This raises an issue — how does Python determine which method to call? Python has a set of rules that determine which class the method will come from, known as the <strong>Method Resolution Order</strong>, or <strong>MRO</strong>. As an example, consider the four classes below.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
+
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+
+    <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+
+    <span class="k">def</span> <span class="nf">fg</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">y</span>
+
+    <span class="k">def</span> <span class="nf">fg</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fg</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+
+<span class="k">class</span> <span class="nc">D</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">()</span>
+</code></pre></div>  </div>
+</div>
+
+<p>After saving this code as <code class="highlighter-rouge">mro.py</code>, we can look at the functionality of our classes. To start with, let’s just look at what an object of class A does.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">_x</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">f</span><span class="p">()</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">g</span><span class="p">()</span>
+<span class="mi">6</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">fg</span><span class="p">()</span>
+<span class="o">-</span><span class="mi">3</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This class is straightforward. The constructor <code class="highlighter-rouge">A(3)</code> calls the <code class="highlighter-rouge">__init__</code> method, which creates an attribute <code class="highlighter-rouge">_x</code> with the value <code class="highlighter-rouge">3</code>. Method <code class="highlighter-rouge">f</code> returns the value of <code class="highlighter-rouge">_x</code>, method <code class="highlighter-rouge">g</code> returns twice <code class="highlighter-rouge">_x</code> and method <code class="highlighter-rouge">fg</code> returns the difference between the results of these two methods.</p>
+
+<p>Now, let’s have a look at using an object of the <code class="highlighter-rouge">B</code> class.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">B</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">_x</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">f</span><span class="p">()</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">g</span><span class="p">()</span>
+<span class="mi">9</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">fg</span><span class="p">()</span>
+<span class="o">-</span><span class="mi">6</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Let’s consider what happens when we construct the object <code class="highlighter-rouge">B(3)</code>. The Python interpreter will create a new object and attempt to call the <code class="highlighter-rouge">__init__</code> method. However, the <code class="highlighter-rouge">B</code> class does not have a definition of the <code class="highlighter-rouge">__init__</code> method. Python then looks to the superclass for an <code class="highlighter-rouge">__init__</code> method. The superclass is <code class="highlighter-rouge">A</code>, which has an <code class="highlighter-rouge">__init__</code> method. This <code class="highlighter-rouge">__init__</code> method is called, which creates an attribute <code class="highlighter-rouge">_x</code> with the value <code class="highlighter-rouge">3</code>.</p>
+
+<p>What happens when we call <code class="highlighter-rouge">b.f()</code>? The <code class="highlighter-rouge">B</code> class does not have a definition of the <code class="highlighter-rouge">f</code> method. Therefore the interpreter looks in the superclass A for an <code class="highlighter-rouge">f</code> method, which it finds. This method is used, which returns the value of <code class="highlighter-rouge">b.x</code> (which is 3).</p>
+
+<p>Next the <code class="highlighter-rouge">g</code> method is called. The <code class="highlighter-rouge">B</code> class has a <code class="highlighter-rouge">g</code> method so the interpreter uses that <code class="highlighter-rouge">g</code> method, returning the square of <code class="highlighter-rouge">x</code>, in this case 9.</p>
+
+<p>When the <code class="highlighter-rouge">fg</code> method is called, <code class="highlighter-rouge">B</code> again does not have this method so the interpreter looks back to the superclass and uses the fg method from <code class="highlighter-rouge">A</code>, which returns <code class="highlighter-rouge">self.f() - self.g()</code>. Because the <code class="highlighter-rouge">fg</code> method was called with a <code class="highlighter-rouge">B</code> object, the interpreter will look for <code class="highlighter-rouge">f</code> and <code class="highlighter-rouge">g</code> methods in the <code class="highlighter-rouge">B</code> class. As before, <code class="highlighter-rouge">B</code> does not have a definition of <code class="highlighter-rouge">f</code>, so the interpreter uses the definition from <code class="highlighter-rouge">A</code>, which returns 3. The process is repeated for the <code class="highlighter-rouge">g</code> method call, but as the <code class="highlighter-rouge">B</code> class has a definition of <code class="highlighter-rouge">g</code>, that method is called, which returns 9. So the return value of <code class="highlighter-rouge">b.fg()</code> is <code class="highlighter-rouge">3 - 9</code>, which is -6.</p>
+
+<p>Now, let’s look at using an object of the <code class="highlighter-rouge">C</code> class.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">_x</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">_y</span>
+<span class="mi">5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">f</span><span class="p">()</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">g</span><span class="p">()</span>
+<span class="mi">9</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">fg</span><span class="p">()</span>
+<span class="o">-</span><span class="mi">30</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The <code class="highlighter-rouge">C</code> class inherits from the B class, which in turn inherits from <code class="highlighter-rouge">A</code>. When <code class="highlighter-rouge">C(3, 5)</code> is constructed, Python will look for an <code class="highlighter-rouge">__init__</code> method in <code class="highlighter-rouge">C</code>, which it finds and uses. This calls <code class="highlighter-rouge">super().__init__(3)</code> method. The <code class="highlighter-rouge">super()</code> function will first look in <code class="highlighter-rouge">B</code> for an <code class="highlighter-rouge">__init__</code> method. As <code class="highlighter-rouge">B</code> does not have an <code class="highlighter-rouge">__init__</code> method, super will look at <code class="highlighter-rouge">B</code>’s super class, which is <code class="highlighter-rouge">A</code> for an <code class="highlighter-rouge">__init__</code> method. As <code class="highlighter-rouge">A</code> does have a <code class="highlighter-rouge">__init__</code> method, super evaluates to <code class="highlighter-rouge">A</code>. Therefore, the <code class="highlighter-rouge">super().__init__(3)</code> line in <code class="highlighter-rouge">C</code>’s <code class="highlighter-rouge">__init__</code> method results in calling <code class="highlighter-rouge">A.__init__(3)</code>. <code class="highlighter-rouge">A</code>’s <code class="highlighter-rouge">__init__</code> will, therefore, set the value of the attribute <code class="highlighter-rouge">x</code> to 3. The next line in <code class="highlighter-rouge">C.__init__</code> will now run, setting the value of the attribute <code class="highlighter-rouge">y</code> to 5.</p>
+
+<p>When <code class="highlighter-rouge">c.f()</code> is called, <code class="highlighter-rouge">C</code> does not have an <code class="highlighter-rouge">f</code> method, so the interpreter looks in the superclass, <code class="highlighter-rouge">B</code>. <code class="highlighter-rouge">B</code> also does not have an <code class="highlighter-rouge">f</code> method so the interpreter looks in <code class="highlighter-rouge">B</code>’s superclass, which is <code class="highlighter-rouge">A</code>. The <code class="highlighter-rouge">f</code> method of <code class="highlighter-rouge">A</code> is finally used, which returns the value of the attribute <code class="highlighter-rouge">_x</code>.</p>
+
+<p>The process is the same again for the <code class="highlighter-rouge">g</code> method call. As <code class="highlighter-rouge">C</code> does not have a <code class="highlighter-rouge">g</code> method, the interpreter looks in the <code class="highlighter-rouge">B</code> class. <code class="highlighter-rouge">B</code> does have a <code class="highlighter-rouge">g</code> method, so that is used, and returns <code class="highlighter-rouge">3 ** 2</code>.</p>
+
+<p>Next is the <code class="highlighter-rouge">fg</code> method call on <code class="highlighter-rouge">C</code>. This method first calls <code class="highlighter-rouge">super().fg()</code> which will look for an <code class="highlighter-rouge">fg</code> method first in the <code class="highlighter-rouge">B</code> class. As <code class="highlighter-rouge">B</code> doesn’t have an <code class="highlighter-rouge">fg</code> method, the super function will look in <code class="highlighter-rouge">B</code>’s superclass, which is <code class="highlighter-rouge">A</code>, and, therefore, <code class="highlighter-rouge">A.fg()</code> is called. This method follows the process just described to call both the <code class="highlighter-rouge">f</code> method from <code class="highlighter-rouge">A</code> and the <code class="highlighter-rouge">g</code> method from <code class="highlighter-rouge">B</code> and subtract the results together, performing the operation <code class="highlighter-rouge">3 - 9</code>. The result of the <code class="highlighter-rouge">super().fg()</code> call is <code class="highlighter-rouge">-6</code>, which is multiplied by the attribute <code class="highlighter-rouge">y</code> (5) to give -30 as the final result.</p>
+
+<p>Finally, let’s have a look at using an object of the <code class="highlighter-rouge">D</code> class.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">D</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">_x</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">f</span><span class="p">()</span>
+<span class="o">-</span><span class="mi">12</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">g</span><span class="p">()</span>
+<span class="mi">6</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">fg</span><span class="p">()</span>
+<span class="o">-</span><span class="mi">18</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The <code class="highlighter-rouge">D</code> class is similar to the <code class="highlighter-rouge">B</code> class. The <code class="highlighter-rouge">f</code> method call on <code class="highlighter-rouge">D</code> uses the <code class="highlighter-rouge">f</code> method defined in <code class="highlighter-rouge">D</code>. This method calls <code class="highlighter-rouge">self.g()</code>. <code class="highlighter-rouge">D</code> does not have a <code class="highlighter-rouge">g</code> method, so the interpreter calls the <code class="highlighter-rouge">g</code> method from the superclass (<code class="highlighter-rouge">A</code>) class performing the operation <code class="highlighter-rouge">-2 * 2 * 3</code>. The <code class="highlighter-rouge">g</code> method call on <code class="highlighter-rouge">D</code> works exactly the same way.</p>
+
+<p>When the <code class="highlighter-rouge">fg</code> method of <code class="highlighter-rouge">D</code> is called the interpreter uses the <code class="highlighter-rouge">fg</code> method of <code class="highlighter-rouge">A</code>, as <code class="highlighter-rouge">D</code> does not have an <code class="highlighter-rouge">fg</code> method defined. This calls the <code class="highlighter-rouge">f</code> method using the <code class="highlighter-rouge">f</code> method of <code class="highlighter-rouge">D</code>, which in turn uses the <code class="highlighter-rouge">g</code> method of <code class="highlighter-rouge">A</code>, and then calls the <code class="highlighter-rouge">g</code> method of <code class="highlighter-rouge">A</code> again. The results are then subtracted performing the operation <code class="highlighter-rouge">-12 - 6</code>.</p>
+
+<p>In summary, the MRO can be easily determined by simply following the chain of inheritance of the classes involved, remembering to always start at the class the method call is performed on.</p>
+
+<div class="aside">
+
+  <h4 id="aside-multiple-inheritance">Aside: Multiple Inheritance</h4>
+  <p>Python supports the ability for classes to inherit from more than one superclass, known as <strong>multiple inheritance</strong>. As an example, consider these four classes:</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
+
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+
+<span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">y</span>
+
+    <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+
+<span class="k">class</span> <span class="nc">D</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"x = {0}, y = {1}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">self_</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"f() -&gt; {0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">()))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"g() -&gt; {0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">()))</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>The class <code class="highlighter-rouge">D</code> inherits from both <code class="highlighter-rouge">B</code> and <code class="highlighter-rouge">C</code>, which each inherit from <code class="highlighter-rouge">A</code>. Here is an interaction with the <code class="highlighter-rouge">D</code> class:</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">D</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">f</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="mi">9</span>
+<span class="n">g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="mi">45</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>When the <code class="highlighter-rouge">f</code> method is called, Python will use the <code class="highlighter-rouge">f</code> method defined in <code class="highlighter-rouge">B</code>. When the <code class="highlighter-rouge">g</code> method is called, Python uses the <code class="highlighter-rouge">g</code> method defined in <code class="highlighter-rouge">C</code>. This method calls <code class="highlighter-rouge">self.f()</code>, which will again be the method defined in <code class="highlighter-rouge">B</code>. We see that without needing to modify anything in the <code class="highlighter-rouge">D</code> class, we have manipulated the <code class="highlighter-rouge">g</code> method defined in the <code class="highlighter-rouge">C</code> class to use the <code class="highlighter-rouge">f</code> method of <code class="highlighter-rouge">B</code> instead of <code class="highlighter-rouge">A</code>. This technique can be useful in certain situations.</p>
+
+  <p>However, we must be very careful when using multiple inheritance, as it makes the MRO much harder to interpret. If <code class="highlighter-rouge">B</code> and <code class="highlighter-rouge">C</code> were to both define the same method, which one is used? If <code class="highlighter-rouge">D</code> overrides this method and needs to access the superclass method, should <code class="highlighter-rouge">super</code> evaluate to <code class="highlighter-rouge">B</code> or <code class="highlighter-rouge">C</code>? Is it possible for unwanted side-effects to occur? Does the order of inheritance matter (<code class="highlighter-rouge">class D(B, C):</code> or <code class="highlighter-rouge">class D(C, B):</code>)?</p>
+
+  <p>Using multiple inheritance is <strong>often</strong> inadvisable where other techniques can be used to achieve the same desired outcome. Some programming languages, such as Java and Ruby, do not support multiple inheritance, as it can be unnecessarily complex.</p>
+</div>
+
+<h2 id="writing-exceptions">Writing Exceptions</h2>
+<p>We previously discussed various types of <code class="highlighter-rouge">exceptions</code>, and how to use them. Python has a range of built-in exceptions for various generic purposes. For example, <code class="highlighter-rouge">NameError</code> is raised when a variable name is not found, and <code class="highlighter-rouge">ValueError</code> when an input is of an inappropriate value.</p>
+
+<p>Often it is useful to create different types of exception for specific purposes. In the following example, we will write a class to represent a savings bank account, which will have methods for withdrawing and depositing funds, and accumulating interest. When the user tries to withdraw or deposit a negative amount, we will raise a <code class="highlighter-rouge">ValueError</code>. When the user tries to withdraw too much money, then we would like to raise a different type of error that represents a failed withdrawal.</p>
+
+<p>Python comes with a class to represent exceptions, called <code class="highlighter-rouge">Exception</code>. By creating a class which inherits from <code class="highlighter-rouge">Exception</code>, we can create our own custom exceptions. Here is an exception for a failed withdrawal:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">WithdrawalError</span><span class="p">(</span><span class="nb">Exception</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""An exception to be raised when a withdrawal fails."""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">balance</span><span class="p">):</span>
+        <span class="s">"""
+        Parameters
+            message (str): The reason for the error
+            balance (float): The balance of the account 
+        """</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">=</span> <span class="n">balance</span>
+
+    <span class="k">def</span> <span class="nf">get_balance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The exception stores a message detailing why the transaction failed, and the balance of the savings account. Using this, we can write a class to represent the savings account:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">SavingsAccount</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""A simple savings account."""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">initial_deposit</span><span class="p">,</span> <span class="n">monthly_interest</span><span class="p">)</span> <span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span> <span class="o">=</span> <span class="n">owner</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">=</span> <span class="n">initial_deposit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interest</span> <span class="o">=</span> <span class="n">monthly_interest</span>
+
+    <span class="k">def</span> <span class="nf">get_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span>
+
+    <span class="k">def</span> <span class="nf">get_balance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span>
+
+    <span class="k">def</span> <span class="nf">add_interest</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Add the monthly interest to the balance."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="n">interest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interest</span> <span class="o">/</span> <span class="mf">100.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">+=</span> <span class="n">interest</span>
+
+    <span class="k">def</span> <span class="nf">deposit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Add a positive amount to the balance."""</span>
+        <span class="k">if</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"Can't deposit a negative amount"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">+=</span> <span class="n">amount</span>
+
+    <span class="k">def</span> <span class="nf">withdraw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Subtract a positive amount from the balance."""</span>
+        <span class="k">if</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"Can't withdraw a negative amount"</span><span class="p">)</span>
+        <span class="n">new_balance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">-</span> <span class="n">amount</span>
+        <span class="k">if</span> <span class="n">new_balance</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WithdrawalError</span><span class="p">(</span><span class="s">"Not enough funds in account"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span><span class="p">)</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">=</span> <span class="n">new_balance</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">repr_string</span> <span class="o">=</span> <span class="s">"SavingsAccount({0}, {1}, {2})"</span>
+        <span class="k">return</span> <span class="n">repr_string</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interest</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>We can then write functions <code class="highlighter-rouge">withdraw</code> and <code class="highlighter-rouge">deposit</code> that the user can interact with:</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">withdraw</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">try</span> <span class="p">:</span>
+        <span class="n">account</span><span class="o">.</span><span class="n">withdraw</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">ValueError</span> <span class="k">as</span> <span class="n">e</span> <span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Invalid:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">WithdrawalError</span> <span class="k">as</span> <span class="n">e</span> <span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Cannot withdraw:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Your account balance is ${0}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">get_balance</span><span class="p">()))</span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Withdrawal successful."</span><span class="p">)</span>
+        
+<span class="k">def</span> <span class="nf">deposit</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">try</span> <span class="p">:</span>
+        <span class="n">account</span><span class="o">.</span><span class="n">deposit</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">ValueError</span> <span class="k">as</span> <span class="n">e</span> <span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Invalid:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Deposit successful."</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>These functions both use a <code class="highlighter-rouge">try</code>-<code class="highlighter-rouge">except</code>-<code class="highlighter-rouge">else</code> construct. In these constructs, the <code class="highlighter-rouge">else</code> body is executed if there were no exceptions raised in the try body.</p>
+
+<p>The code above is available in the file <code class="highlighter-rouge">banking.py</code>. Below is an example interaction with this savings account:</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; savings = SavingsAccount("John Cleese", 100, 0.3)
+&gt;&gt;&gt; savings
+SavingsAccount(John Cleese, 100, 0.3)
+&gt;&gt;&gt; withdraw(savings, 60)
+Withdrawal successful.
+&gt;&gt;&gt; savings.get_balance()
+40
+&gt;&gt;&gt; savings.add_interest()
+&gt;&gt;&gt; savings.get_balance()
+40.12
+&gt;&gt;&gt; deposit(savings, -20)
+Invalid: Can't deposit a negative amount
+&gt;&gt;&gt; withdraw(savings, 45)
+Cannot withdraw: Not enough funds in account
+Your account balance is $40.12
+</code></pre></div>  </div>
+</div>
+
+<h2 id="inheritance-as-abstraction">Inheritance as Abstraction</h2>
+<p>Following from the previous example, we write a class that represents a credit account.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CreditAccount</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""A simple credit account."""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">initial_deposit</span><span class="p">,</span> <span class="n">monthly_interest</span><span class="p">,</span> <span class="n">limit</span><span class="p">)</span> <span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span> <span class="o">=</span> <span class="n">owner</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">=</span> <span class="n">initial_deposit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interest</span> <span class="o">=</span> <span class="n">monthly_interest</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span> <span class="o">=</span> <span class="n">limit</span>
+
+    <span class="k">def</span> <span class="nf">get_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span>
+
+    <span class="k">def</span> <span class="nf">get_balance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span>
+
+    <span class="k">def</span> <span class="nf">add_interest</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Subtract the monthly interest from the balance."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="n">interest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interest</span> <span class="o">/</span> <span class="mf">100.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">+=</span> <span class="n">interest</span>
+
+    <span class="k">def</span> <span class="nf">deposit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Add a positive amount to the balance."""</span>
+        <span class="k">if</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"Can't deposit a negative amount"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">+=</span> <span class="n">amount</span>
+
+    <span class="k">def</span> <span class="nf">withdraw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Subtract a positive amount from the balance."""</span>
+        <span class="k">if</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"Can't withdraw a negative amount"</span><span class="p">)</span>
+        <span class="n">new_balance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">-</span> <span class="n">amount</span>
+        <span class="k">if</span> <span class="n">new_balance</span> <span class="o">&lt;</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_limit</span> <span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WithdrawalError</span><span class="p">(</span><span class="s">"Credit limit reached"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span><span class="p">)</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">=</span> <span class="n">new_balance</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">repr_string</span> <span class="o">=</span> <span class="s">"CreditAccount({0}, {1}, {2}, {3})"</span>
+        <span class="k">return</span> <span class="n">repr_string</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">_interest</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Notice that the class definitions of <code class="highlighter-rouge">SavingsAccount</code> and <code class="highlighter-rouge">CreditAccount</code> are very similar; in fact, some of the methods are identical. This is to be expected as the credit and savings accounts are both types of bank account. We would like to abstract out the duplicated methods, and create an “account” class which represents the common functionality of the two types of account. Once this is done, the <code class="highlighter-rouge">SavingsAccount</code> and <code class="highlighter-rouge">CreditAccount</code> classes can inherit from <code class="highlighter-rouge">Account</code>.</p>
+
+<p>Between the two classes, we see that the <code class="highlighter-rouge">get_owner</code>, <code class="highlighter-rouge">get_balance</code> and deposit methods are identical, so these methods can be moved to the Account class. The <code class="highlighter-rouge">__init__</code> method also contains similar behaviour, so it can easily be moved to Account. The other three methods (<code class="highlighter-rouge">add_interest</code>, <code class="highlighter-rouge">withdraw</code> and <code class="highlighter-rouge">__repr__</code>) look similar, but not in a way that can be easily abstracted, so we will leave them as they are. The file <code class="highlighter-rouge">banking2.py</code> contains the code below.</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Account</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""An abstraction of different bank accounts."""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">initial_deposit</span><span class="p">,</span> <span class="n">monthly_interest</span><span class="p">)</span> <span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span> <span class="o">=</span> <span class="n">owner</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">=</span> <span class="n">initial_deposit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interest</span> <span class="o">=</span> <span class="n">monthly_interest</span>
+
+    <span class="k">def</span> <span class="nf">get_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span>
+
+    <span class="k">def</span> <span class="nf">get_balance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span>
+
+    <span class="k">def</span> <span class="nf">deposit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Add a positive amount to the balance."""</span>
+        <span class="k">if</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"Can't deposit a negative amount"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">+=</span> <span class="n">amount</span>
+
+        
+<span class="k">class</span> <span class="nc">SavingsAccount</span><span class="p">(</span><span class="n">Account</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""A simple savings account."""</span>
+    <span class="k">def</span> <span class="nf">add_interest</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Add the monthly interest to the balance."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="n">interest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interest</span> <span class="o">/</span> <span class="mf">100.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">+=</span> <span class="n">interest</span>
+
+    <span class="k">def</span> <span class="nf">withdraw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Subtract a positive amount from the balance."""</span>
+        <span class="k">if</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"Can't withdraw a negative amount"</span><span class="p">)</span>
+
+        <span class="n">new_balance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">-</span> <span class="n">amount</span>
+        <span class="k">if</span> <span class="n">new_balance</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WithdrawalError</span><span class="p">(</span><span class="s">"Not enough funds in account"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span><span class="p">)</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">=</span> <span class="n">new_balance</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">repr_string</span> <span class="o">=</span> <span class="s">"SavingsAccount({0}, {1}, {2})"</span>
+        <span class="k">return</span> <span class="n">repr_string</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interest</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">CreditAccount</span><span class="p">(</span><span class="n">Account</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""A simple credit account."""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">initial_deposit</span><span class="p">,</span> <span class="n">monthly_interest</span><span class="p">,</span> <span class="n">limit</span><span class="p">)</span> <span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">initial_deposit</span><span class="p">,</span> <span class="n">monthly_interest</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span> <span class="o">=</span> <span class="n">limit</span>
+
+    <span class="k">def</span> <span class="nf">add_interest</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Subtract the monthly interest from the balance."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="n">interest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interest</span> <span class="o">/</span> <span class="mf">100.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">+=</span> <span class="n">interest</span>
+
+    <span class="k">def</span> <span class="nf">withdraw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">:</span>
+        <span class="s">"""Subtract a positive amount from the balance."""</span>
+        <span class="k">if</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"Can't withdraw a negative amount"</span><span class="p">)</span>
+
+        <span class="n">new_balance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">-</span> <span class="n">amount</span>
+        <span class="k">if</span> <span class="n">new_balance</span> <span class="o">&lt;</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_limit</span> <span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WithdrawalError</span><span class="p">(</span><span class="s">"Credit limit reached"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span><span class="p">)</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">=</span> <span class="n">new_balance</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">repr_string</span> <span class="o">=</span> <span class="s">"CreditAccount({0}, {1}, {2}, {3})"</span>
+        <span class="k">return</span> <span class="n">repr_string</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">_interest</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>In the television example above, we used inheritance to add more functionality to an existing type of television. Here, we have used inheritance to abstract functionality from two similar classes. A result of this is that the <code class="highlighter-rouge">Account</code> class is not a fully functional bank account; it does not have the ability to withdraw funds or accumulate interest. Because of this, we call the <code class="highlighter-rouge">Account</code> an <strong>abstract class</strong>.</p>
+
+<p>Abstract classes should not be instantiated directly (that is, we should not create instances of the abstract class itself), instead we create subclasses that fill in the missing functionality. We have already seen an example of an abstract class, <code class="highlighter-rouge">Exception</code>. We never raise an <code class="highlighter-rouge">Exception</code> itself, but we use various subclasses of <code class="highlighter-rouge">Exception</code> to represent different things. An advantage of using the concept of an abstract <code class="highlighter-rouge">Account</code> class is that we can write functions that work with any type of account. For example, the <code class="highlighter-rouge">withdraw</code> and <code class="highlighter-rouge">deposit</code> functions we wrote above can also work with <code class="highlighter-rouge">CreditAccount</code> instances:</p>
+
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; credit = CreditAccount("Michael Palin", 0, 1.5, 200)
+&gt;&gt;&gt; credit
+CreditAccount(Michael Palin, 0, 1.5, 200)
+&gt;&gt;&gt; withdraw(credit, 150)
+Withdrawal successful.
+&gt;&gt;&gt; credit.add_interest()
+&gt;&gt;&gt; credit.get_balance()
+-152.25
+&gt;&gt;&gt; deposit(credit, 60)
+Deposit successful.
+&gt;&gt;&gt; credit.get_balance()
+-92.25
+&gt;&gt;&gt; withdraw(credit, 110)
+Cannot withdraw: Credit limit reached
+Your account balance is $-92.25
+</code></pre></div>  </div>
+</div>
+
+<h2 id="designing-an-inheritance-hierarchy">Designing an Inheritance Hierarchy</h2>
+<p>As another example we now sketch out some ideas for designing a simple inheritance hierarchy for people at a university.</p>
+
+<p>If we look around campus we will see lots of people and we can look at them more closely, searching for similarities. Some of these people sit in lectures and do exams. These people have a lot in common and so we might define a class to describe their attributes — let’s say an <code class="highlighter-rouge">UndergraduateStudent</code> class. What do members of this class have in common? They have names, addresses, student numbers, student records, courses they are enrolled in. If we look around we will find some other kinds of students that have slightly different attributes — let’s put them in a <code class="highlighter-rouge">PostgraduateStudent</code> class. These students will share some attributes with the other students but have their own attributes — for example, thesis topic and supervisor. We might then decide that both kinds of students have a lot of overlap and decide that they both inherit from <code class="highlighter-rouge">Student</code>.</p>
+
+<p>There are other people walking around that get paid — some of these teach classes and do research — let’s put them in an <code class="highlighter-rouge">Academic</code> class. Members of this class will have attributes like staff number, pay scale, roles, teaching assignments and research interests. Others might belong to a <code class="highlighter-rouge">TechnicalStaff</code> class and others might belong to an <code class="highlighter-rouge">Administration</code> class. Together we might group these together and form the Staff superclass and then together with students create the <code class="highlighter-rouge">Person</code> superclass.</p>
+
+<p>Now that we have sketched out the inheritance hierarchy we then want to determine where specific attributes should live. Let’s start with name and address. Everyone has these attributes and so belong to the base <code class="highlighter-rouge">Person</code> class. On the other hand, the attribute (method) for enrolling in a course is specific to an undergraduate student and so should go in that class.</p>
+
+<p>What we have done is a bottom-up design of the class hierarchy — we started at the bottom and worked our way up moving from subclass to superclass. We could also do top-down design — by starting with the base class (<code class="highlighter-rouge">Person</code>) and looking for differences — for example staff get paid and students do not. This gives the subclasses of <code class="highlighter-rouge">Person</code>.</p>
+
+    </div>
+</body>
+
+</html>

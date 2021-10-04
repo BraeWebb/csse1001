@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Data Structures</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/notes/data_structures.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <blockquote class="blockquote">
+  <p> Useful stuff, string, no trouble there</p>
+</blockquote>
+
+<h1 id="data-structures">Data Structures</h1>
+<h2 id="sequences">Sequences</h2>
+<p>A sequence can be thought of as an ordered collection of data – i.e. it has a 0<sup>th</sup> element, a first element, a second element and so on.</p>
+
+<p><strong>Note that Python, and many other programming languages, start counting from 0 rather than 1.</strong></p>
+
+<p>A typical operation on any kind of a sequence is to be able to access the i<sup>th</sup> element. Another operation is to determine how many elements there are in the sequence. This also leads to the ability to walk through the sequence from start to end. This is known as <strong>iterating</strong> through the sequence. All sequence-based objects that have this capability are known as <strong>iterables</strong>. 
+A string can be considered as a specialisation of a sequence as it represents a series of ordered characters. We will use strings as our first example of using ADTs.</p>
+
+<h2 id="strings">Strings</h2>
+<p>As we have seen before a string can be made using the quotation marks. Python interprets anything held within a pair of “” to be a string. This can be thought of as the <strong>constructor</strong> of a string.</p>
+
+<p>Because strings are specialisations of sequences, then we expect to be able to get the ith character of a string and find out how long a string is. To be able to access the characters in a string it is possible to do what is called <strong>indexing</strong>. This is done using <code class="highlighter-rouge">[ ]</code> notation – this is the <strong>accessor</strong>. To be able to find the length of a string we have the <code class="highlighter-rouge">len</code> function.</p>
+
+<p>Note that there are other operations we want to perform on strings that may not make sense for other specialisations of sequences.</p>
+
+<p>Here are some examples of indexing and finding the of length strings in action:</p>
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; s = "spam"
+&gt;&gt;&gt; len(s)
+4
+&gt;&gt;&gt; s[0]
+'s'
+&gt;&gt;&gt; s[3]
+'m'
+&gt;&gt;&gt; s[4]
+Traceback (most recent call last):
+  File "&lt;pyshell#32&gt;", line 1, in &lt;module&gt;
+    s[4]
+IndexError: string index out of range
+&gt;&gt;&gt; s[-1]
+'m'
+&gt;&gt;&gt; s[-2]
+'a'
+&gt;&gt;&gt; i = 0
+&gt;&gt;&gt; while i &lt; len(s) :
+        print(s[i])
+        i += 1
+
+s
+p
+a
+m
+</code></pre></div>  </div>
+</div>
+
+<p>Note the <code class="highlighter-rouge">'string index out of range'</code> error in the fourth example – <strong>there is no fourth element as Python starts counting at 0</strong>. Also notice that negative numbers can be used in indexing. The use of negative numbers starts the indexing at the <strong>end</strong> of the string. So -1 refers to the last element in the string, -2 refers to the second last, and so on. In the last example we use a while loop to iterate over and print every character in the string. Remember <strong>i += 1</strong> is the same as 
+<strong>i = i + 1</strong>.
+In Python, there is no separate ‘character type’. Characters in Python are represented as strings of length 1. We will use the term ‘character’ to mean a string of length 1.
+Strings are <strong>immutable sequences</strong> – i.e. it is not possible to change the data in a string. We will cover <strong>mutable</strong> and <strong>immutable</strong> objects and sequences in the following weeks’ notes.</p>
+
+<div class="important">
+
+  <h4 id="len-syntax">len Syntax</h4>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </div>
+
+  <h4 id="semantics">Semantics</h4>
+  <p>Returns the length of (number of objects in) the sequence.</p>
+
+</div>
+
+<h2 id="for">For</h2>
+<p>In the example above, a <code class="highlighter-rouge">while</code> loop was used to iterate over the characters of a string. Iterating over the elements of a sequence is such a common thing to do that Python has a special construct for this purpose – the <strong>for loop</strong>.
+Instead of using the <code class="highlighter-rouge">while</code> loop as we did earlier we could use a for loop instead, as a string is an iterable object.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"spam"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">s</span> <span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="n">s</span>
+<span class="n">p</span>
+<span class="n">a</span>
+<span class="n">m</span>
+</code></pre></div>  </div>
+</div>
+<div class="important">
+
+  <h4 id="syntax">Syntax</h4>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">sequence</span> <span class="p">:</span>
+    <span class="n">body</span>
+</code></pre></div>    </div>
+  </div>
+  <p>where <em>var</em> is a variable and sequence is a sequence.</p>
+
+  <h4 id="semantics-1">Semantics</h4>
+  <p>Iterate over sequence assigning <em>var</em> in turn to each element of the sequence. For each element, execute <em>body</em>. The body typically contains occurrences of <em>var</em>. The body must follow the indentation rules of Python that we have seen before.</p>
+
+</div>
+
+<p>As a simple example of the use of a <code class="highlighter-rouge">for</code> loop we now write a function to determine if a given character is in a string. Here is the definition:</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">is_in</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Return True iff 'char' is in 'string'.
+
+    Parameters:
+        char (string): The character being searched for.
+        string (string): The string being searched.
+
+    Return:
+        bool: True if 'char' is in 'string'. False otherwise.
+    """</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">string</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="n">char</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+</code></pre></div>  </div>
+</div>
+<p>Here is an example of <code class="highlighter-rouge">is_in</code>:</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">spam</span> <span class="o">=</span> <span class="s">"spam"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">is_in</span><span class="p">(</span><span class="s">"s"</span><span class="p">,</span> <span class="n">spam</span><span class="p">)</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">is_in</span><span class="p">(</span><span class="s">"d"</span><span class="p">,</span> <span class="n">spam</span><span class="p">)</span>
+<span class="bp">False</span>
+</code></pre></div>  </div>
+</div>
+<p>The <code class="highlighter-rouge">for</code> loop iterates over the characters in the string, comparing each in turn with the supplied character. If a match is found, <code class="highlighter-rouge">True</code> is returned. If we iterate through all the elements without finding a match, then the <code class="highlighter-rouge">for</code> loop terminates and the following command is executed – returning <code class="highlighter-rouge">False</code>.
+Determining if a particular item is an element of a sequence is a common operation, and so Python has a built-in operator <code class="highlighter-rouge">in</code> that does the job for us – so we don’t need the previous function. Actually, for strings, <code class="highlighter-rouge">in</code> does more than the previous function as we can see in the following examples.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="s">'s'</span> <span class="ow">in</span> <span class="s">'spam'</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'x'</span> <span class="ow">in</span> <span class="s">'spam'</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'sp'</span> <span class="ow">in</span> <span class="s">'spam'</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'sa'</span> <span class="ow">in</span> <span class="s">'spam'</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'pa'</span> <span class="ow">in</span> <span class="s">'spam'</span>
+<span class="bp">True</span>
+</code></pre></div>  </div>
+</div>
+
+<p><strong>Note</strong> how the <code class="highlighter-rouge">in</code> keyword is used in for loops as well as boolean tests. It’s important to be aware of both uses of <code class="highlighter-rouge">in</code> and how to use it in both cases.</p>
+
+<h2 id="slice-it-up">Slice It Up</h2>
+<p>Earlier we saw how we can access the i<sub>th</sub> element using square brackets. We can do more! We can also use the square brackets to do <strong>slicing</strong> – i.e. extracting subsequences. Here are some examples.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s">'spam'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="s">'p'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="s">'pa'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+<span class="s">'spa'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="s">'pam'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="s">'sp'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span>
+<span class="s">'pam'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[:]</span>
+<span class="s">'spam'</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The idea is to supply two indices separated by a colon. So when we write <code class="highlighter-rouge">s[n:m]</code>, we mean the substring from the n<sub>th</sub> index <strong>up to, but not including</strong>, the m<sub>th</sub> index. If the first index is missing we get the slice starting at the beginning of the string or sequence. If the second index is missing we get the slice ending at the last element. In the last case we actually generate a <strong>copy</strong> of the original string.
+We can also write <code class="highlighter-rouge">s[n:m:k]</code>. This means the substring from n to m in steps of k. Here are some examples.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span> <span class="o">=</span> <span class="s">'Lovely Spam'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="s">'oeySa'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">8</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="s">'Le '</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="s">'o'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="s">'olS'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span><span class="p">[:</span><span class="mi">7</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+<span class="s">'Ll'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span>
+<span class="s">'vyp'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span><span class="p">[::</span><span class="mi">3</span><span class="p">]</span>
+<span class="s">'Le a'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="s">'mp lv'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+<span class="s">'py'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="s">'mapS ylevoL'</span>
+</code></pre></div>  </div>
+</div>
+
+<p>The first four examples show starting from one index and ending at another using a step size. The next three examples show ways of starting at the beginning or ending at the end or both using a step size. The last three are examples of using negative step sizes.</p>
+
+<div class="important">
+
+  <h4 id="slicing-syntax">Slicing Syntax</h4>
+  <p><em>sequence</em><strong>[n:m:k]</strong></p>
+  <h4 id="semantics-2">Semantics</h4>
+  <p>Returns the elements in the sequence from <code class="highlighter-rouge">n</code> up to but not including <code class="highlighter-rouge">m</code> in steps of size <code class="highlighter-rouge">k</code>. If <code class="highlighter-rouge">k</code> is not included then step size defaults to 1. To get a backwards segment of the sequence then <code class="highlighter-rouge">m &lt; n</code> and <code class="highlighter-rouge">k</code> must be negative.</p>
+
+</div>
+
+<p>To finish off this section we look at two programming problems involving lists. The first problem is, given a character and a string, find the index of the first occurrence of the character in the string.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Return the first i such that string[i] == 'char'
+
+    Parameters:
+        char (string): The character being searched for.
+        string (string): The string being searched.
+
+    Return:
+        int: Index position of 'char' in 'string', 
+             or -1 if 'char' does not occur in 'string'.
+    """</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="n">i</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre></div>  </div>
+</div>
+
+<p>We use a <code class="highlighter-rouge">while</code> loop to iterate over the elements of the string. Either we find an occurrence of the character — in which case we immediately return that index, or we get to the end of the string without finding the character and return -1.
+Here are some tests of <code class="highlighter-rouge">find</code>.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"spam"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">find</span><span class="p">(</span><span class="s">'m'</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">find</span><span class="p">(</span><span class="s">'s'</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">find</span><span class="p">(</span><span class="s">'x'</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">1</span>
+</code></pre></div>  </div>
+</div>
+
+<h2 id="tuples">Tuples</h2>
+<p>A tuple is a comma separated list of values. Tuples are useful for storing data that is required to not be modified. As tuples are immutable, <strong>they cannot be modified</strong>, they are useful for this type of operation.</p>
+
+<p>Here are some examples using tuples.</p>
+<div class="viz">
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; type((2,3,4))
+&lt;class 'tuple'&gt;
+&gt;&gt;&gt; point = (2,3)
+&gt;&gt;&gt; point
+(2, 3)
+&gt;&gt;&gt; x, y = point
+&gt;&gt;&gt; print(x, y)
+2 3
+&gt;&gt;&gt; x, y = y, x
+&gt;&gt;&gt; print(x, y)
+3 2
+</code></pre></div>  </div>
+</div>
+
+<p>The second example assigns a tuple to the variable <code class="highlighter-rouge">point</code>. This tuple represents an x, y coordinate, one of the more common uses of tuples. (Formally, we say that the name <code class="highlighter-rouge">point</code> refers to the tuple (2,3) in memory.) The third is an example of <strong>tuple unpacking</strong>, also called <strong>parallel assignment</strong> — it assigns <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> respectively the values of the first and second components of the tuple. The last example uses parallel assignment to swap the values of two variables.</p>
+
+<p>Tuples can also be indexed and sliced in the same way as strings. Here is an example. The tuple in this example represents a person’s details. Using a tuple is an easy way of storing multiple values together to represent the information of a person.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">john</span> <span class="o">=</span> <span class="p">(</span><span class="s">"John"</span><span class="p">,</span> <span class="s">"Cleese"</span><span class="p">,</span> <span class="s">"Ministry of Silly Walks"</span><span class="p">,</span> <span class="mi">5555421</span><span class="p">,</span> <span class="s">"27/10"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">john</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="s">'Ministry of Silly Walks'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">john</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="s">'27/10'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">john</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">(</span><span class="s">'John'</span><span class="p">,</span> <span class="s">'Cleese'</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<h3 id="multiple-outputs">Multiple Outputs</h3>
+<p>Tuples are also useful for using multiple values, for example in for loops and return statements. It is possible to rewrite the <code class="highlighter-rouge">find</code> function using a for loop and the <code class="highlighter-rouge">enumerate</code> function. Calling <code class="highlighter-rouge">enumerate</code> on a sequence will create a sequence of tuples containing a counter and the values in the sequence. By default, the counter starts at 0, so it can be used to generate tuples that contain a value of the sequence and the index of that value. The following is a couple of examples using <code class="highlighter-rouge">enumerate</code>.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"I like Spam"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+<span class="mi">0</span> <span class="n">I</span>
+<span class="mi">1</span>  
+<span class="mi">2</span> <span class="n">l</span>
+<span class="mi">3</span> <span class="n">i</span>
+<span class="mi">4</span> <span class="n">k</span>
+<span class="mi">5</span> <span class="n">e</span>
+<span class="mi">6</span>  
+<span class="mi">7</span> <span class="n">S</span>
+<span class="mi">8</span> <span class="n">p</span>
+<span class="mi">9</span> <span class="n">a</span>
+<span class="mi">10</span> <span class="n">m</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'number:'</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s">'character:'</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+<span class="n">number</span><span class="p">:</span> <span class="mi">3</span> <span class="n">character</span><span class="p">:</span> <span class="n">I</span>
+<span class="n">number</span><span class="p">:</span> <span class="mi">4</span> <span class="n">character</span><span class="p">:</span>  
+<span class="n">number</span><span class="p">:</span> <span class="mi">5</span> <span class="n">character</span><span class="p">:</span> <span class="n">l</span>
+<span class="n">number</span><span class="p">:</span> <span class="mi">6</span> <span class="n">character</span><span class="p">:</span> <span class="n">i</span>
+<span class="n">number</span><span class="p">:</span> <span class="mi">7</span> <span class="n">character</span><span class="p">:</span> <span class="n">k</span>
+<span class="n">number</span><span class="p">:</span> <span class="mi">8</span> <span class="n">character</span><span class="p">:</span> <span class="n">e</span>
+<span class="n">number</span><span class="p">:</span> <span class="mi">9</span> <span class="n">character</span><span class="p">:</span>  
+<span class="n">number</span><span class="p">:</span> <span class="mi">10</span> <span class="n">character</span><span class="p">:</span> <span class="n">S</span>
+<span class="n">number</span><span class="p">:</span> <span class="mi">11</span> <span class="n">character</span><span class="p">:</span> <span class="n">p</span>
+<span class="n">number</span><span class="p">:</span> <span class="mi">12</span> <span class="n">character</span><span class="p">:</span> <span class="n">a</span>
+<span class="n">number</span><span class="p">:</span> <span class="mi">13</span> <span class="n">character</span><span class="p">:</span> <span class="n">m</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Notice that the for loop uses tuple unpacking, by assigning the items of the tuple to the variables <code class="highlighter-rouge">i</code> and <code class="highlighter-rouge">c</code>. The first example simply prints out the index and character as a tuple pair. The second gives a second argument to <code class="highlighter-rouge">enumerate</code>, which is the starting value for the counter.</p>
+
+<div class="important">
+
+  <h4 id="enumerate-syntax"><code class="highlighter-rouge">enumerate</code> Syntax</h4>
+  <p>Either of these forms can be used:</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">enumerate</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+<span class="nb">enumerate</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </div>
+
+  <h4 id="semantics-3">Semantics</h4>
+  <p>Generates a sequence of <code class="highlighter-rouge">(count, value)</code> tuples, with an increasing count and the values of the sequence. The count starts at <code class="highlighter-rouge">start</code>, or at 0 if <code class="highlighter-rouge">start</code> is not given. More precisely, the following sequence is generated:</p>
+  <div class="viz">
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">enumerate</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">seq</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">seq</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">seq</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="o">...</span>
+<span class="nb">enumerate</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">seq</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="n">start</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">seq</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                         <span class="p">(</span><span class="n">start</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">seq</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="o">...</span>
+</code></pre></div>    </div>
+  </div>
+
+  <p>If the counter starts from 0, then the count is the same as the index of the value in the sequence. This is the most common use of <code class="highlighter-rouge">enumerate</code>.</p>
+</div>
+
+<p>Now we can rewrite <code class="highlighter-rouge">find</code> as below:</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Return the first i such that string[i] == char
+
+    Parameters:
+        char (string): The character being searched for.
+        string (string): The string being searched.
+
+    Return:
+        int: Index position of 'char' in 'string', 
+             or -1 if 'char' does not occur in 'string'.
+    """</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="n">char</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre></div>  </div>
+</div>
+
+<p>This function now goes through each character in the string using a for loop with enumerate. The body of the for loop is to check if the current character, <code class="highlighter-rouge">c</code>, is the same as <code class="highlighter-rouge">char</code>. If it is then the current index <code class="highlighter-rouge">i</code> is returned. Otherwise the for loop moves onto the next character in the string. If the for loop ends then -1 is returned.
+Performing test cases on <code class="highlighter-rouge">find.py</code> we can see that it has the same functionality as before.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"spam"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">find</span><span class="p">(</span><span class="s">'m'</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">find</span><span class="p">(</span><span class="s">'s'</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">find</span><span class="p">(</span><span class="s">'x'</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">1</span>
+</code></pre></div>  </div>
+</div>
+
+<h3 id="returning-a-tuple">Returning a Tuple</h3>
+<p>Now we are going to write our own function that returns multiple outputs. Our function is going to take a character and a string and split the string in two, at the first occurrence of the character. In this case we want to write a function that will return three strings - the string up to (but not including) the character; the character; and the string after the character.</p>
+
+<p>Our programming problem can be solved by using <code class="highlighter-rouge">find</code> in combination with slicing.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">partition</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Return 'string' split at 'char'.
+
+    The returned result is a tuple consisting of three strings that
+    partition 'string' at 'char' - i.e. the substring before the first occurrence
+    of 'char', 'char', and the substring after the first occurrence of 'char'.
+    If 'char' does not occur in 'string' then the first component returned
+    is the entire 'string' and the last two components are empty strings.
+
+    Parameters:
+        char (string): The character used to partition string.
+        string (string): The string being partitioned.
+
+    Return:
+        tuple&lt;tr, str, str&gt;: sub-string before char, char, sub-string after char;
+                             or 'string', "", "".
+    """</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="n">string</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="s">''</span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="n">string</span><span class="p">[:</span><span class="n">index</span><span class="p">],</span> <span class="n">char</span><span class="p">,</span> <span class="n">string</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+</code></pre></div>  </div>
+</div>
+
+<p>Here are some tests of <code class="highlighter-rouge">partition</code>.</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">spam</span> <span class="o">=</span> <span class="s">'spam'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">partition</span><span class="p">(</span><span class="s">'s'</span><span class="p">,</span> <span class="n">spam</span><span class="p">)</span>
+<span class="p">(</span><span class="s">''</span><span class="p">,</span> <span class="s">'s'</span><span class="p">,</span> <span class="s">'pam'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">partition</span><span class="p">(</span><span class="s">'p'</span><span class="p">,</span> <span class="n">spam</span><span class="p">)</span>
+<span class="p">(</span><span class="s">'s'</span><span class="p">,</span> <span class="s">'p'</span><span class="p">,</span> <span class="s">'am'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">partition</span><span class="p">(</span><span class="s">'m'</span><span class="p">,</span> <span class="n">spam</span><span class="p">)</span>
+<span class="p">(</span><span class="s">'spa'</span><span class="p">,</span> <span class="s">'m'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">partition</span><span class="p">(</span><span class="s">'x'</span><span class="p">,</span> <span class="n">spam</span><span class="p">)</span>
+<span class="p">(</span><span class="s">'spam'</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
+</code></pre></div>  </div>
+</div>
+
+<p>In next week’s notes we will see that the <code class="highlighter-rouge">find</code> and <code class="highlighter-rouge">partition</code> functions, like the <code class="highlighter-rouge">is_in</code> function are already part of Python as part of the string ADT interface.</p>
+
+    </div>
+</body>
+
+</html>

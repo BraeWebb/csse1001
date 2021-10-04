@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Inheritance</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <p class="link-bar">
+            <a href="/tutorials/inheritance.pdf" data-toggle="tooltip" title="View as PDF"><i class="fa fa-file-pdf"></i></a>
+            <a href="https://github.com/BraeWebb/csse1001" data-toggle="tooltip" title="Contribute Fixes"><i class="fab fa-github"></i></a>
+        </p>
+        <h1 id="inheritance">Inheritance</h1>
+<h2 id="extending-students">Extending Students</h2>
+
+<p>In last week’s tutorial, we wrote a <code class="highlighter-rouge">Student</code> class which aimed to store, retrieve, and perform computations on, information about a university student. The file <code class="highlighter-rouge">week08_students.py</code> contains a much simpler model of a student; it includes a name, student number, and a list of courses. Each course has an associated tuition fee.</p>
+
+<p>We would like to extend this model to allow for students who live in college. In addition to paying tuition fees, college students must also pay an extra fee to live on campus. Write a class <code class="highlighter-rouge">CollegeStudent</code> which inherits from <code class="highlighter-rouge">Student</code>, and implements the following functionality:</p>
+<ul>
+  <li>The constructor should take an extra two arguments, the name of the student’s college (as a string), and their college fee (as an integer).</li>
+  <li>Add a method <code class="highlighter-rouge">get_college</code> which returns the name of the student’s college.</li>
+  <li>The <code class="highlighter-rouge">calculate_fees</code> method of a <code class="highlighter-rouge">CollegeStudent</code> should return the sum of all their tuition fees, plus their college fee.
+The following shows an example of using this class:</li>
+</ul>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">fred</span> <span class="o">=</span> <span class="n">CollegeStudent</span><span class="p">(</span><span class="s">"fred"</span><span class="p">,</span> <span class="mi">43214321</span><span class="p">,</span> <span class="s">"St. Leo's"</span><span class="p">,</span> <span class="mi">18000</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fred</span><span class="o">.</span><span class="n">get_college</span><span class="p">()</span>
+<span class="s">"St. Leo's"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fred</span><span class="o">.</span><span class="n">calculate_fees</span><span class="p">()</span>
+<span class="mi">18000</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fred</span><span class="o">.</span><span class="n">enrol</span><span class="p">(</span><span class="s">'CSSE1001'</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fred</span><span class="o">.</span><span class="n">enrol</span><span class="p">(</span><span class="s">'LAWS1000'</span><span class="p">,</span> <span class="mi">1300</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fred</span><span class="o">.</span><span class="n">calculate_fees</span><span class="p">()</span>
+<span class="mi">20300</span>
+</code></pre></div>  </div>
+</div>
+
+<h2 id="web-crawling">Web Crawling</h2>
+<p>If you are building a search engine, you need to start by having a list of all web pages on the Internet. The simple way to find webpages is to start with a known web page, and follow all the links to different pages; repeating the procedure on those web pages. (This method is called <a href="https://en.wikipedia.org/wiki/Web_crawler">web crawling</a>, since it is akin to the way a spider crawls along its web.) 
+For this task, we will write a program which takes a URL for a Web page, and finds all links on that page. To do this, we will need to learn a bit about HTML, and the Python <code class="highlighter-rouge">HTMLParser</code>.</p>
+
+<div class="important">
+
+  <h4 id="html-basics">HTML Basics</h4>
+  <p>In HTML, text is annotated with <em>tags</em>, which affect the way the text is displayed. For example, to make text appear in <strong>bold face</strong>, we put it inside <code class="highlighter-rouge">&lt;strong&gt;</code> tags. To see more tags, view the source of any web page in your browser.</p>
+
+  <p>Tags can have attributes; attributes have a name and a value. For example, the tag <code class="highlighter-rouge">&lt;img src="img/spam.jpg" alt="Spam"&gt;</code> is an <code class="highlighter-rouge">img</code> tag with the two attributes <code class="highlighter-rouge">src="img/spam.jpg"</code> and <code class="highlighter-rouge">alt="Spam"</code>.</p>
+
+  <p>Of particular interest to us is the <code class="highlighter-rouge">a</code> <a href="https://www.w3schools.com/tags/tag_a.asp">tag</a>, which describes a link. The URL to be linked is put in the attribute called <code class="highlighter-rouge">href</code>. For example, <code class="highlighter-rouge">&lt;a href="http://example.com/"&gt;link&lt;/a&gt;</code> produces: <a href="http://example.com/">link</a>.</p>
+
+  <h4 id="htmlparser">HTMLParser</h4>
+  <p>Python contains a library called <code class="highlighter-rouge">HTMLParser</code> which can help interpret HTML text. The <code class="highlighter-rouge">HTMLParser</code> class has a method <code class="highlighter-rouge">feed</code>, which takes a string. For each HTML tag within the string, the class calls its own <code class="highlighter-rouge">handle_starttag</code> method. By default, this method does nothing, but subclasses can overwrite that behaviour.</p>
+
+  <p>In all the examples of inheritance we have seen, we are defining two (or more) classes in the same file, and have one inherit from the other. In this task, we will instead be inheriting from a class in another library; this works in exactly the same way — we write the name of the superclass (<code class="highlighter-rouge">HTMLParser</code>) inside <code class="highlighter-rouge">()</code> parentheses next to the class definition.</p>
+
+  <p>Since we cannot see the code we are inheriting from, we have to be careful when overriding methods to call the superclass method, including for the <code class="highlighter-rouge">__init__</code> method.</p>
+</div>
+
+<p>Start with the sample code below (available as <code class="highlighter-rouge">week08_webcrawler.py</code>). The function <code class="highlighter-rouge">find_links</code> takes a URL (for example, the URL of this webpage), and calls the <code class="highlighter-rouge">feed</code> method of a <code class="highlighter-rouge">LinkParser</code> class (which has not yet been defined).</p>
+
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">html.parser</span> <span class="kn">import</span> <span class="n">HTMLParser</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+
+<span class="c1"># Write the LinkParser class here
+</span>
+<span class="k">def</span> <span class="nf">find_links</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="p">:</span>
+    <span class="s">"""Return a list of links from the given Web page.
+
+    Return:
+        (list[str]): List of all links found at the given URL.
+    """</span>
+    <span class="c1"># Open the Web page and read the HTML text
+</span>    <span class="n">fd</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1"># Create a parser instance and feed it the text
+</span>    <span class="n">parser</span> <span class="o">=</span> <span class="n">LinkParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">feed</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>  <span class="c1"># Need to convert text to a str as read gives a
+</span>                            <span class="c1"># bytes type which feed cannot process
+</span>
+    <span class="c1"># Write a return statement here
+</span></code></pre></div>  </div>
+</div>
+
+<p>Make the following modifications to this code:</p>
+<ol>
+  <li>Write a class <code class="highlighter-rouge">LinkParser</code> which inherits from <code class="highlighter-rouge">HTMLParser</code>, and write a method <code class="highlighter-rouge">handle_starttag(self, tag, attrs)</code> which prints out the two parameters <code class="highlighter-rouge">tag</code> and <code class="highlighter-rouge">attrs</code>. Run the code and determine what the code is doing, and what values are being given to <code class="highlighter-rouge">handle_starttag</code> when it is called. Discuss with others at your table, or with a tutor.</li>
+  <li>Modify the <code class="highlighter-rouge">handle_starttag</code> method to print out the <code class="highlighter-rouge">href</code> attribute of every link (a tag) within the HTML text.</li>
+  <li>
+    <p>Modify the class so that it stores a list of URLs, and modify the <code class="highlighter-rouge">handle_starttag</code> method so that it adds the linked URLs into the list. Add a method <code class="highlighter-rouge">get_urls</code> which returns this list, and use that method in the return value of <code class="highlighter-rouge">find_links</code>.</p>
+
+    <p>(Hint: think carefully about where you should create this list, so that you will be able to access it again.)</p>
+  </li>
+</ol>
+
+<p>An example of executing the finished code is as follows:</p>
+<div class="viz">
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">find_links</span><span class="p">(</span><span class="s">'http://www.itee.uq.edu.au/'</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'https://www.uq.edu.au/contacts/'</span><span class="p">,</span>
+ <span class="s">'https://future-students.uq.edu.au/'</span><span class="p">,</span>
+ <span class="s">'https://www.uq.edu.au/maps/'</span><span class="p">,</span>
+ <span class="s">'https://www.uq.edu.au/news/'</span><span class="p">,</span>
+ <span class="s">'https://www.uq.edu.au/events/'</span><span class="p">,</span>
+ <span class="s">'http://jobs.uq.edu.au/'</span><span class="p">,</span>
+ <span class="s">'https://library.uq.edu.au/'</span><span class="p">,</span>
+ <span class="s">'https://my.uq.edu.au/'</span><span class="p">,</span>
+ <span class="s">'http://www.uq.edu.au/'</span><span class="p">,</span>
+ <span class="s">'/'</span><span class="p">,</span>
+ <span class="s">'https://www.facebook.com/UQEngTech/'</span><span class="p">,</span>
+ <span class="s">'https://www.instagram.com/uqengineeringtech/'</span><span class="p">,</span>
+ <span class="s">'https://twitter.com/UQ_EAIT'</span><span class="p">,</span>
+ <span class="s">'https://www.linkedin.com/groups/4123315'</span><span class="p">,</span>
+ <span class="s">'https://www.youtube.com/channel/UCn7-OSiaW162YraLKzs4fzA/videos'</span><span class="p">,</span>
+ <span class="s">'/'</span><span class="p">,</span>
+ <span class="s">'/about'</span><span class="p">,</span>
+ <span class="s">'/occupational-health-and-safety'</span><span class="p">,</span>
+ <span class="s">'/facilities'</span><span class="p">,</span>
+ <span class="s">'http://www.itee.uq.edu.au/etsg'</span><span class="p">,</span>
+ <span class="s">'/social-media'</span><span class="p">,</span>
+ <span class="s">'/news'</span><span class="p">,</span>
+ <span class="s">'/our-people'</span><span class="p">,</span>
+ <span class="s">'/future-students'</span><span class="p">,</span>
+ <span class="s">'/itee-undergraduate-programs'</span><span class="p">,</span>
+ <span class="s">'/first-year'</span><span class="p">,</span>
+ <span class="s">'/itee-careers'</span><span class="p">,</span>
+ <span class="s">'/grad-cert'</span><span class="p">,</span>
+ <span class="s">'/grad-dipl'</span><span class="p">,</span>
+ <span class="s">'/itee-honours'</span><span class="p">,</span>
+ <span class="s">'/itee-industry-experience'</span><span class="p">,</span>
+ <span class="s">'/internships'</span><span class="p">,</span>
+ <span class="s">'/postgraduate-coursework'</span><span class="p">,</span>
+ <span class="s">'/future-postgraduate-research'</span><span class="p">,</span>
+ <span class="s">'/publications'</span><span class="p">,</span>
+ <span class="s">'/advanced-programs'</span><span class="p">,</span>
+ <span class="s">'/future-international'</span><span class="p">,</span>
+ <span class="s">'/future-scholarships'</span><span class="p">,</span>
+ <span class="s">'http://www.eait.uq.edu.au/why-study-engineering-uq'</span><span class="p">,</span>
+ <span class="s">'/why-uq'</span><span class="p">,</span>
+ <span class="s">'/current-students'</span><span class="p">,</span>
+ <span class="s">'/student-faqs-general'</span><span class="p">,</span>
+ <span class="s">'/academic-advice'</span><span class="p">,</span>
+ <span class="s">'/student-resources'</span><span class="p">,</span>
+ <span class="s">'/itee-guidelines'</span><span class="p">,</span>
+ <span class="s">'/itee-undergraduate-programs'</span><span class="p">,</span>
+ <span class="s">'/postgraduate-coursework'</span><span class="p">,</span>
+ <span class="s">'/rhd-students'</span><span class="p">,</span>
+ <span class="s">'/scc'</span><span class="p">,</span>
+ <span class="s">'/study-overseas'</span><span class="p">,</span>
+ <span class="s">'/courses'</span><span class="p">,</span>
+ <span class="s">'/tutoring'</span><span class="p">,</span>
+ <span class="s">'/thesis'</span><span class="p">,</span>
+ <span class="s">'/career-resources-and-jobs'</span><span class="p">,</span>
+ <span class="s">'/research'</span><span class="p">,</span>
+ <span class="s">'/itee-school-based-ethics-review'</span><span class="p">,</span>
+ <span class="s">'/seminars'</span><span class="p">,</span>
+ <span class="s">'/industry'</span><span class="p">,</span>
+ <span class="s">'/student-engagement'</span><span class="p">,</span>
+ <span class="s">'/industry-advisory-board'</span><span class="p">,</span>
+ <span class="s">'/rd-collaboration'</span><span class="p">,</span>
+ <span class="s">'/consultancy-services'</span><span class="p">,</span>
+ <span class="s">'/shared-facilities'</span><span class="p">,</span>
+ <span class="s">'/commercial-ventures'</span><span class="p">,</span>
+ <span class="s">'/donations'</span><span class="p">,</span>
+ <span class="s">'/community'</span><span class="p">,</span>
+ <span class="s">'/activities-outreach'</span><span class="p">,</span>
+ <span class="s">'/contact-us'</span><span class="p">,</span>
+ <span class="s">'/our-people'</span><span class="p">,</span>
+ <span class="s">'https://future-students.uq.edu.au/study/find-a-program/studyarea/engineering-and-information-technology-1581?career=</span><span class="si">%5</span><span class="s">B</span><span class="si">%22</span><span class="s">ugrd</span><span class="si">%22%5</span><span class="s">D'</span><span class="p">,</span>
+ <span class="s">'https://future-students.uq.edu.au/study/find-a-program/studyarea/engineering-and-information-technology-1581?career=</span><span class="si">%5</span><span class="s">B</span><span class="si">%22</span><span class="s">pgcw</span><span class="si">%22%5</span><span class="s">D'</span><span class="p">,</span>
+ <span class="s">'https://future-students.uq.edu.au/study/find-a-program/studyarea/engineering-and-information-technology-1581?career=</span><span class="si">%5</span><span class="s">B</span><span class="si">%22</span><span class="s">pgrs</span><span class="si">%22%5</span><span class="s">D'</span><span class="p">,</span>
+ <span class="s">'https://future-students.uq.edu.au/study/program/Bachelor-of-Computer-Science-2425'</span><span class="p">,</span>
+ <span class="s">'/node/7060/'</span><span class="p">,</span>
+ <span class="s">'http://eait.uq.edu.au/ingenuity'</span><span class="p">,</span>
+ <span class="s">'/current-students'</span><span class="p">,</span>
+ <span class="s">'/current-students'</span><span class="p">,</span>
+ <span class="s">'/current-students'</span><span class="p">,</span>
+ <span class="s">'/research'</span><span class="p">,</span>
+ <span class="s">'/research'</span><span class="p">,</span>
+ <span class="s">'/research'</span><span class="p">,</span>
+ <span class="s">'/itee-industry'</span><span class="p">,</span>
+ <span class="s">'/itee-industry'</span><span class="p">,</span>
+ <span class="s">'/itee-industry'</span><span class="p">,</span>
+ <span class="s">'/community'</span><span class="p">,</span>
+ <span class="s">'/community'</span><span class="p">,</span>
+ <span class="s">'/community'</span><span class="p">,</span>
+ <span class="s">'/news'</span><span class="p">,</span>
+ <span class="s">'/news/article/scholarships-awarded-commonwealth-games-competitors'</span><span class="p">,</span>
+ <span class="s">'/news/article/scholarships-awarded-commonwealth-games-competitors'</span><span class="p">,</span>
+ <span class="s">'/news/article/uq-aces-world-subject-rankings'</span><span class="p">,</span>
+ <span class="s">'/news/article/uq-aces-world-subject-rankings'</span><span class="p">,</span>
+ <span class="s">'/news/article/big-data-centre-energy-web'</span><span class="p">,</span>
+ <span class="s">'/news/article/big-data-centre-energy-web'</span><span class="p">,</span>
+ <span class="s">'/news/article/researchers-help-fight-rising-power-costs'</span><span class="p">,</span>
+ <span class="s">'/news/article/researchers-help-fight-rising-power-costs'</span><span class="p">,</span>
+ <span class="s">'/news/article/opie-visits-arnhem-land'</span><span class="p">,</span>
+ <span class="s">'/news/article/opie-visits-arnhem-land'</span><span class="p">,</span>
+ <span class="s">'/news/article/portable-3d-brain-scanner-set-save-lives'</span><span class="p">,</span>
+ <span class="s">'/news/article/portable-3d-brain-scanner-set-save-lives'</span><span class="p">,</span>
+ <span class="s">'/news/article/older-australians-shape-how-new-technologies-are-developed'</span><span class="p">,</span>
+ <span class="s">'/news/article/older-australians-shape-how-new-technologies-are-developed'</span><span class="p">,</span>
+ <span class="s">'/news/article/uq-wins-two-acs-digital-disruptors-awards'</span><span class="p">,</span>
+ <span class="s">'/news/article/uq-wins-two-acs-digital-disruptors-awards'</span><span class="p">,</span>
+ <span class="s">'/scholarships-giving'</span><span class="p">,</span>
+ <span class="s">'http://www.uq.edu.au/maps/index.html?menu=1&amp;id=160'</span><span class="p">,</span>
+ <span class="s">'mailto:enquiries@itee.uq.edu.au'</span><span class="p">,</span>
+ <span class="s">'mailto:studentenquiries@itee.uq.edu.au'</span><span class="p">,</span>
+ <span class="s">'mailto:rhdstudentenquiries@itee.uq.edu.au'</span><span class="p">,</span>
+ <span class="s">'http://eait.uq.edu.au/eng-academic-advice'</span><span class="p">,</span>
+ <span class="s">'http://eait.uq.edu.au/'</span><span class="p">,</span>
+ <span class="s">'http://eait.uq.edu.au/current-engineering-students'</span><span class="p">,</span>
+ <span class="s">'http://future-students.uq.edu.au'</span><span class="p">,</span>
+ <span class="s">'https://internal.itee.uq.edu.au/'</span><span class="p">,</span>
+ <span class="s">'tel:+6173365111'</span><span class="p">,</span>
+ <span class="s">'http://uq.edu.au/contacts'</span><span class="p">,</span>
+ <span class="s">'http://www.uq.edu.au/about/cricos-link'</span><span class="p">,</span>
+ <span class="s">'tel:+61733653333'</span><span class="p">,</span>
+ <span class="s">'http://www.uq.edu.au/terms-of-use/'</span><span class="p">,</span>
+ <span class="s">'http://www.uq.edu.au/feedback'</span><span class="p">,</span>
+ <span class="s">'/eait_login'</span><span class="p">]</span>
+</code></pre></div>  </div>
+</div>
+
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+@import "code.css";
+.important,
+.aside,
+.extra,
+.blockquote,
+.viz {
+    margin: 20px 0;
+    padding: 15px 30px 15px 15px;
+    border-left: 5px solid #eee;
+    color: #333;
+}
+
+.aside {
+    background-color: #fcf2f2;
+    border-color: #dFb5b4;
+}
+
+.aside h4 {
+    color: #B94A48;
+}
+
+.important {
+    background-color: #fefbed;
+    border-color: #f1e7bc;
+}
+
+.important h4 {
+    color: #C09853;
+}
+
+.extra {
+    background-color: #f0f7fd;
+    border-color: #d0e3f0;
+}
+
+.extra h4 {
+    color: #3A87AD;
+}
+
+.link-bar {
+    float: right;
+    font-size: 36px;
+}
+
+.link-bar a:link {
+    color: black;
+}
+
+.link-bar a:visited {
+    color: black;
+}
+
+.link-bar a:hover {
+    color: rgb(0, 140, 255);
+}
+
+.link-bar a:active {
+    color: rgb(0, 140, 255);
+}
+
+.container {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.blockquote {
+    line-height: 10px;
+    font-style: italic;
+}
+
+.indent {
+    padding-left: 4em;
+}
+
+.viz figure {
+    margin-block-end: 0px;
+}
+
+.viz figure pre {
+    margin-block-end: 0px;
+}
+
+.viz pre {
+    margin-block-end: 0px;
+}
