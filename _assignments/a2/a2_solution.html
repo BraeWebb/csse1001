@@ -1328,6 +1328,8 @@ might be.</p>
 <li>No matter the result of the catch attempt, a pokeball will be
 used.</li>
 <li>Catching pokemon is impossible in trainer battles.</li>
+<li>The <code>did_succeed</code> method from the support code must be used to
+determine if a catch attempt was successful.</li>
 <li>The wild pokemon will be added to the trainers roster if there is
 room</li>
 <li>In a wild battle, catching the enemy pokemon will end the battle.</li>
@@ -1516,6 +1518,11 @@ class, a <code><a title="a2_solution.Move" href="#a2_solution.Move">Move</a></co
 <p>Generally, the move should be performed and its effects should be
 applied to the player and/or the enemy if needed. In addition,
 the appropriate pokemon's remaining moves should be updated.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>In the resulting ActionSummary, messages for ally effects should
+preceed enemy effects.</li>
+</ul>
 <h2 id="parameters">Parameters</h2>
 <ul>
 <li><code>battle</code>: The ongoing pokemon battle</li>
@@ -1571,6 +1578,8 @@ before the pokemon's attack, defense or type effectiveness is accounted
 for. </li>
 <li>Hit chance is a measure of how likely the move is to hit an enemy
 pokemon, before the pokemon's hit chance stat is taken into account.</li>
+<li>The <code>did_succeed</code> method from the support code must be used to
+determine if the attack hit.</li>
 <li>If an attack 'misses' it does no damage to the enemy pokemon.</li>
 </ul>
 <h2 id="examples">Examples</h2>
